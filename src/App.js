@@ -6,17 +6,17 @@ import L from "leaflet";
 import proj4 from 'proj4';
 //import 'proj4leaflet';
 
-const position = [36.0761696194201, 129.382655928438] // 위,경도 직접 입력 값
+const position = [36.0761696194201, 129.382655928438] // 위,경도 직접 입력할때의 값
 
 const crs2097 = '+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=bessel +units=m +no_defs';
 const crs5174 = '+proj=tmerc +lat_0=38 +lon_0=127.00289 +k=1 +x_0=200000 +y_0=500000 +ellps=bessel +units=m +no_defs';
 const crsWgs84 = '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs';
 
-// EPSG 2097 또는 EPSG 5174 좌표계 사용할 때 x,y 좌표 값
+// EPSG 2097 또는 EPSG 5174 좌표계 사용할 때 원본 x,y 좌표 값
 const x = 414570.563877435;
 const y = 288815.472861785;
 
-// x,y 좌표 (EPSG 2097 or EPSG 5174) to 위,경도 (WGS84)
+// x,y 좌표 (EPSG 2097 or EPSG 5174) to 위,경도 (WGS84) 변환
 const [lng, lat] = proj4(crs5174, crsWgs84, [x, y]);
 
 function App() {
