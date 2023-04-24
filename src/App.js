@@ -61,21 +61,21 @@ function LocationInput() {
       level: 3 // 지도의 확대 레벨
     };
 
-  // 지도를 생성합니다    
+  // 지도 생성    
   var map = new kakao.maps.Map(mapContainer, mapOption);
 
-  // 주소-좌표 변환 객체를 생성합니다
+  // 주소-좌표 변환 객체를 생성
   var geocoder = new kakao.maps.services.Geocoder();
 
   const onSearch = () => {
-    // 주소로 좌표를 검색합니다
+    // 주소로 좌표를 검색
     geocoder.addressSearch(search, function (result, status) {
 
       // 정상적으로 검색이 완료됐으면 
       if (status === kakao.maps.services.Status.OK) {
         var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
       }
-      // 결과값으로 받은 위치를 마커로 표시합니다
+      // 결과값으로 받은 위치를 마커로 표시
       var marker = new kakao.maps.Marker({
         map: map,
         position: coords
@@ -83,11 +83,12 @@ function LocationInput() {
 
       map.setCenter(coords)
 
-      // json 생성 (위도, 경도, 반경)
+      // 결과값으로 받은 위도, 경도 + 반경으로 json생성
       const pos = { x: String(coords.La), y: String(coords.Ma), position_range: "100" }
       const user1 = JSON.stringify(pos)
       console.log(user1)
       
+      // 서버로 위도,경도,반경 json값 post
       fetch('/user', {
         method: 'POST',
         headers: {
