@@ -1,9 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import L from "leaflet";
-import proj4 from 'proj4';
+//import "leaflet/dist/leaflet.css";
+//import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+//import L from "leaflet";
 import React, { useState, useEffect, useCallback } from 'react';
 
 /*global kakao*/
@@ -69,7 +68,7 @@ function App() {
           setPlace([...response.data]);
 
           /*
-          // A) 서버에서 받아온 데이터를 이용하여 마커를 생성하고 지도에 표시
+          // A) 서버에서 받아온 데이터를 이용하여 지도에 마커 표시
           response.data.forEach(place => {
             const latLng = new kakao.maps.LatLng(place.y, place.x);
             const marker = new kakao.maps.Marker({
@@ -79,7 +78,7 @@ function App() {
             });
           });
 
-          // B) 1, 2, 3번째 장소 정보 추출
+          // B) 서버에서 받아온 데이터 중 1, 2, 3번째 장소 정보 추출하여 지도에 마커 표시
           const place1 = response.data[0];
           const place2 = response.data[1];
           const place3 = response.data[2];
@@ -110,6 +109,5 @@ function App() {
     </>
   )
 }
-
 
 export default App;
