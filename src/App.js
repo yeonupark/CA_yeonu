@@ -4,6 +4,7 @@ import './App.css';
 //import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 //import L from "leaflet";
 import React, { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 
 /*global kakao*/
 
@@ -15,7 +16,7 @@ function App() {
 
   var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+      center: new kakao.maps.LatLng(37.5960006772448, 127.059935489657), // 지도의 중심좌표
       level: 3 // 지도의 확대 레벨
     };
 
@@ -51,9 +52,8 @@ function App() {
       console.log(user1)
       
       // 서버에 데이터 전송
-      axios.post("users", {
-        title: "제목",
-        content: "내용",
+      axios.post("http://facilities/bus/", {
+        user1
       })
       .then(function (response) {
         console.log(response);
@@ -63,7 +63,7 @@ function App() {
       });
 
       // 서버에서 데이터 받아오기
-      axios.get("users")
+      axios.get("http://facilities/bus/")
         .then((response) => {
           setPlace([...response.data]);
 
@@ -77,7 +77,8 @@ function App() {
               title: place.name
             });
           });
-
+          */
+         
           // B) 서버에서 받아온 데이터 중 1, 2, 3번째 장소 정보 추출하여 지도에 마커 표시
           const place1 = response.data[0];
           const place2 = response.data[1];
@@ -95,7 +96,7 @@ function App() {
             map: map,
             position: new kakao.maps.LatLng(place3.y좌표, place3.x좌표)
           });
-          */
+          
         })
         .catch(function (error) {
           console.log(error);
