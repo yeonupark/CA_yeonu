@@ -1,10 +1,28 @@
-.App {
-  text-align: center;
+#map{
+  width: 360px !important;
+  height: 740px !important;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.search-container{
+  border: 2px solid #777777;
+  border-radius: 12px;
+}
+.search-container input{
+  margin: 5px;
+  width: 300px;
+  border:none;
+}
+
+#search-btn{
+  border:none;
+  margin: 5px;
+  cursor: pointer;
+  background-color: #ffffff;
+  float: right;
+}
+
+.App {
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -1,10 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
 //import "leaflet/dist/leaflet.css";
 //import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 //import L from "leaflet";
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /*global kakao*/
 
@@ -104,10 +105,10 @@ function App() {
     });   
   }
   return (
-    <>
-      <input type="text" value={search} onChange={onChange}></input>
-      <button onClick={onSearch}>Search</button>
-    </>
+    <div className="search-container">
+      <input type="text" value={search} onChange={onChange} placeholder="도로명 주소를 입력해주세요!"></input>
+      <button id="search-btn" onClick={onSearch}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
+    </div>
   )
 }
 
