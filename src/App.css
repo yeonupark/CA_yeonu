@@ -1,3 +1,9 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css");
+
+* {
+  font-family: 'Pretendard';
+}
+
 #map{
   width: 360px !important;
   height: 740px !important;
@@ -9,11 +15,11 @@
 }
 .search-container input{
   margin: 5px;
-  width: 300px;
+  width: 270px;
   border:none;
 }
 
-#search-btn{
+#search-btn {
   border:none;
   margin: 5px;
   cursor: pointer;

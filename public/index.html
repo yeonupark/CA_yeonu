@@ -30,7 +30,7 @@
     <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=9520bd47ae022ccc549e132de8f71ded&libraries=services"></script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root" onclick="useBottomSheet"></div>
     <div id="map" style="width:500px;height:400px;"></div>
 	  <script>
 		var container = document.getElementById('map');
@@ -38,10 +38,13 @@
 			center: new kakao.maps.LatLng(33.450701, 126.570667),
 			level: 3
 		};
+    function useBottomSheet() {
+      alert('바텀시트 출력')
+    };
+
 		var map = new kakao.maps.Map(container, options);
 	  </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
     <div id="map"></div>
   </body>
 </html>
