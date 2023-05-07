@@ -1,0 +1,37 @@
+.leaflet-top.leaflet-left{
+    top: 50px !important;
+}
+
+.leaflet-bar.leaflet-control{
+    margin: auto;
+}
+
+.leaflet-bar-part.leaflet-bar-part-single{
+    background-color: #fff;
+    margin:auto;
+    border:none;
+    border-radius: 4px;
+}
+
+.leaflet-bar.leaflet-control input{
+    margin: 5px;
+    width: 270px;
+    border:none;
+  }
+  
+  #search-btn {
+    border:none;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #ffffff;
+    float: right;
+  }
+
+.leaflet-bar-part.leaflet-bar-part-single{
+    width: 100%;
+}
+
+.leaflet-search-control.form-control{
+    width: 270px !important;
+    border: none !important;
+}

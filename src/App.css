@@ -9,24 +9,6 @@
   height: 740px !important;
 }
 
-.search-container{
-  border: 2px solid #777777;
-  border-radius: 12px;
-}
-.search-container input{
-  margin: 5px;
-  width: 270px;
-  border:none;
-}
-
-#search-btn {
-  border:none;
-  margin: 5px;
-  cursor: pointer;
-  background-color: #ffffff;
-  float: right;
-}
-
 .App {
   text-align: center;
 }
@@ -59,4 +41,10 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+#root { height: 100vh;}
+
+.leaflet-container{
+  height: 100vh;
 }
