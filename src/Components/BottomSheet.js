@@ -1,5 +1,6 @@
 import Sheet from 'react-modal-sheet';
 import { useState } from 'react';
+import DataCheckbox from './DataCheckbox';
 import './BottomSheet.css';
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,8 +10,6 @@ function BottomSheet() {
   const openSheet = () => {
     setOpen(true)
   }
-
-
 
   return (
     <>
@@ -22,11 +21,7 @@ function BottomSheet() {
             <div className="filter-contents">
               <p> 검색하고 싶은 편의시설을 모두 선택해주세요! </p>
               <div className="checkbox-container">
-                <input type="checkbox" value="편의점"/>
-                <input type="checkbox" value="버스정류장"/>
-                <input type="checkbox" value="지하철역"/>
-                <input type="checkbox" value="커피숍"/>
-                <input type="checkbox" value="공원"/>
+                <DataCheckbox/>
               </div>
             </div>
           </Sheet.Content>
