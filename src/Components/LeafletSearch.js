@@ -92,6 +92,7 @@ export const LeafletSearch = ({ setSearch }) => {
                     */
                 // App 컴포넌트에서 정의한 handleSearch 함수를 호출
                 setSearch(coords);
+
             }
         });
     };

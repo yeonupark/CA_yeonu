@@ -8,10 +8,6 @@ import { LeafletSearch } from "./Components/LeafletSearch";
 
 
 function App() {
-  const [isOpen, setOpen] = useState(false);
-  const openSheet = () => {
-    setOpen(true)
-  }
   const initialPosition = [37.5978219540466, 127.065505630651];
   const [search, setSearch] = useState("");
   //const [markerPosition, setMarkerPosition] = useState(null);
@@ -23,11 +19,6 @@ function App() {
 
   return (
     <div>
-    {/* <div className="search-container">
-      <input type="text" value={search} onChange={onChange} onClick={openSheet} placeholder="도로명 주소를 입력해주세요!"></input>
-      <button id="search-btn" onClick={onSearch}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
-      <BottomSheet></BottomSheet>
-    </div> */}
     <div className="App">
       <MapContainer center={initialPosition} zoom={17} className="map-container">
         <TileLayer

@@ -1,50 +1,46 @@
-import React, { useState } from "react";
-import { Collapse, Checkbox } from "antd";
+import React, { useState } from 'react';
+import './DataCheckbox.css';
+import axios from 'axios';
 
-const { Panel } = Collapse;
 
-function DataCheckbox(props) {
-    //list로 값 전달
-  
-    const [Checked, setChecked] = useState([]);
-  
-    const handleToggle = (value) => {
-      //누른 index 번호 확인
-      const currentIndex = Checked.indexOf(value);
-      //이미 눌러졌다면
-      const newChecked = [...Checked];
-  
-      //눌러지지 않다면(항목은 총 1, 2, 3, 4를 가지는데 값이 없으면 indexOf가 -1로 표기)
-      if (currentIndex === -1) {
-        newChecked.push(value);
-      } else {
-        //빼주고 state를 넣어준다
-        //splice : 눌러진 index의 값이 지워짐
-        newChecked.splice(currentIndex, 1);
-      }
-      setChecked(newChecked);
-    };
-  
-    const renderCheckboxList = () =>
-      props.list &&
-      props.list.map((value, index) => (
-        <React.Fragment key={index}>
-          <Checkbox
-            onChange={() => handleToggle(value._id)}
-            type="checkbox"
-            checked={Checked.indexOf(value._id) === -1 ? false : true}
-          />
-          <span>{value.name}</span>
-        </React.Fragment>
-      ));
-  
-    return (
-      <div>
-        <Collapse style={{ height: "100%", width: "500px", marginLeft: "14.8%" }}>
-            {renderCheckboxList()}
-        </Collapse>
-      </div>
-    );
-  }
-  
-  export default DataCheckbox;
+function DataCheckbox() {
+    const [checkedItems, setCheckedItems] = useState({});
+    
+    const handleSubmit = (e) => {
+    e.preventDefault();
+    //체크된 값을 배열에 저장해 콘솔에 출력
+    const checkedItemsArray = Object.keys(checkedItems).filter(key => checkedItems[key]).map(key => key);
+    console.log(checkedItemsArray);
+    axios.post("users", checkedItems)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+  };
+
+  const handleCheckboxChange = (event) => {
+    const { name } = event.target;
+    setCheckedItems({ ...checkedItems, [name]: !checkedItems[name] });
+    console.log(name);
+  };
+
+  return (
+  <form id="checkbox-container" onSubmit={handleSubmit}>
+    <label for="filter1">편의점</label>
+    <input type="checkbox" id="filter1" name="편의점" checked={checkedItems.filter1} onChange={handleCheckboxChange}/>
+    <label for="filter2">버스</label>
+    <input type="checkbox" id="filter2" name="버스" checked={checkedItems.filter2} onChange={handleCheckboxChange}/>
+    <label for="filter3">지하철</label>
+    <input type="checkbox" id="filter3" name="지하철" checked={checkedItems.filter3} onChange={handleCheckboxChange}/>
+    <label for="filter4">커피숍</label>
+    <input type="checkbox" id="filter4" name="커피숍" checked={checkedItems.filter4} onChange={handleCheckboxChange}/>
+    <label for="filter5">공원</label>
+    <input type="checkbox" id="filter5" name="공원" checked={checkedItems.filter5} onChange={handleCheckboxChange}/>
+    <button id="submit-btn" type="submit">적용</button>
+  </form>
+  );
+}
+
+export default DataCheckbox;
