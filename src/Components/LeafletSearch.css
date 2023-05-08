@@ -23,13 +23,13 @@
     border:none;
   }
   
-  #search-btn {
-    border:none;
+#search-btn {
+    border:none !important;
     margin: 5px;
     cursor: pointer;
     background-color: #ffffff;
     float: right;
-  }
+}
 
 .leaflet-bar-part.leaflet-bar-part-single{
     width: 100%;
@@ -38,4 +38,17 @@
 .leaflet-search-control.form-control{
     width: 270px !important;
     border: none !important;
+}
+
+#submit-btn{
+    width: 100%;
+    cursor: pointer;
+    background-color: #3B89FD;
+    color: #fff;
+    margin: 5px;
+    padding: 5px;
+    border: none;
+    font-size: 16px;
+    width: 90%;
+    border-radius: 4px;
 }

@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
+import './LeafletSearch.css';
+import './BottomSheet.css';
 import Sheet from 'react-modal-sheet';
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter, faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 
 /* global kakao*/
 
@@ -140,81 +142,81 @@ export const LeafletSearch = ({ setSearch }) => {
                     <div className="filter-contents">
                         <p> 검색하고 싶은 편의시설을 모두 선택해주세요! </p>
                         <div className="checkbox-container">
-                        <label>
-                    반경:
-                    <select
-                        value={radius}
-                        onChange={(e) => setRadius(e.target.value)}
-                    >
-                        <option value="">선택하세요</option>
-                        <option value="100">100m</option>
-                        <option value="200">200m</option>
-                        <option value="500">500m</option>
-                        <option value="1000">1km</option>
-                    </select>
-                </label>
-                <div>
-                    <input
-                        type="checkbox"
-                        value="pharmacy"
-                        checked={facilities.includes('pharmacy')}
-                        onChange={handleFacilityChange}
-                    />
-                    <label>약국</label>
+                            <label>
+                                반경:
+                                <select
+                                    value={radius}
+                                    onChange={(e) => setRadius(e.target.value)}>
+                                        <option value="">선택하세요</option>
+                                        <option value="100">100m</option>
+                                        <option value="200">200m</option>
+                                        <option value="500">500m</option>
+                                        <option value="1000">1km</option>
+                                </select>
+                            </label>
+                        <div>
+                            <input
+                                type="checkbox"
+                                value="pharmacy"
+                                checked={facilities.includes('pharmacy')}
+                                onChange={handleFacilityChange}
+                            />
+                            <span>약국</span>
+                        </div>
+                        <div>
+                            <input
+                                type="checkbox"
+                                value="cafe"
+                                checked={facilities.includes('cafe')}
+                                onChange={handleFacilityChange}
+                            />
+                            <span>카페</span>
+                        </div>
+                        <div>
+                            <input
+                            type="checkbox"
+                            value="hospital"
+                            checked={facilities.includes('hospital')}
+                            onChange={handleFacilityChange}
+                            />
+                            <span>병원</span>
+                        </div>
+                        <div>
+                            <input
+                                type="checkbox"
+                                value="mart"
+                                checked={facilities.includes('mart')}
+                                onChange={handleFacilityChange}
+                            />
+                            <span>마트</span>
+                        </div>
+                        <div>
+                            <input
+                                type="checkbox"
+                                value="gym"
+                                checked={facilities.includes('gym')}
+                                onChange={handleFacilityChange}
+                            />
+                            <span>체육시설</span>
+                        </div>
+                        <div>
+                            <input
+                                type="checkbox"
+                                value="busStation"
+                                checked={facilities.includes('busStation')}
+                                onChange={handleFacilityChange}
+                            />
+                            <span>버스정류장</span>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        value="cafe"
-                        checked={facilities.includes('cafe')}
-                        onChange={handleFacilityChange}
-                    />
-                    <label>카페</label>
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        value="hospital"
-                        checked={facilities.includes('hospital')}
-                        onChange={handleFacilityChange}
-                    />
-                    <label>병원</label>
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        value="mart"
-                        checked={facilities.includes('mart')}
-                        onChange={handleFacilityChange}
-                    />
-                    <label>마트</label>
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        value="gym"
-                        checked={facilities.includes('gym')}
-                        onChange={handleFacilityChange}
-                    />
-                    <label>체육시설</label>
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        value="busStation"
-                        checked={facilities.includes('busStation')}
-                        onChange={handleFacilityChange}
-                    />
-                    <label>버스정류장</label>
-                </div>
-              </div>
-            </div>
-          </Sheet.Content>
-        </Sheet.Container>
-        <Sheet.Backdrop />
-      </Sheet>
-                <button onClick={handleSearch}>
-                    Search
+                <button id="submit-btn" onClick={handleSearch}>적용</button>
+                </Sheet.Content>
+                </Sheet.Container>
+                <Sheet.Backdrop />
+            </Sheet>
+                <button id="search-btn" onClick={handleSearch}>
+                    <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
             </form>
         </div>

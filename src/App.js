@@ -3,7 +3,6 @@ import './App.css';
 import L from "leaflet";
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import BottomSheet from './Components/BottomSheet';
 import { LeafletSearch } from "./Components/LeafletSearch";
 
 
@@ -18,7 +17,6 @@ function App() {
   };
 
   return (
-    <div>
     <div className="App">
       <MapContainer center={initialPosition} zoom={17} className="map-container">
         <TileLayer
@@ -26,11 +24,7 @@ function App() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <LeafletSearch id="search-container" onSearchCallback={handleSearch} setSearch={setSearch} />
-        <BottomSheet/>
       </MapContainer>
-      
-    </div>
-    
     </div>
   );
 }
