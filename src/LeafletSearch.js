@@ -61,12 +61,12 @@ export const LeafletSearch = ({ setSearch }) => {
                     };
                     const selectedServers = facilities.map((facility) => servers[facility]);
                     
+                    // 서버로 POST
                     try {
                       // selectedServers 배열을 순회하면서 각 서버에 대해 요청을 보냄
                       const promises = selectedServers.map(server => {
                         return axios.post(server, {
-                          user_json,
-                          servers: [server]
+                          user_json
                         });
                       });
                   
@@ -78,6 +78,28 @@ export const LeafletSearch = ({ setSearch }) => {
                     } catch (error) {
                       console.error(error);
                     }
+
+                    // 서버로부터 GET
+                    try {
+                        // selectedServers 배열을 순회하면서 각 서버에 대해 GET 요청을 보냄
+                        const promises = selectedServers.map(server => {
+                          return axios.get(server);
+                        });
+                    
+                        // 모든 서버에 대한 요청이 끝날 때까지 기다림
+                        const responses = await Promise.all(promises);
+                    
+                        // 각 서버로부터 받은 응답 데이터를 처리하여 마커를 지도에 표시하는 작업을 수행
+                        responses.forEach(response => {
+                          const data = response.data;
+                          if (data.choice === 1) {
+                            const coords = new L.LatLng(data.lat, data.lon);
+                            L.marker(coords).addTo(map);
+                          }
+                        });
+                      } catch (error) {
+                        console.error(error);
+                      }    
                   }
                 
                 // App 컴포넌트에서 정의한 handleSearch 함수를 호출
