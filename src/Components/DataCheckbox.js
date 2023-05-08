@@ -28,17 +28,29 @@ function DataCheckbox() {
 
   return (
   <form id="checkbox-container" onSubmit={handleSubmit}>
-    <label for="filter1">편의점</label>
-    <input type="checkbox" id="filter1" name="편의점" checked={checkedItems.filter1} onChange={handleCheckboxChange}/>
-    <label for="filter2">버스</label>
-    <input type="checkbox" id="filter2" name="버스" checked={checkedItems.filter2} onChange={handleCheckboxChange}/>
-    <label for="filter3">지하철</label>
-    <input type="checkbox" id="filter3" name="지하철" checked={checkedItems.filter3} onChange={handleCheckboxChange}/>
-    <label for="filter4">커피숍</label>
-    <input type="checkbox" id="filter4" name="커피숍" checked={checkedItems.filter4} onChange={handleCheckboxChange}/>
-    <label for="filter5">공원</label>
-    <input type="checkbox" id="filter5" name="공원" checked={checkedItems.filter5} onChange={handleCheckboxChange}/>
-    <button id="submit-btn" type="submit">적용</button>
+    <div id="options-container">
+        <label htmlFor="filter1">
+            <input type="checkbox" id="filter1" name="편의점" checked={checkedItems.filter1} onChange={handleCheckboxChange}/>
+            <span>편의점</span>
+        </label>
+        <label htmlFor="filter2">
+            <input type="checkbox" id="filter2" name="버스" checked={checkedItems.filter2} onChange={handleCheckboxChange}/>
+            <span>버스</span>
+        </label>
+        <label htmlFor="filter3">
+            <input type="checkbox" id="filter3" name="버스" checked={checkedItems.filter3} onChange={handleCheckboxChange}/>
+            <span>지하철</span>
+        </label>
+        <label htmlFor="filter4">
+            <input type="checkbox" id="filter4" name="버스" checked={checkedItems.filter4} onChange={handleCheckboxChange}/>
+            <span>커피숍</span>
+        </label>
+        <label htmlFor="filter5">
+            <input type="checkbox" id="filter5" name="공원" checked={checkedItems.filter5} onChange={handleCheckboxChange}/>
+            <span>공원</span>
+        </label>
+        </div>
+        <button id="submit-btn" type="submit">적용</button>
   </form>
   );
 }

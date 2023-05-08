@@ -1,12 +1,20 @@
 #checkbox-container input {
-    width: 100px;
+    /* width: 100px; */
     /* height: 100%; */
     z-index: 100;
     opacity: 0;
     cursor: pointer;
 }
-#checkbox-container{
-    /* display: flex; */
+
+#options-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#checkbox-container label{
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
 }
 
 #checkbox-container input{
@@ -14,21 +22,21 @@
     display: flex;
 }
 
-#checkbox-container label {
+#checkbox-container span {
+    display: flex;
     display: block;
     text-align: center;
     color: #777777;
     padding: 5px;
     margin: 5px;
     width: 100px;
-    height: 33%;
     background-color: #fff;
     border-radius: 12px;
     cursor: pointer;
     border: 1px solid #777777;
 }
 
-#checkbox-container input:checked {
+#checkbox-container input:checked ~ span{
     background-color: #3B89FD;
     color: white;
     border:none;
