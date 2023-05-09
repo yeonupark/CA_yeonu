@@ -1,10 +1,16 @@
-.App {
-  text-align: center;
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css");
+
+* {
+  font-family: 'Pretendard';
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#map{
+  width: 360px !important;
+  height: 740px !important;
+}
+
+.App {
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -50,14 +56,13 @@
 
 form {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: flex-start;
   background-color: #fff;
-  padding: 20px;
+  padding: 3px;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   margin-left: auto;
   margin-right: auto;
-  max-width: 600px;
+  /* max-width: 600px; */
   width: 100%;
 }
