@@ -10,7 +10,7 @@ export const LeafletSearch = ({ setSearch }) => {
     const [search, setSearchLocal] = useState("");
     const [place, setPlace] = useState([]);
     const [radius, setRadius] = useState('');
-    const [facilities, setFacilities] = useState(['pharmacy', 'cafe', 'hospital','mart','gym','busStation']);
+    const [facilities, setFacilities] = useState([]);
 
     // 체크박스 변경 핸들러
     const handleFacilityChange = (e) => {
@@ -45,22 +45,68 @@ export const LeafletSearch = ({ setSearch }) => {
                 map.setView(coords, 17);
 
                 // json 생성 {위도, 경도, 반경}
-                const user1 = { x: coords.lat, y: coords.lng, position_range : radius};
-                const user_json = JSON.stringify(user1)
-                console.log(user_json);
-                console.log(facilities)
+                const user1 = { "x" : String(coords.lat), "y" : String(coords.lng), "radius" : radius};
+                
+                const user_json_tmp = JSON.stringify(user1)
+                const user_json = JSON.parse(user_json_tmp);
+
+                console.log(user_json)
+
+                
 
                 // 폼 제출 핸들러
-                const handleSubmit = async (e) => {
-                    e.preventDefault();
-                  
-                    const servers = {
-                      pharmacy: 'https://facilities/pharm',
-                      cafe: 'https://facilities/cafe',
-                      hospital: 'http://facilities/hospi'
-                    };
-                    const selectedServers = facilities.map((facility) => servers[facility]);
+                const handleSubmit = async (event) => {
+                    //event.preventDefault();
                     
+                    // servers 배열 생성하고 각 편의시설 별 서버 주소 저장
+                    const servers = {
+                      pharmacy: 'http://127.0.0.1:8000/facilities/pharmacy/',
+                      cafe: 'https://127.0.0.1:8000/facilities/cafe',
+                      hospital: 'http://127.0.0.1:8000/facilities/hospital/',
+                      mart: 'http://127.0.0.1:8000/facilities/mart/',
+                      gym: 'http://127.0.0.1:8000/facilities/gym/',
+                      laundry:'http://127.0.0.1:8000/facilities/laundry/',
+                      hair:'http://127.0.0.1:8000/facilities/hair/',
+                      convenience:'http://127.0.0.1:8000/facilities/convenience/'
+                    };
+                    // 사용자가 선택한 서버 배열 따로 저장
+                    const selectedServers = facilities.map((facility) => servers[facility]);
+                    console.log(selectedServers);
+
+                    axios.post('http://127.0.0.1:8000/facilities/gym/', {
+                        user_json
+                      })
+                      .then(function (response) {
+                        //console.log(response);
+                        console.log('서버로 POST 완료')
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                      });
+/*
+                    axios.get('http://127.0.0.1:8000/facilities/gym/')
+                      .then((response) => {
+                        setPlace([...response.data]);
+                        
+                        const place1 = response.data[0];
+                        const place2 = response.data[1];
+                        const place3 = response.data[2];
+                        
+                        const coords1 = new L.LatLng(place1.lat, place2.lon);
+                        L.marker(coords1).addTo(map)
+
+
+                        // // 서버에서 받아온 데이터를 이용하여 마커를 생성하고 지도에 표시합니다
+                        // place.forEach(response => {
+                        //     const data = response.data;
+                        //     if (data.choice === 1) {
+                        //       const coords = new L.LatLng(data.lat, data.lon);
+                        //       L.marker(coords).addTo(map);
+                        //     }
+                            
+                        // });
+                    });  
+/*
                     // 서버로 POST
                     try {
                       // selectedServers 배열을 순회하면서 각 서버에 대해 요청을 보냄
@@ -68,8 +114,8 @@ export const LeafletSearch = ({ setSearch }) => {
                         return axios.post(server, {
                           user_json
                         });
+                        console.log(selectedServers)
                       });
-                  
                       // 모든 서버에 대한 요청이 끝날 때까지 기다림
                       const responses = await Promise.all(promises);
                   
@@ -100,8 +146,11 @@ export const LeafletSearch = ({ setSearch }) => {
                       } catch (error) {
                         console.error(error);
                       }    
+*/                      
                   }
+                handleSubmit();
                 
+
                 // App 컴포넌트에서 정의한 handleSearch 함수를 호출
                 setSearch(coords);
             }
@@ -110,7 +159,7 @@ export const LeafletSearch = ({ setSearch }) => {
 
     return (
         <div className="leaflet-bar leaflet-control">
-            <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(e) => e.preventDefault()}>
+            <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(event) => event.preventDefault()}>
                 <input
                     className="leaflet-search-control form-control"
                     type="text"
@@ -175,6 +224,33 @@ export const LeafletSearch = ({ setSearch }) => {
                         onChange={handleFacilityChange}
                     />
                     <label>체육시설</label>
+                </div>
+                <div>
+                    <input
+                        type="checkbox"
+                        value="laundry"
+                        checked={facilities.includes('laundry')}
+                        onChange={handleFacilityChange}
+                    />
+                    <label>세탁소</label>
+                </div>
+                <div>
+                    <input
+                        type="checkbox"
+                        value="convenience"
+                        checked={facilities.includes('convecience')}
+                        onChange={handleFacilityChange}
+                    />
+                    <label>편의점</label>
+                </div>
+                <div>
+                    <input
+                        type="checkbox"
+                        value="hair"
+                        checked={facilities.includes('hair')}
+                        onChange={handleFacilityChange}
+                    />
+                    <label>미용실</label>
                 </div>
                 <div>
                     <input
