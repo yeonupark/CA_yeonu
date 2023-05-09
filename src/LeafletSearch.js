@@ -40,7 +40,7 @@ export const LeafletSearch = ({ setSearch }) => {
                 const coords = new L.LatLng(result[0].y, result[0].x);
                 
                 // 마커를 생성하고 지도에 추가
-                L.marker(coords).addTo(map);
+                //L.marker(coords).addTo(map);
                 // 검색 결과 위치로 지도의 센터를 이동
                 map.setView(coords, 17);
 
@@ -50,9 +50,7 @@ export const LeafletSearch = ({ setSearch }) => {
                 const user_json_tmp = JSON.stringify(user1)
                 const user_json = JSON.parse(user_json_tmp);
 
-                console.log(user_json)
-
-                
+                //console.log(user_json)
 
                 // 폼 제출 핸들러
                 const handleSubmit = async (event) => {
@@ -71,43 +69,9 @@ export const LeafletSearch = ({ setSearch }) => {
                     };
                     // 사용자가 선택한 서버 배열 따로 저장
                     const selectedServers = facilities.map((facility) => servers[facility]);
-                    console.log(selectedServers);
+                    //console.log(selectedServers);
 
-                    axios.post('http://127.0.0.1:8000/facilities/gym/', {
-                        user_json
-                      })
-                      .then(function (response) {
-                        //console.log(response);
-                        console.log('서버로 POST 완료')
-                      })
-                      .catch(function (error) {
-                        console.log(error);
-                      });
-/*
-                    axios.get('http://127.0.0.1:8000/facilities/gym/')
-                      .then((response) => {
-                        setPlace([...response.data]);
-                        
-                        const place1 = response.data[0];
-                        const place2 = response.data[1];
-                        const place3 = response.data[2];
-                        
-                        const coords1 = new L.LatLng(place1.lat, place2.lon);
-                        L.marker(coords1).addTo(map)
-
-
-                        // // 서버에서 받아온 데이터를 이용하여 마커를 생성하고 지도에 표시합니다
-                        // place.forEach(response => {
-                        //     const data = response.data;
-                        //     if (data.choice === 1) {
-                        //       const coords = new L.LatLng(data.lat, data.lon);
-                        //       L.marker(coords).addTo(map);
-                        //     }
-                            
-                        // });
-                    });  
-/*
-                    // 서버로 POST
+                // 서버로 POST                    
                     try {
                       // selectedServers 배열을 순회하면서 각 서버에 대해 요청을 보냄
                       const promises = selectedServers.map(server => {
@@ -116,15 +80,23 @@ export const LeafletSearch = ({ setSearch }) => {
                         });
                         console.log(selectedServers)
                       });
+                      
                       // 모든 서버에 대한 요청이 끝날 때까지 기다림
                       const responses = await Promise.all(promises);
                   
-                      // 각 서버로부터 받은 응답 데이터를 출력
-                      responses.forEach(response => console.log(response.data));
+                      // 각 서버로부터 받은 응답 데이터들에 따른 마커 띄우기
+                      responses.forEach(
+                        response => {
+                            const data = response.data;
+                            // if (data.choice === 1) 
+                            const coords = new L.LatLng(data[0].y, data[0].x);
+                            console.log(coords)
+                            //L.marker(coords).addTo(map);
+                        });
                     } catch (error) {
                       console.error(error);
                     }
-
+/*
                     // 서버로부터 GET
                     try {
                         // selectedServers 배열을 순회하면서 각 서버에 대해 GET 요청을 보냄
@@ -136,7 +108,8 @@ export const LeafletSearch = ({ setSearch }) => {
                         const responses = await Promise.all(promises);
                     
                         // 각 서버로부터 받은 응답 데이터를 처리하여 마커를 지도에 표시하는 작업을 수행
-                        responses.forEach(response => {
+                        responses.forEach(
+                            response => {
                           const data = response.data;
                           if (data.choice === 1) {
                             const coords = new L.LatLng(data.lat, data.lon);
@@ -146,11 +119,9 @@ export const LeafletSearch = ({ setSearch }) => {
                       } catch (error) {
                         console.error(error);
                       }    
-*/                      
+*/
                   }
                 handleSubmit();
-                
-
                 // App 컴포넌트에서 정의한 handleSearch 함수를 호출
                 setSearch(coords);
             }
