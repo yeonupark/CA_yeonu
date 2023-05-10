@@ -20,14 +20,13 @@ export const LeafletSearch = ({ setSearch }) => {
 
     //바텀시트 핸들러(열기)
     const openSheet = () => {
-      setOpen(true)
+        setOpen(true)
     }
-
+      
     //바텀시트 핸들러(닫기)
     const closeSheet = () => {
         setOpen(false);
-      };
-
+    };
     // 체크박스 변경 핸들러
     const handleFacilityChange = (e) => {
         const value = e.target.value;
@@ -56,59 +55,79 @@ export const LeafletSearch = ({ setSearch }) => {
                 const coords = new L.LatLng(result[0].y, result[0].x);
                 
                 // 마커를 생성하고 지도에 추가
-                L.marker(coords).addTo(map);
+                //L.marker(coords).addTo(map);
                 // 검색 결과 위치로 지도의 센터를 이동
                 map.setView(coords, 17);
 
                 // json 생성 {위도, 경도, 반경}
-                const user1 = { x: coords.lat, y: coords.lng, position_range : radius};
-                const user_json = JSON.stringify(user1)
-                console.log('사용자 입력 정보:', user_json);
-                console.log(facilities)
+                const user1 = { "st_x" : String(coords.lng), "st_y" : String(coords.lat), "radius" : radius};
+                
+                const user_json_tmp = JSON.stringify(user1)
+                const user_json = JSON.parse(user_json_tmp);
+
+                console.log(user_json)
 
                 // 폼 제출 핸들러
-                const handleSubmit = async (e) => {
-                    e.preventDefault();
-                  
-                    const servers = {
-                      pharmacy: 'https://127.0.0.1:8000/facilities/pharmacy',
-                      cafe: 'https://127.0.0.1:8000/facilities/cafe',
-                      hospital: 'http://127.0.0.1:8000/facilities/hospital',
-                      gym: 'http://127.0.0.1:8000/facilities/gym'
-                    };
-                    const selectedServers = facilities.map((facility) => servers[facility]);
+                const handleSubmit = async (event) => {
+                    //event.preventDefault();
                     
-                    // 서버로 POST
+                    // servers 배열 생성하고 각 편의시설 별 서버 주소 저장
+                    const servers = {
+                      pharmacy: 'http://127.0.0.1:8000/facilities/pharmacy/',
+                      cafe: 'https://127.0.0.1:8000/facilities/cafe',
+                      hospital: 'http://127.0.0.1:8000/facilities/hospital/',
+                      mart: 'http://127.0.0.1:8000/facilities/mart/',
+                      gym: 'http://127.0.0.1:8000/facilities/gym/',
+                      laundry:'http://127.0.0.1:8000/facilities/laundry/',
+                      hair:'http://127.0.0.1:8000/facilities/hair/',
+                      convenience:'http://127.0.0.1:8000/facilities/convenience/'
+                    };
+                    // 사용자가 선택한 서버 배열 따로 저장
+                    const selectedServers = facilities.map((facility) => servers[facility]);
+                    console.log(selectedServers);
+
+                // 서버로 POST                    
                     try {
                       // selectedServers 배열을 순회하면서 각 서버에 대해 요청을 보냄
-                      const promises = selectedServers.map(servers => {
-                        axios.post(servers, {
-                            x: coords.lat, y: coords.lng
-                        });
-                        console.log('응답하라 종합설계:', promises);
+                      const promises = selectedServers.map(server => {
+                        return axios.post(server, {user_json});
+                        // console.log(selectedServers)
                       });
-                  
+                      
                       // 모든 서버에 대한 요청이 끝날 때까지 기다림
                       const responses = await Promise.all(promises);
+                      const places = responses.flatMap(response => response.data);
+                        setPlace(places);
+                        //console.log(places)
                   
-                      // 각 서버로부터 받은 응답 데이터를 출력
-                      responses.forEach(response => console.log(response.data));
+                      // 각 서버로부터 받은 응답 데이터들에 따른 마커 띄우기
+                      places.forEach(
+                        (place) => {
+                            console.log(place.bplcnm)
+                            const coords = new L.LatLng(place.st_x, place.st_y);
+                            console.log(coords)
+                            L.marker(coords).addTo(map);
+                        });
+
+                        // setPlace([...responses.data]);
+
                     } catch (error) {
                       console.error(error);
                     }
-
+/*
                     // 서버로부터 GET
                     try {
                         // selectedServers 배열을 순회하면서 각 서버에 대해 GET 요청을 보냄
-                        const promises = servers.map(servers => {
-                          return axios.get('http://127.0.0.1:8000/');
+                        const promises = selectedServers.map(server => {
+                          return axios.get(server);
                         });
                     
                         // 모든 서버에 대한 요청이 끝날 때까지 기다림
-                        const responses = await promises.all(promises);
+                        const responses = await Promise.all(promises);
                     
                         // 각 서버로부터 받은 응답 데이터를 처리하여 마커를 지도에 표시하는 작업을 수행
-                        responses.forEach(response => {
+                        responses.forEach(
+                            response => {
                           const data = response.data;
                           if (data.choice === 1) {
                             const coords = new L.LatLng(data.lat, data.lon);
@@ -118,10 +137,12 @@ export const LeafletSearch = ({ setSearch }) => {
                       } catch (error) {
                         console.error(error);
                       }    
+*/
                   }
-                
+                handleSubmit();
                 // App 컴포넌트에서 정의한 handleSearch 함수를 호출
                 setSearch(coords);
+                
             }
         });
     };
