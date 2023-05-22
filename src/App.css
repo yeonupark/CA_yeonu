@@ -66,3 +66,7 @@ form {
   /* max-width: 600px; */
   width: 100%;
 }
+
+svg {
+  color: #c4c4c4;
+}

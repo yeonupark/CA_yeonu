@@ -18,6 +18,12 @@ export const LeafletSearch = ({ setSearch }) => {
     const [facilities, setFacilities] = useState([]);
     const [isOpen, setOpen] = useState(false);
 
+    const icon = L.icon({
+        iconUrl: './icon-marker.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+      });
+    
     //바텀시트 핸들러(열기)
     const openSheet = () => {
         setOpen(true)
@@ -54,11 +60,6 @@ export const LeafletSearch = ({ setSearch }) => {
                 
                 const coords = new L.LatLng(result[0].y, result[0].x);
                 
-                // 마커를 생성하고 지도에 추가
-                //L.marker(coords).addTo(map);
-                // 검색 결과 위치로 지도의 센터를 이동
-                map.setView(coords, 17);
-
                 // json 생성 {위도, 경도, 반경}
                 const user1 = { "st_x" : String(coords.lng), "st_y" : String(coords.lat), "radius" : radius};
                 
@@ -74,7 +75,7 @@ export const LeafletSearch = ({ setSearch }) => {
                     // servers 배열 생성하고 각 편의시설 별 서버 주소 저장
                     const servers = {
                       pharmacy: 'http://127.0.0.1:8000/facilities/pharmacy/',
-                      cafe: 'https://127.0.0.1:8000/facilities/cafe',
+                      cafe: 'http://127.0.0.1:8000/facilities/cafe/',
                       hospital: 'http://127.0.0.1:8000/facilities/hospital/',
                       mart: 'http://127.0.0.1:8000/facilities/mart/',
                       gym: 'http://127.0.0.1:8000/facilities/gym/',
@@ -99,45 +100,22 @@ export const LeafletSearch = ({ setSearch }) => {
                       const places = responses.flatMap(response => response.data);
                         setPlace(places);
                         //console.log(places)
-                  
+
                       // 각 서버로부터 받은 응답 데이터들에 따른 마커 띄우기
+
+                    //   const markers = []; // 생성된 마커를 저장할 배열
                       places.forEach(
                         (place) => {
                             console.log(place.bplcnm)
-                            const coords = new L.LatLng(place.st_x, place.st_y);
+                            const coords = new L.LatLng(place.st_y, place.st_x);
                             console.log(coords)
                             L.marker(coords).addTo(map);
+                            map.setView(coords, 17);
                         });
-
-                        // setPlace([...responses.data]);
 
                     } catch (error) {
                       console.error(error);
                     }
-/*
-                    // 서버로부터 GET
-                    try {
-                        // selectedServers 배열을 순회하면서 각 서버에 대해 GET 요청을 보냄
-                        const promises = selectedServers.map(server => {
-                          return axios.get(server);
-                        });
-                    
-                        // 모든 서버에 대한 요청이 끝날 때까지 기다림
-                        const responses = await Promise.all(promises);
-                    
-                        // 각 서버로부터 받은 응답 데이터를 처리하여 마커를 지도에 표시하는 작업을 수행
-                        responses.forEach(
-                            response => {
-                          const data = response.data;
-                          if (data.choice === 1) {
-                            const coords = new L.LatLng(data.lat, data.lon);
-                            L.marker(coords).addTo(map);
-                          }
-                        });
-                      } catch (error) {
-                        console.error(error);
-                      }    
-*/
                   }
                 handleSubmit();
                 // App 컴포넌트에서 정의한 handleSearch 함수를 호출
@@ -222,6 +200,24 @@ export const LeafletSearch = ({ setSearch }) => {
                             />
                             <span>버스정류장</span>
                         </div>
+                        <div>
+                            <input
+                                type="checkbox"
+                                value="laundry"
+                                checked={facilities.includes('laundry')}
+                                onChange={handleFacilityChange}
+                            />
+                            <span>빨래방</span>
+                        </div>
+                        <div>
+                            <input
+                                type="checkbox"
+                                value="convenience"
+                                checked={facilities.includes('convenience')}
+                                onChange={handleFacilityChange}
+                            />
+                            <span>편의점</span>
+                        </div>
                     </div>
                     <label>
                         <hr/>
@@ -234,7 +230,7 @@ export const LeafletSearch = ({ setSearch }) => {
                                         <option value="100">100m</option>
                                         <option value="200">200m</option>
                                         <option value="500">500m</option>
-                                        <option value="1000">1km</option>
+                                        {/* <option value="1000">1km</option> */}
                                 </select>
                             </label>
                 </div>
