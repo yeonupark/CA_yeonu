@@ -1,0 +1,46 @@
+#login-modal{
+    text-align: center;
+    opacity: 1 !important;
+}
+
+#input-area{
+    width: 100%;
+}
+
+#login-modal label{
+    border: 1px solid #c4c4c4;
+    padding: 5px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+#login-modal input{
+    color: #c4c4c4;
+    padding: 5px;
+    border: none;
+    margin-bottom: 10px;
+    width: 83%;
+    
+}
+
+#login-btn{
+    width: 95%;
+    padding: 7px;
+    border: none;
+    background-color: #3B89FD;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+#login-modal span{
+    font-size: 0.8em;
+}
+
+#signup-btn{
+    background-color: #fff;
+    border:none;
+    color:#3B89FD;
+    padding: 5px;
+}
