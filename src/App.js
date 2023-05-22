@@ -22,6 +22,8 @@ function App() {
 
   const handleLogin = () => {
     setIsLoggedIn(true);
+    alert('환영합니다!');
+    closeModal();
   };
 
   const customStyles = {
@@ -37,11 +39,6 @@ function App() {
       zIndex: 999999999999999999999 // 모달을 맨 위로 표시하기 위한 zIndex 값 설정
     },
   };
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = '#f00';
-  }
 
   function closeModal() {
     setIsOpen(false);

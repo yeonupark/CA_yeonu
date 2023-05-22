@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios"
-import Sheet from 'react-modal-sheet';
+import Modal from 'react-modal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import './Login.css';
 
 
@@ -13,26 +13,32 @@ function Login({ onLogin }) {
     const [nickname, setName] = useState("");
     const [newpassword, setNewPassword] = useState("");
     const [newemail, setNewEmail] = useState("");
+    const [modalIsOpen, setIsOpen] = useState(false);
 
-    const [isOpen, setOpen] = useState(false);
-
-
-    //바텀시트 핸들러(열기)
-    const openSheet = () => {
-        setOpen(true)
+    function closeModal() {
+      setIsOpen(false);
     }
-    //바텀시트 핸들러(닫기)
-    const closeSheet = () => {
-        setOpen(false);
-    };
 
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-    };
+    function openModal() {
+      setIsOpen(true);
+    }
+  
 
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
+    Modal.setAppElement('#root');
+      const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+    overlay: {
+      zIndex: 999999999999999999999 // 모달을 맨 위로 표시하기 위한 zIndex 값 설정
+    },
+  };
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -46,18 +52,22 @@ function Login({ onLogin }) {
         const loginData_json = JSON.parse(loginData_json_tmp);
         console.log(loginData_json)
         
-        const login_url = "http://www.127.0.0.1:8000/accounts/login/"
+        const login_url = "http://127.0.0.1:8000/accounts/login/"
         try {
             const response = await axios.post(login_url, loginData);
             // 로그인 성공 시 처리
             if (response.status >= 200 && response.status <= 204){
+                closeModal(); // 모달을 닫음
                 onLogin();
+                // closeModal();
+                console.log('로그인 성공')
             }
         } catch (error) {
             // 로그인 실패 시 처리
             //alert('로그인에 실패하셨습니다.')
             console.error("Login failed:", error);
         };
+        // closeModal();
 
         // // 임시
         // if (email && password) {
@@ -90,6 +100,7 @@ function Login({ onLogin }) {
         console.log(signUpData_json)
 
         const signup_url = "http://127.0.0.1:8000/accounts/signup/"
+        
         try {
             const response = await axios.post(signup_url, signUpData_json);
             // 회원가입 성공 시 처리
@@ -97,7 +108,7 @@ function Login({ onLogin }) {
                 alert('회원가입이 완료되었습니다.')
                 //closeSheet();
             }
-            closeSheet();
+            closeModal();
         } catch (error) {
             // 회원가입 실패 시 처리
             // if (error.response && error.response.status === 409 && error.response.data.message === '이미 가입된 이메일') {
@@ -123,43 +134,54 @@ function Login({ onLogin }) {
                 <div id="input-area">
                     <label>
                       <FontAwesomeIcon icon={faUser} />
-                      <input className="login" type="text" value={email} onChange={handleEmailChange} placeholder="아이디/이메일"/>
+                      <input className="login" type="text" value={email} onChange={event => setEmail(event.target.value)} placeholder="아이디/이메일"/>
                     </label>
                 </div>
                 <div id="input-area">
                     <label>
                     <FontAwesomeIcon icon={faLock} />
-                      <input className="login" type="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호"/>
+                      <input className="login" type="password" value={password} onChange={event => setPassword(event.target.value)} placeholder="비밀번호"/>
                     </label>
                 </div>
-                <button id="login-btn" type="submit">로그인</button>
-                <span>다양한 기능을 이용하고 싶다면?
-                    <button onClick={openSheet} id="signup-btn">회원가입</button>
-                    {/* 회원가입 */}
-                    <Sheet isOpen={isOpen} onClose={closeSheet}>
-                        <Sheet.Container>
-                            <Sheet.Header />
-                            <Sheet.Content>
-                                <div>
-                                    <label>Email:</label>
-                                    <input type="text" value={newemail} onChange={handleNewEmailChange} />
-                                </div>
-                                <div>
-                                    <label>Nickname:</label>
-                                    <input type="text" value={nickname} onChange={handleNameChange} />
-                                </div>
-                                <div>
-                                    <label>Password:</label>
-                                    <input type="password" value={newpassword} onChange={handleNewPasswordChange}/>
-                                </div>
-                                <button type="submit" onClick={handleSignUpSubmit}>SIGN UP</button>
-                            </Sheet.Content>
-                        </Sheet.Container>
-                        <Sheet.Backdrop />
-                    </Sheet>
+                <button id="login-btn" onSubmit={closeModal}>로그인</button>
+                <span>
+                  다양한 기능을 이용하고 싶다면?
+                  <button onClick={openModal} id="signup-btn">회원가입</button>
                 </span>
-            </form>
-        </div>
+                    {/* 회원가입 */}
+                    <Modal
+                      isOpen={modalIsOpen}
+                      ariaHideApp={false} // 추가된 부분
+                      portalClassName="modal-portal"
+                      // onAfterOpen={afterOpenModal}
+                      onRequestClose={closeModal}
+                      style={customStyles}
+                      contentLabel="Example Modal">
+                        <div id="signup-modal">
+                        <h2>회원가입</h2>
+                        <div id="input-area">
+                            <label id="mail-area">
+                              <FontAwesomeIcon icon={faEnvelope} />
+                              <input type="text" value={newemail} onChange={event => setNewEmail(event.target.value)} placeholder="이메일 주소"/>
+                            </label>
+                          </div>
+                          <div id="input-area">
+                            <label>
+                              <FontAwesomeIcon icon={faUser} />
+                              <input type="text" value={nickname} onChange={event => setName(event.target.value)} placeholder="사용자 이름"/>
+                            </label>
+                          </div>
+                          <div id="input-area">
+                            <label>
+                              <FontAwesomeIcon icon={faLock} />
+                              <input type="password" value={newpassword} onChange={event => setNewPassword(event.target.value)} placeholder="비밀번호"/>
+                            </label>
+                          </div>
+                          <button id="login-btn" type="submit" onClick={handleSignUpSubmit}>가입</button>
+                        </div>
+                      </Modal>
+                    </form>
+                  </div>
     );
 };
 
