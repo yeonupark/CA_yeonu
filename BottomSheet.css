@@ -1,0 +1,15 @@
+.react-modal-sheet-container {
+    width: 360px !important;
+    top: 30% !important;
+    left: 39.5% !important;
+    margin: -25px 0 0 -25px;
+    text-align: center;
+}
+
+#filter-btn {
+    border:none;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #ffffff;
+    margin-right: 0px;
+}
