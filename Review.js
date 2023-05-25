@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sheet from 'react-modal-sheet';
 
-function Review({ address }) {
+function Review({ address, buildingName }) {
     const [isOpen, setOpen] = useState(true);
 
     //바텀시트 핸들러(열기)
@@ -23,6 +23,7 @@ function Review({ address }) {
                         <p2 >{address}</p2>
                         <hr />
                         <p>
+                            {buildingName}
                             <form className="leaflet-bar-part leaflet-bar-part-single" >
                                 <input
                                     className="leaflet-search-control form-control"

@@ -4,7 +4,7 @@ import './ResultSheet.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments, faChartSimple, faHeart } from "@fortawesome/free-solid-svg-icons";
 import Review from "./Review";
-const ResultSheet = ({ address }) => {
+const ResultSheet = ({ address, buildingName }) => {
     const [isOpen, setOpen] = useState(true);
     const [showReview, setShowReview] = useState(false);
 
@@ -33,7 +33,7 @@ const ResultSheet = ({ address }) => {
                         <h4 >{address}</h4>
                         <hr />
                         <p>
-                            
+                            {buildingName}
                             <span> </span>
                             <button onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} /></button>
                             <button><FontAwesomeIcon icon={faChartSimple} /></button>

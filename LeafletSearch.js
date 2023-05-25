@@ -25,9 +25,10 @@ export const LeafletSearch = ({ setSearch }) => {
     const [isOpen, setOpen] = useState(false);
 
     // 경과 창에서 주소 띄워주기 위해 저장소 생성
-    const [address,setAddress] = useState("");
-    const [lat,setLat] = useState("");
-    const [lng,setLng] = useState("");
+    const [address, setAddress] = useState("");
+    const [buildingName, setBuildingName] = useState("");
+    const [lat, setLat] = useState("");
+    const [lng, setLng] = useState("");
 
     // 결과 창 바텀시트
     const [showResult, setShowResult] = useState(false);
@@ -64,14 +65,14 @@ export const LeafletSearch = ({ setSearch }) => {
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', // Replace with the path to your custom red marker icon image
         iconSize: [25, 41], // Adjust the size of the icon as per your requirements
     });
-    
+
     let user_json;
     let coords;
 
     // 폼 제출 핸들러
     const handleSubmit = async (event) => {
         //event.preventDefault();
-        
+
         //console.log(facilities.join(','))
         const one_server = 'http://127.0.0.1:8000/facilities/info/'
 
@@ -122,11 +123,14 @@ export const LeafletSearch = ({ setSearch }) => {
             // });
             closeSheet();
 
+            setShowResult({ address });
+            map.setView(coords, 17);
             map.addLayer(markerClusterGroup);
             L.marker(coords, { icon: redIcon }).addTo(map);
-            map.setView(coords, 17);
 
-            setShowResult({address});
+            // 반경 원 그리기
+            L.circle(coords, { color: "grey", radius: parseInt(radius) }).addTo(map);
+
 
         } catch (error) {
             console.error(error);
@@ -136,7 +140,7 @@ export const LeafletSearch = ({ setSearch }) => {
     const handleSearch = () => {
         // 주소-좌표 변환 객체를 생성
         const geocoder = new kakao.maps.services.Geocoder();
-        
+
         // 주소로 좌표를 검색
         geocoder.addressSearch(search, function (result, status) {
             // 정상적으로 검색이 완료됐으면
@@ -146,7 +150,7 @@ export const LeafletSearch = ({ setSearch }) => {
                 setLng(coords.lng);
                 setLat(coords.lat);
                 //console.log(lng,lat);
-                
+
                 // json 생성 {위도, 경도, 반경}
                 const user1 = { lon: coords.lng, lat: coords.lat, radius: parseInt(radius), facilities_type: facilities.join(',') };
                 const user_json_tmp = JSON.stringify(user1);
@@ -158,24 +162,40 @@ export const LeafletSearch = ({ setSearch }) => {
 
                 // App 컴포넌트에서 정의한 handleSearch 함수를 호출
                 setSearch(coords);
-                
+
             }
         });
 
-        geocoder.coord2Address(lng,lat, function (result, status) {
+        // 좌표값 -> 주소로 변경
+        geocoder.coord2Address(lng, lat, function (result, status) {
             // 정상적으로 검색이 완료됐으면
             if (status === kakao.maps.services.Status.OK) {
-              setAddress(result[0].address.address_name);
-              console.log(address);
+
+                // 1) 시, 구, 동 or 도, 시, 동 단위까지만 저장
+                const adrs1 = result[0].address.region_1depth_name;
+                const adrs2 = result[0].address.region_2depth_name;
+                const adrs3 = result[0].address.region_3depth_name;
+                setAddress(adrs1+" "+adrs2+" "+adrs3);
+                // 2) 주소지 전체 저장
+                //setAddress(result[0].address.address_name);
+
+                // 도로명주소 값 있는 경우에만 건물 이름이 존재함
+                if (result[0].road_address !== null) {
+                    setBuildingName(result[0].road_address.building_name);
+                }
+                else {
+                    setBuildingName("");
+                }
+                console.log(result);
             }
-            
-          });
+
+        });
     };
 
     return (
-        
+
         <div className="leaflet-bar leaflet-control">
-            <div>{showResult && <ResultSheet address={address} />}</div>
+            <div>{showResult && <ResultSheet address={address} buildingName={buildingName} />}</div>
             <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(event) => event.preventDefault()}>
                 <input
                     className="leaflet-search-control form-control"
@@ -301,8 +321,8 @@ export const LeafletSearch = ({ setSearch }) => {
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
             </form>
-            
-            
+
+
         </div>
     );
 };
