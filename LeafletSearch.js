@@ -104,37 +104,33 @@ export const LeafletSearch = ({ setSearch }) => {
             }
         });
 
-        // 서버로 POST                    
+        // 서버로 POST
         try {
-            axios.post(one_server, user_json)
-                .then((response) => {
-                    setPlace([...response.data]);
-
-                    places.forEach((place) => {
-                        console.log(place.bplcnm)
-                        const new_coords = new L.LatLng(place.st_y, place.st_x);
-                        const marker = L.marker(new_coords);
-                        marker.bindPopup(`<b>${place.bplcnm}</b>`);
-                        markerClusterGroup.addLayer(marker);
-                    });
-                })
-            // .catch(function(error){
-            //     console.log(error);
-            // });
-            closeSheet();
-
-            setShowResult({ address });
-            map.setView(coords, 17);
-            map.addLayer(markerClusterGroup);
-            L.marker(coords, { icon: redIcon }).addTo(map);
-
-            // 반경 원 그리기
-            L.circle(coords, { color: "grey", radius: parseInt(radius) }).addTo(map);
-
-
+            const response = await axios.post(one_server, user_json);
+            const places = response.data;
+            setPlace(places);
+            
+            places.forEach((place) => {
+                
+                const new_coords = new L.LatLng(place.lat, place.lon);
+                const marker = L.marker(new_coords);
+                marker.bindPopup(`<b>${place.name}</b>`);
+                console.log(place.name)
+                markerClusterGroup.addLayer(marker);
+            });
         } catch (error) {
             console.error(error);
-        }
+        };
+        closeSheet();
+
+        setShowResult({ address });
+            
+        map.addLayer(markerClusterGroup);
+        //L.marker(coords, { icon: redIcon }).addTo(map);
+        // 반경 원 그리기
+        L.circle(coords, { color: "grey", radius: parseInt(radius) }).addTo(map);
+        map.setView(coords, 17);
+
     }
 
     const handleSearch = () => {
@@ -152,7 +148,7 @@ export const LeafletSearch = ({ setSearch }) => {
                 //console.log(lng,lat);
 
                 // json 생성 {위도, 경도, 반경}
-                const user1 = { lon: coords.lng, lat: coords.lat, radius: parseInt(radius), facilities_type: facilities.join(',') };
+                const user1 = { lon: String(coords.lng), lat: String(coords.lat), radius: radius, facilities_type: facilities.join(',') };
                 const user_json_tmp = JSON.stringify(user1);
                 user_json = JSON.parse(user_json_tmp);
                 console.log(user_json)
