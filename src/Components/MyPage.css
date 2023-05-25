@@ -1,0 +1,19 @@
+.mypage-button {
+    position: absolute;
+    /* top: 90%; */
+    right: 10px;
+    z-index: 9999;
+    cursor: pointer;
+    background-color: #fff;
+    border: none;
+    padding:10px;
+    border-radius: 50%;
+    width: 48px;
+    height:48px;
+    box-shadow: 8.0px 16.0px 16.0px hsl(0deg 0% 0% / 0.25);
+  }
+  
+  .mypage-button svg{
+    width: 18px !important;
+    height: 100%;
+  }
