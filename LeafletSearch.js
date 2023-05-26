@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import L from "leaflet";
-import { useMap } from "react-leaflet";
+import { useMap} from "react-leaflet";
 import axios from 'axios';
 import './LeafletSearch.css';
 import './BottomSheet.css';
@@ -24,15 +24,15 @@ export const LeafletSearch = ({ setSearch }) => {
     const [facilities, setFacilities] = useState([]);
     const [isOpen, setOpen] = useState(false);
 
-    // 경과 창에서 주소 띄워주기 위해 저장소 생성
+    // 결과 창에서 주소 띄워주기 위해 저장소 생성
     const [address, setAddress] = useState("");
-    const [buildingName, setBuildingName] = useState("");
+    //const [buildingName, setBuildingName] = useState("");
     const [lat, setLat] = useState("");
     const [lng, setLng] = useState("");
 
     // 결과 창 바텀시트
     const [showResult, setShowResult] = useState(false);
-
+    
     //바텀시트 핸들러(열기)
     const openSheet = () => {
         setOpen(true)
@@ -73,12 +73,11 @@ export const LeafletSearch = ({ setSearch }) => {
     const handleSubmit = async (event) => {
         //event.preventDefault();
 
-        //console.log(facilities.join(','))
         const one_server = 'http://127.0.0.1:8000/facilities/info/'
 
         // 검색할때마다 맵 리셋
         map.eachLayer((layer) => {
-            if (layer instanceof L.MarkerClusterGroup) {
+            if (layer instanceof L.MarkerClusterGroup || layer instanceof L.Circle || layer instanceof L.Marker) {
                 map.removeLayer(layer);
             }
         });
@@ -109,9 +108,9 @@ export const LeafletSearch = ({ setSearch }) => {
             const response = await axios.post(one_server, user_json);
             const places = response.data;
             setPlace(places);
-            
+
             places.forEach((place) => {
-                
+
                 const new_coords = new L.LatLng(place.lat, place.lon);
                 const marker = L.marker(new_coords);
                 marker.bindPopup(`<b>${place.name}</b>`);
@@ -124,9 +123,10 @@ export const LeafletSearch = ({ setSearch }) => {
         closeSheet();
 
         setShowResult({ address });
-            
+        <ResultSheet address={address} />
+
         map.addLayer(markerClusterGroup);
-        //L.marker(coords, { icon: redIcon }).addTo(map);
+        L.marker(coords, { icon: redIcon }).addTo(map);
         // 반경 원 그리기
         L.circle(coords, { color: "grey", radius: parseInt(radius) }).addTo(map);
         map.setView(coords, 17);
@@ -171,18 +171,18 @@ export const LeafletSearch = ({ setSearch }) => {
                 const adrs1 = result[0].address.region_1depth_name;
                 const adrs2 = result[0].address.region_2depth_name;
                 const adrs3 = result[0].address.region_3depth_name;
-                setAddress(adrs1+" "+adrs2+" "+adrs3);
+                setAddress(adrs1 + " " + adrs2 + " " + adrs3);
                 // 2) 주소지 전체 저장
                 //setAddress(result[0].address.address_name);
 
-                // 도로명주소 값 있는 경우에만 건물 이름이 존재함
-                if (result[0].road_address !== null) {
-                    setBuildingName(result[0].road_address.building_name);
-                }
-                else {
-                    setBuildingName("");
-                }
-                console.log(result);
+                // // 도로명주소 값 있는 경우에만 건물 이름이 존재함
+                // if (result[0].road_address !== null) {
+                //     setBuildingName(result[0].road_address.building_name);
+                // }
+                // else {
+                //     setBuildingName("");
+                // }
+                //console.log(result);
             }
 
         });
@@ -191,7 +191,7 @@ export const LeafletSearch = ({ setSearch }) => {
     return (
 
         <div className="leaflet-bar leaflet-control">
-            <div>{showResult && <ResultSheet address={address} buildingName={buildingName} />}</div>
+            <div>{showResult && <ResultSheet address={address} />}</div>
             <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(event) => event.preventDefault()}>
                 <input
                     className="leaflet-search-control form-control"
@@ -265,33 +265,33 @@ export const LeafletSearch = ({ setSearch }) => {
                                         />
                                         <span>세탁소</span>
                                     </div>
-                                    {/* <div>
-                            <input
-                            type="checkbox"
-                            value="미용실"
-                            checked={facilities.includes('hair')}
-                            onChange={handleFacilityChange}
-                            />
-                            <span>미용실</span>
-                        </div>
-                        <div>
-                            <input
-                            type="checkbox"
-                            value="convenience"
-                            checked={facilities.includes('convenience')}
-                            onChange={handleFacilityChange}
-                            />
-                            <span>편의점</span>
-                        </div>
-                        <div>
-                            <input
-                                type="checkbox"
-                                value="busStation"
-                                checked={facilities.includes('busStation')}
-                                onChange={handleFacilityChange}
-                            />
-                            <span>버스정류장</span>
-                        </div> */}
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="미용실"
+                                            checked={facilities.includes('hair')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>미용실</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="convenience"
+                                            checked={facilities.includes('convenience')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>편의점</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="busStation"
+                                            checked={facilities.includes('busStation')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>버스정류장</span>
+                                    </div>
                                 </div>
                                 <label>
                                     <hr />
