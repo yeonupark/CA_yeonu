@@ -26,6 +26,7 @@ export const LeafletSearch = ({ setSearch }) => {
 
     // 결과 창에서 주소 띄워주기 위해 저장소 생성
     const [address, setAddress] = useState("");
+    const [fullAddress, setFullAddress] = useState("");
     //const [buildingName, setBuildingName] = useState("");
     const [lat, setLat] = useState("");
     const [lng, setLng] = useState("");
@@ -122,8 +123,9 @@ export const LeafletSearch = ({ setSearch }) => {
         };
         closeSheet();
 
-        setShowResult({ address });
-        <ResultSheet address={address} />
+        setShowResult({ address, fullAddress });
+        
+        <ResultSheet address={address} fullAddress={fullAddress} />
 
         map.addLayer(markerClusterGroup);
         L.marker(coords, { icon: redIcon }).addTo(map);
@@ -151,8 +153,7 @@ export const LeafletSearch = ({ setSearch }) => {
                 const user1 = { lon: String(coords.lng), lat: String(coords.lat), radius: radius, facilities_type: facilities.join(',') };
                 const user_json_tmp = JSON.stringify(user1);
                 user_json = JSON.parse(user_json_tmp);
-                console.log(user_json)
-                //console.log(user1)
+                //console.log(user_json)
 
                 handleSubmit();
 
@@ -171,7 +172,10 @@ export const LeafletSearch = ({ setSearch }) => {
                 const adrs1 = result[0].address.region_1depth_name;
                 const adrs2 = result[0].address.region_2depth_name;
                 const adrs3 = result[0].address.region_3depth_name;
+
+                setFullAddress(result[0].address.address_name);
                 setAddress(adrs1 + " " + adrs2 + " " + adrs3);
+                
                 // 2) 주소지 전체 저장
                 //setAddress(result[0].address.address_name);
 
@@ -191,7 +195,7 @@ export const LeafletSearch = ({ setSearch }) => {
     return (
 
         <div className="leaflet-bar leaflet-control">
-            <div>{showResult && <ResultSheet address={address} />}</div>
+            <div>{showResult && <ResultSheet address={address} fullAddress={fullAddress} />}</div>
             <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(event) => event.preventDefault()}>
                 <input
                     className="leaflet-search-control form-control"
