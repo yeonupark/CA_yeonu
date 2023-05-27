@@ -14,7 +14,7 @@ function ReviewUpdate({ onReviewSubmit }) {
   
   // {id, 새로운 리뷰 텍스트} json 생성 
   const newReview_json = JSON.stringify({"id":loggedInUser,"text":reviewText})
-  console.log(newReview_json)
+  //console.log(newReview_json)
 
   const handleSubmit = async (event) => {
     event.preventDefault();

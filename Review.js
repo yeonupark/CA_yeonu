@@ -18,7 +18,7 @@ function Review({ address }) {
     };
 
     const address_json = JSON.stringify({ address })
-    console.log(address)
+    //console.log(address_json)
 
     const fetchReviews = async () => {
         try {
@@ -34,10 +34,10 @@ function Review({ address }) {
     return (
         <div>
             {/* 리뷰 바텀시트를 추가로 열지 않고 기존의 result 바텀시트를 활용하여 띄워주면 어떨지? */}
-            <Sheet isOpen={isOpen} onClose={closeSheet}>
+            {/* <Sheet isOpen={isOpen} onClose={closeSheet}>
                 <Sheet.Container >
                     <Sheet.Header />
-                    <Sheet.Content>
+                    <Sheet.Content> */}
                         <p2 >review</p2>
                         <hr />
                         <ReviewUpdate/>
@@ -49,10 +49,10 @@ function Review({ address }) {
                                 {review.content}</li>
                             ))}
                         </ul>
-                    </Sheet.Content>
+                    {/* </Sheet.Content>
                 </Sheet.Container>
                 <Sheet.Backdrop />
-            </Sheet>
+            </Sheet> */}
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import L from "leaflet";
-import { useMap} from "react-leaflet";
+import { useMap } from "react-leaflet";
 import axios from 'axios';
 import './LeafletSearch.css';
 import './BottomSheet.css';
@@ -22,18 +22,16 @@ export const LeafletSearch = ({ setSearch }) => {
     const [places, setPlace] = useState([]);
     const [radius, setRadius] = useState('');
     const [facilities, setFacilities] = useState([]);
-    const [isOpen, setOpen] = useState(false);
-
-    // 결과 창에서 주소 띄워주기 위해 저장소 생성
-    const [address, setAddress] = useState("");
-    const [fullAddress, setFullAddress] = useState("");
-    //const [buildingName, setBuildingName] = useState("");
     const [lat, setLat] = useState("");
     const [lng, setLng] = useState("");
+    const [isOpen, setOpen] = useState(false);
 
     // 결과 창 바텀시트
     const [showResult, setShowResult] = useState(false);
-    
+    // 결과 창에서 주소 띄워주기 위해 저장소 생성
+    const [address, setAddress] = useState("");
+    const [fullAddress, setFullAddress] = useState("");
+
     //바텀시트 핸들러(열기)
     const openSheet = () => {
         setOpen(true)
@@ -60,7 +58,6 @@ export const LeafletSearch = ({ setSearch }) => {
         setSearchLocal(e.target.value);
     };
 
-
     // 빨간색 마커
     const redIcon = L.icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', // Replace with the path to your custom red marker icon image
@@ -82,7 +79,8 @@ export const LeafletSearch = ({ setSearch }) => {
                 map.removeLayer(layer);
             }
         });
-
+        // 결과 바텀시트 재오픈 위해 초기 세팅
+        setShowResult(false);
 
         // 마커클러스터 생성
         const markerClusterGroup = L.markerClusterGroup({
@@ -122,10 +120,7 @@ export const LeafletSearch = ({ setSearch }) => {
             console.error(error);
         };
         closeSheet();
-
-        setShowResult({ address, fullAddress });
-        
-        <ResultSheet address={address} fullAddress={fullAddress} />
+        setShowResult(true);
 
         map.addLayer(markerClusterGroup);
         L.marker(coords, { icon: redIcon }).addTo(map);
@@ -134,68 +129,40 @@ export const LeafletSearch = ({ setSearch }) => {
         map.setView(coords, 17);
 
     }
-
     const handleSearch = () => {
         // 주소-좌표 변환 객체를 생성
         const geocoder = new kakao.maps.services.Geocoder();
 
-        // 주소로 좌표를 검색
+        // 주소로 검색 -> result에 좌표값, 주소정보 들어있음
         geocoder.addressSearch(search, function (result, status) {
             // 정상적으로 검색이 완료됐으면
+            console.log(result)
             if (status === kakao.maps.services.Status.OK) {
-
                 coords = new L.LatLng(result[0].y, result[0].x);
-                setLng(coords.lng);
-                setLat(coords.lat);
-                //console.log(lng,lat);
 
-                // json 생성 {위도, 경도, 반경}
-                const user1 = { lon: String(coords.lng), lat: String(coords.lat), radius: radius, facilities_type: facilities.join(',') };
-                const user_json_tmp = JSON.stringify(user1);
-                user_json = JSON.parse(user_json_tmp);
-                //console.log(user_json)
+                // full address는 마이페이지에 넘겨주기 위한 저장값.
+                // address에는 시, 구, 동 단위까지 저장. 결과 컴포넌트에 띄워주기 위함
+                let adrs1, adrs2, adrs3;
+                if (result[0].road_address) {
+                    adrs1 = result[0].road_address.region_1depth_name;
+                    adrs2 = result[0].road_address.region_2depth_name;
+                    adrs3 = result[0].road_address.region_3depth_name;
+                    setFullAddress(result[0].road_address.address_name);
+                } else {
+                    adrs1 = result[0].address.region_1depth_name;
+                    adrs2 = result[0].address.region_2depth_name;
+                    adrs3 = result[0].address.region_3depth_name;
+                    setFullAddress(result[0].address.address_name);
+                }
+                setAddress(adrs1 + " " + adrs2 + " " + adrs3);
 
                 handleSubmit();
-
-                // App 컴포넌트에서 정의한 handleSearch 함수를 호출
-                setSearch(coords);
-
             }
-        });
-
-        // 좌표값 -> 주소로 변경
-        geocoder.coord2Address(lng, lat, function (result, status) {
-            // 정상적으로 검색이 완료됐으면
-            if (status === kakao.maps.services.Status.OK) {
-
-                // 1) 시, 구, 동 or 도, 시, 동 단위까지만 저장
-                const adrs1 = result[0].address.region_1depth_name;
-                const adrs2 = result[0].address.region_2depth_name;
-                const adrs3 = result[0].address.region_3depth_name;
-
-                setFullAddress(result[0].address.address_name);
-                setAddress(adrs1 + " " + adrs2 + " " + adrs3);
-                
-                // 2) 주소지 전체 저장
-                //setAddress(result[0].address.address_name);
-
-                // // 도로명주소 값 있는 경우에만 건물 이름이 존재함
-                // if (result[0].road_address !== null) {
-                //     setBuildingName(result[0].road_address.building_name);
-                // }
-                // else {
-                //     setBuildingName("");
-                // }
-                //console.log(result);
-            }
-
         });
     };
 
     return (
-
         <div className="leaflet-bar leaflet-control">
-            <div>{showResult && <ResultSheet address={address} fullAddress={fullAddress} />}</div>
             <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(event) => event.preventDefault()}>
                 <input
                     className="leaflet-search-control form-control"
@@ -320,9 +287,8 @@ export const LeafletSearch = ({ setSearch }) => {
                 <button id="search-btn" onClick={handleSearch}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
+                <div>{showResult && <ResultSheet address={address} fullAddress={fullAddress} />}</div>
             </form>
-
-
         </div>
     );
 };
