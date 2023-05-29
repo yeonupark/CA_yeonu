@@ -9,6 +9,7 @@ import './App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { LoginProvider } from './Components/LoginContext';
+import RadarChart from "./Components/Radar";
 
 function App() {
   const initialPosition = [37.5978219540466, 127.065505630651];
@@ -96,6 +97,7 @@ const openMypageModal = () => {
         <Sheet.Container>
           <Sheet.Header/>
             <Sheet.Content>
+              <RadarChart/>
               <button id="logout-btn" onClick={handleLogout}>
                 로그아웃
               </button>

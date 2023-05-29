@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import './MyPage.css';
-
+import RadarChart from "./Radar";
 
 function MyPage({ myAddressList }) {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -25,6 +25,7 @@ function MyPage({ myAddressList }) {
         ))}
       </ul>
       <hr />
+      <RadarChart/>
       <button id="logout-btn" onClick={Logout}>
         로그아웃
       </button>
