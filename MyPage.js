@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import './MyPage.css';
 
 
-function MyPage({ myAddressList }) {
+function MyPage({ }) {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isOpen, setOpen] = useState(true);
 
@@ -18,12 +18,6 @@ function MyPage({ myAddressList }) {
 
   return (
     <div className="Mypage">
-      <p2>좋아요 리스트</p2>
-      <ul>
-        {myAddressList.map((address) => (
-          <li >{address}</li>
-        ))}
-      </ul>
       <hr />
       <button id="logout-btn" onClick={Logout}>
         로그아웃
