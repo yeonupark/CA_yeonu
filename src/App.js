@@ -8,6 +8,7 @@ import './Components/Modal.css';
 import './App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { LoginProvider } from './Components/LoginContext';
 
 function App() {
   const initialPosition = [37.5978219540466, 127.065505630651];
@@ -65,6 +66,7 @@ const openMypageModal = () => {
 
   return (
     <div className="App">
+      <LoginProvider>
         {/* // 로그인 상태에 따른 컴포넌트 렌더링 */}
         <MapContainer center={initialPosition} zoom={17} className="map-container">
           <TileLayer
@@ -101,6 +103,7 @@ const openMypageModal = () => {
           </Sheet.Container>
           <Sheet.Backdrop />
       </Sheet>  
+      </LoginProvider>
     </div>
   );
 }
