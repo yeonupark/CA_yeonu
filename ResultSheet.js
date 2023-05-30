@@ -8,7 +8,7 @@ import Review from "./Review";
 import MyPage from './MyPage';
 import InfoSheet from "./InfoSheet";
 
-const ResultSheet = ({ address, coords, places }) => {
+const ResultSheet = ({ address, coords, location }) => {
     const [isOpen, setOpen] = useState(true);
     const [showReview, setShowReview] = useState(false);
     const [like, setLike] = useState(undefined);
@@ -32,6 +32,7 @@ const ResultSheet = ({ address, coords, places }) => {
     };
 
     const handleInfoClick = () => {
+        //setShowInfo(false);
         setShowInfo(!showInfo);
     };
 
@@ -76,7 +77,7 @@ const ResultSheet = ({ address, coords, places }) => {
                             <button onClick={handleLikeClick} style={{ color: like ? 'red' : 'black' }}>♥︎</button>
                         </p>
                         <div>{showReview && <Review address={address} />}</div>
-                        <div>{showInfo && <InfoSheet address={address} places={places} />}</div>
+                        <div>{showInfo && <InfoSheet address={address} location={location} />}</div>
                     </Sheet.Content>
                 </Sheet.Container>
                 <Sheet.Backdrop />
