@@ -6,33 +6,42 @@ import './LeafletSearch.css';
 import './BottomSheet.css';
 import Sheet from 'react-modal-sheet';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import ResultSheet from "./ResultSheet";
 
-/* global kakao*/
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet.markercluster/dist/leaflet.markercluster';
 
+
+/* global kakao */
 export const LeafletSearch = ({ setSearch }) => {
     const map = useMap();
+
     const [search, setSearchLocal] = useState("");
-    const [place, setPlace] = useState([]);
+    const [places, setPlace] = useState([]);
     const [radius, setRadius] = useState('');
     const [facilities, setFacilities] = useState([]);
+    const [lat, setLat] = useState("");
+    const [lng, setLng] = useState("");
     const [isOpen, setOpen] = useState(false);
 
-    const icon = L.icon({
-        iconUrl: './icon-marker.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-      });
-    
+    // 결과 창 바텀시트
+    const [showResult, setShowResult] = useState(false);
+    // 결과 창에서 주소 띄워주기 위해 저장소 생성
+    const [address, setAddress] = useState("");
+    const [fullAddress, setFullAddress] = useState("");
+
     //바텀시트 핸들러(열기)
     const openSheet = () => {
         setOpen(true)
     }
-      
+
     //바텀시트 핸들러(닫기)
     const closeSheet = () => {
         setOpen(false);
     };
+
     // 체크박스 변경 핸들러
     const handleFacilityChange = (e) => {
         const value = e.target.value;
@@ -49,199 +58,236 @@ export const LeafletSearch = ({ setSearch }) => {
         setSearchLocal(e.target.value);
     };
 
+    // 빨간색 마커
+    const redIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', // Replace with the path to your custom red marker icon image
+        iconSize: [25, 41], // Adjust the size of the icon as per your requirements
+    });
+
+    let user_json;
+    let coords;
+
+    // 폼 제출 핸들러
+    const handleSubmit = async (event) => {
+        //event.preventDefault();
+
+        const one_server = 'http://127.0.0.1:8000/facilities/info/'
+
+        // 검색할때마다 맵 리셋
+        map.eachLayer((layer) => {
+            if (layer instanceof L.MarkerClusterGroup || layer instanceof L.Circle || layer instanceof L.Marker) {
+                map.removeLayer(layer);
+            }
+        });
+        // 결과 바텀시트 재오픈 위해 초기 세팅
+        setShowResult(false);
+
+        // 마커클러스터 생성
+        const markerClusterGroup = L.markerClusterGroup({
+            iconCreateFunction: function (cluster) {
+                var childCount = cluster.getChildCount();
+                var c = ' marker-cluster-';
+                if (childCount < 10) {
+                    c += 'small';
+                } else if (childCount < 30) {
+                    c += 'medium';
+                } else {
+                    c += 'large';
+                }
+                return new L.DivIcon({
+                    html: '<div><span>' + childCount + '</span></div>',
+                    className: 'marker-cluster' + c,
+                    iconSize: new L.Point(40, 40)
+                });
+            }
+        });
+
+        // 서버로 POST
+        try {
+            const response = await axios.post(one_server, user_json);
+            const places = response.data;
+            setPlace(places);
+
+            places.forEach((place) => {
+
+                const new_coords = new L.LatLng(place.lat, place.lon);
+                const marker = L.marker(new_coords);
+                marker.bindPopup(`<b>${place.name}</b>`);
+                console.log(place.name)
+                markerClusterGroup.addLayer(marker);
+            });
+        } catch (error) {
+            console.error(error);
+        };
+        closeSheet();
+        setShowResult(true);
+
+        map.addLayer(markerClusterGroup);
+        L.marker(coords, { icon: redIcon }).addTo(map);
+        // 반경 원 그리기
+        L.circle(coords, { color: "grey", radius: parseInt(radius) }).addTo(map);
+        map.setView(coords, 17);
+
+    }
     const handleSearch = () => {
         // 주소-좌표 변환 객체를 생성
         const geocoder = new kakao.maps.services.Geocoder();
 
-        // 주소로 좌표를 검색
+        // 주소로 검색 -> result에 좌표값, 주소정보 들어있음
         geocoder.addressSearch(search, function (result, status) {
             // 정상적으로 검색이 완료됐으면
+            console.log(result)
             if (status === kakao.maps.services.Status.OK) {
-                
-                const coords = new L.LatLng(result[0].y, result[0].x);
-                
-                // json 생성 {위도, 경도, 반경}
-                const user1 = { "st_x" : String(coords.lng), "st_y" : String(coords.lat), "radius" : radius};
-                
-                const user_json_tmp = JSON.stringify(user1)
-                const user_json = JSON.parse(user_json_tmp);
+                coords = new L.LatLng(result[0].y, result[0].x);
 
-                console.log(user_json)
+                // full address는 마이페이지에 넘겨주기 위한 저장값.
+                // address에는 시, 구, 동 단위까지 저장. 결과 컴포넌트에 띄워주기 위함
+                let adrs1, adrs2, adrs3;
+                if (result[0].road_address) {
+                    adrs1 = result[0].road_address.region_1depth_name;
+                    adrs2 = result[0].road_address.region_2depth_name;
+                    adrs3 = result[0].road_address.region_3depth_name;
+                    setFullAddress(result[0].road_address.address_name);
+                } else {
+                    adrs1 = result[0].address.region_1depth_name;
+                    adrs2 = result[0].address.region_2depth_name;
+                    adrs3 = result[0].address.region_3depth_name;
+                    setFullAddress(result[0].address.address_name);
+                }
+                setAddress(adrs1 + " " + adrs2 + " " + adrs3);
 
-                // 폼 제출 핸들러
-                const handleSubmit = async (event) => {
-                    //event.preventDefault();
-                    
-                    // servers 배열 생성하고 각 편의시설 별 서버 주소 저장
-                    const servers = {
-                      pharmacy: 'http://127.0.0.1:8000/facilities/pharmacy/',
-                      cafe: 'http://127.0.0.1:8000/facilities/cafe/',
-                      hospital: 'http://127.0.0.1:8000/facilities/hospital/',
-                      mart: 'http://127.0.0.1:8000/facilities/mart/',
-                      gym: 'http://127.0.0.1:8000/facilities/gym/',
-                      laundry:'http://127.0.0.1:8000/facilities/laundry/',
-                      hair:'http://127.0.0.1:8000/facilities/hair/',
-                      convenience:'http://127.0.0.1:8000/facilities/convenience/'
-                    };
-                    // 사용자가 선택한 서버 배열 따로 저장
-                    const selectedServers = facilities.map((facility) => servers[facility]);
-                    console.log(selectedServers);
-
-                // 서버로 POST                    
-                    try {
-                      // selectedServers 배열을 순회하면서 각 서버에 대해 요청을 보냄
-                      const promises = selectedServers.map(server => {
-                        return axios.post(server, {user_json});
-                        // console.log(selectedServers)
-                      });
-                      
-                      // 모든 서버에 대한 요청이 끝날 때까지 기다림
-                      const responses = await Promise.all(promises);
-                      const places = responses.flatMap(response => response.data);
-                        setPlace(places);
-                        //console.log(places)
-
-                      // 각 서버로부터 받은 응답 데이터들에 따른 마커 띄우기
-
-                    //   const markers = []; // 생성된 마커를 저장할 배열
-                      places.forEach(
-                        (place) => {
-                            console.log(place.bplcnm)
-                            const coords = new L.LatLng(place.st_y, place.st_x);
-                            console.log(coords)
-                            L.marker(coords).addTo(map);
-                            map.setView(coords, 17);
-                        });
-
-                    } catch (error) {
-                      console.error(error);
-                    }
-                  }
                 handleSubmit();
-                // App 컴포넌트에서 정의한 handleSearch 함수를 호출
-                setSearch(coords);
-                
             }
         });
     };
 
     return (
         <div className="leaflet-bar leaflet-control">
-            <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(e) => e.preventDefault()}>
+            <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(event) => event.preventDefault()}>
                 <input
                     className="leaflet-search-control form-control"
                     type="text"
-                    placeholder="주소를 입력하세요!"
+                    placeholder="상권이 궁금한 동네의 위치를 입력해보세요!"
                     onChange={onChange}
                     value={search}
                 />
                 {/* 누르면 바텀 시트 출력되는 필터링 버튼 */}
-                <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faFilter}/></button>
+                <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faFilter} /></button>
                 {/* 편의시설 종류 반경 선택: 바텀 시트에서 진행. */}
                 <Sheet isOpen={isOpen} onClose={closeSheet}>
                     <Sheet.Container>
                         <Sheet.Header />
-                    <Sheet.Content>
-                    <div className="filter-contents">
-                        <p> 검색하고 싶은 편의시설을 모두 선택해주세요! </p>
-                        <hr/>
-                        <div id="checkbox-container">
-                        <div>
-                            <input
-                                type="checkbox"
-                                value="pharmacy"
-                                checked={facilities.includes('pharmacy')}
-                                onChange={handleFacilityChange}
-                            />
-                            <span>약국</span>
-                        </div>
-                        <div>
-                            <input
-                                type="checkbox"
-                                value="cafe"
-                                checked={facilities.includes('cafe')}
-                                onChange={handleFacilityChange}
-                            />
-                            <span>카페</span>
-                        </div>
-                        <div>
-                            <input
-                            type="checkbox"
-                            value="hospital"
-                            checked={facilities.includes('hospital')}
-                            onChange={handleFacilityChange}
-                            />
-                            <span>병원</span>
-                        </div>
-                        <div>
-                            <input
-                                type="checkbox"
-                                value="mart"
-                                checked={facilities.includes('mart')}
-                                onChange={handleFacilityChange}
-                            />
-                            <span>마트</span>
-                        </div>
-                        <div>
-                            <input
-                                type="checkbox"
-                                value="gym"
-                                checked={facilities.includes('gym')}
-                                onChange={handleFacilityChange}
-                            />
-                            <span>체육시설</span>
-                        </div>
-                        <div>
-                            <input
-                                type="checkbox"
-                                value="busStation"
-                                checked={facilities.includes('busStation')}
-                                onChange={handleFacilityChange}
-                            />
-                            <span>버스정류장</span>
-                        </div>
-                        <div>
-                            <input
-                                type="checkbox"
-                                value="laundry"
-                                checked={facilities.includes('laundry')}
-                                onChange={handleFacilityChange}
-                            />
-                            <span>빨래방</span>
-                        </div>
-                        <div>
-                            <input
-                                type="checkbox"
-                                value="convenience"
-                                checked={facilities.includes('convenience')}
-                                onChange={handleFacilityChange}
-                            />
-                            <span>편의점</span>
-                        </div>
-                    </div>
-                    <label>
-                        <hr/>
-                        <p>입력한 주소에서(최대)</p>
-                                <select
-                                    id="radius-select"
-                                    value={radius}
-                                    onChange={(e) => setRadius(e.target.value)}>
+                        <Sheet.Content>
+                            <div className="filter-contents">
+                                <p> 상권이 궁금한 동네의 위치를 입력해 보세요! </p>
+                                <hr />
+                                <div id="checkbox-container">
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="pharmacy"
+                                            checked={facilities.includes('pharmacy')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>약국</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="cafe"
+                                            checked={facilities.includes('cafe')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>카페</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="hospital"
+                                            checked={facilities.includes('hospital')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>병원</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="mart"
+                                            checked={facilities.includes('mart')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>마트</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="gym"
+                                            checked={facilities.includes('gym')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>체육시설</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="laundry"
+                                            checked={facilities.includes('laundry')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>세탁소</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="미용실"
+                                            checked={facilities.includes('hair')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>미용실</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="convenience"
+                                            checked={facilities.includes('convenience')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>편의점</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="busStation"
+                                            checked={facilities.includes('busStation')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>버스정류장</span>
+                                    </div>
+                                </div>
+                                <label>
+                                    <hr />
+                                    <p>입력한 주소에서(최대)</p>
+                                    <select
+                                        id="radius-select"
+                                        value={radius}
+                                        onChange={(e) => setRadius(e.target.value)}>
                                         <option value="">선택하세요</option>
                                         <option value="100">100m</option>
                                         <option value="200">200m</option>
                                         <option value="500">500m</option>
-                                        {/* <option value="1000">1km</option> */}
-                                </select>
-                            </label>
-                </div>
-                <button id="submit-btn" onClick={handleSearch}>적용</button>
-                </Sheet.Content>
-                </Sheet.Container>
-                <Sheet.Backdrop />
-            </Sheet>
+                                        <option value="1000">1km</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <button id="submit-btn" onClick={handleSearch}>적용</button>
+                        </Sheet.Content>
+                    </Sheet.Container>
+                    <Sheet.Backdrop />
+                </Sheet>
                 <button id="search-btn" onClick={handleSearch}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
+                <div>{showResult && <ResultSheet address={address} fullAddress={fullAddress} />}</div>
             </form>
         </div>
     );
