@@ -33,6 +33,7 @@ export const LeafletSearch = ({ setSearch }) => {
     const [showResult, setShowResult] = useState(false);
     // 결과 창에서 주소 띄워주기 위해 저장소 생성
     const [address, setAddress] = useState("");
+    //const [fullAddress,setFullAddress] = useState("");
 
     //바텀시트 핸들러(열기)
     const openSheet = () => {
@@ -106,18 +107,16 @@ export const LeafletSearch = ({ setSearch }) => {
         // 서버로 POST
         try {
             const response = await axios.post(one_server, user_json);
-            
-            setLocation(response.data);
-            //console.log(location);
+
+            setLocation(response.data.location);
             
             const places = [];
-
             // 편의시설 종류
-            const facilities = Object.keys(response.data.facility_type);
+            const facilities = Object.keys(response.data.location.facility_type);
             
             // 모든 편의시설 데이터 추가
             facilities.forEach(facility => {
-                const facilityData = response.data.facility_type[facility].place;
+                const facilityData = response.data.location.facility_type[facility].place;
                 places.push(...facilityData);
             });
 
@@ -147,13 +146,19 @@ export const LeafletSearch = ({ setSearch }) => {
         // 주소로 검색 -> result에 좌표값, 주소정보 들어있음
         geocoder.addressSearch(search, function (result, status) {
             // 정상적으로 검색이 완료됐으면
-            //console.log(result)
+            
             if (status === kakao.maps.services.Status.OK) {
                 coords = new L.LatLng(result[0].y, result[0].x);
                 setPosition(coords);
 
+                // if (result[0].address){
+                //     setFullAddress(result[0].address.address_name);
+                // } else {
+                //     setFullAddress(result[0].road_address.address_name);
+                // }
+                
                 // user_json 생성 (x좌표,y좌표,반경,편의시설)
-                const user1 = { lon: coords.lng, lat: coords.lat, radius: parseInt(radius), facilities_type: facilities.join(',') };
+                const user1 = { lon: String(coords.lng), lat: String(coords.lat), radius: radius, facilities_type: facilities.join(',') };
                 const user_json_tmp = JSON.stringify(user1);
                 user_json = JSON.parse(user_json_tmp);
 

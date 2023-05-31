@@ -77,7 +77,7 @@ const InfoSheet = ({ location, address }) => {
                 {firstFacilities.map(facility => {
                     const { type, name, distance, address } = facility;
                     return (
-                        <div style={{ textAlign: 'left' }}>
+                        <div key={type} style={{ textAlign: 'left' }}>
                             <span> {type} {name}은 {distance}m 떨어져 있습니다.</span>
                         </div>
                     );
