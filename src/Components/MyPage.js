@@ -20,9 +20,9 @@ function MyPage({ myAddressList }) {
     <div className="Mypage">
       <p2>좋아요 리스트</p2>
       <ul>
-        {myAddressList.map((address) => (
-          <li >{address}</li>
-        ))}
+        {/* {myAddressList.map((address) => (
+          <li key={address}>{address}</li>
+        ))} */}
       </ul>
       <hr />
       <RadarChart/>
