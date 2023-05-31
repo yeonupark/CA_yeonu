@@ -4,7 +4,7 @@ import { useMap } from "react-leaflet";
 //import axios from "axios";
 
 // 전체 편의시설 목록 가져오기
-// 편의시설 리스트에서 특정 편의시설 클릭 시 지도 상 해당 마커 위치로 이동시키기 위함
+// 편의시설 리스트에서 특정 편의시설 클릭 시 지도 상 해당 마커 위치로 이동시키는 ver.
 const FacilitiesList = ({ facility, location }) => {
     const map = useMap();
 
@@ -16,6 +16,7 @@ const FacilitiesList = ({ facility, location }) => {
             const lat = specificFacility.lat;
             const lon = specificFacility.lon;
             map.setView([lat, lon]);
+            
         }
     };
 
@@ -44,6 +45,7 @@ const InfoSheet = ({ location, address }) => {
 
     var [firstFacilities, setFirstFacilities] = useState([]);
     const [isOpen, setOpen] = useState(true);
+    
     // 선택된 편의시설 종류
     const facilities = Object.keys(location.facility_type);
 
@@ -55,7 +57,8 @@ const InfoSheet = ({ location, address }) => {
     const closeSheet = () => {
         setOpen(false);
     };
-    console.log(location)
+    //console.log(location)
+
     // 편의시설 별 가장 가까운 지점 가져오기
     const getFirstFacilities = () => {
         firstFacilities = []
@@ -84,9 +87,37 @@ const InfoSheet = ({ location, address }) => {
     }
 
     // 가장 많이 있는 편의시설 가져오기
-    const mostCommonFacilities = () => {
+    const getTopFacilities = () => {
+        const totalCount = facilities.reduce((sum, facility) => {
+            return sum + location.facility_type[facility].count;
+        }, 0);
 
-    }
+        const facilityRatios = facilities.map((facility) => {
+            const count = location.facility_type[facility].count;
+            const ratio = (count / totalCount) * 100;
+            return { facility, count, ratio };
+        });
+
+        const sortedFacilities = facilityRatios.sort((a, b) => b.ratio - a.ratio);
+
+        const topFacilities = sortedFacilities.slice(0, 3);
+
+        
+        return (
+            <>
+                <ul>
+                    {topFacilities.map((facility) => (
+                        <li key={facility.ratio}>
+                            {facility.facility} {facility.ratio.toFixed(2)}% ({facility.count}개)
+                        </li>
+                    ))}
+                </ul>
+            </>
+        )
+    };
+
+    //const topFacilities = getTopFacilities();
+    
 
     // 전체 편의시설 목록 가져오기
     // 편의시설 목록에서 특정 편의시설 클릭 시 해당 위치 마커로 이동하는 기능 없는 ver.
@@ -130,7 +161,7 @@ const InfoSheet = ({ location, address }) => {
                         {getFirstFacilities()}
                         <hr />
                         <h5>주위에 어떤 편의시설들이 많을까?</h5>
-
+                        {getTopFacilities()}
                         <hr />
                         <h5>검색한 동네 주위 이런 편의시설이 있어요!</h5>
                         {/* {facilities_list()} */}
