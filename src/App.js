@@ -4,12 +4,12 @@ import LeafletSearch from "./Components/LeafletSearch";
 import Login from "./Components/Login";
 import Modal from 'react-modal';
 import Sheet from 'react-modal-sheet';
-import './Components/Modal.css';
+import './Components/css/Modal.css';
 import './App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { LoginProvider } from './Components/LoginContext';
-import MyPage from "./Components/MyPage";
+import MyPage from "./Components/userPage";
 
 function App() {
   const initialPosition = [37.5978219540466, 127.065505630651];

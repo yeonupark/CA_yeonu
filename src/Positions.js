@@ -19,8 +19,9 @@ const [lng, lat] = proj4(crs5174, crsWgs84, [x, y]);
 
 function Positions() {
     
-    const customMarker = L.icon({
-        iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+    const customMarker = L.AwesomeMarkers.icon({
+        icon: 'home',
+        markerColor: 'red',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],

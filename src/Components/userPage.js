@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './MyPage.css';
+import './css/userPage.css';
 import RadarChart from "./Radar";
 
 function MyPage({ myAddressList }) {

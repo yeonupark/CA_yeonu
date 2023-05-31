@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sheet from 'react-modal-sheet';
-import './ResultSheet.css';
+import './css/ResultSheet.css';
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments, faChartSimple, faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -72,7 +72,7 @@ const ResultSheet = ({ address, coords, location} ) => {
                         <hr />
                         <div id="result-btn-container">
                             <span> </span>
-                            <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}>♥︎</button>
+                            <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}><FontAwesomeIcon icon={faHeart}/></button>
                             <button id="dashboard-btn" onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} /></button>
                             <button id="review-btn" onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} /></button>
                         </div>

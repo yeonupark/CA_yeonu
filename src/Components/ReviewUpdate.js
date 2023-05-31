@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { LoginContext } from './LoginContext';
-import './ResultSheet.css';
+import './css/ResultSheet.css';
 
 // 새로 작성하는 리뷰 서버에 post하는 컴포넌트
 function ReviewUpdate({ onReviewSubmit }) {
