@@ -42,7 +42,7 @@ const ResultSheet = ({ address, coords, location }) => {
             const response = await axios.post('http://127.0.0.1:8000/accounts/precomment/', address_json);
             const fetchedReviews = response.data;
             setReviews(fetchedReviews);
-            console.log(response)
+            //console.log(response)
         } catch (error) {
             console.error('리뷰를 가져오는 중 오류가 발생했습니다.', error);
         }
