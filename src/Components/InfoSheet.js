@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Sheet from 'react-modal-sheet';
+import ImageComponent from './ImageComponent';
 import { useMap } from "react-leaflet";
+import './css/InfoSheet.css';
 //import axios from "axios";
 
 // 편의시설 종류 영어 -> 한글로 변환
@@ -29,17 +31,18 @@ const FacilitiesList = ({ facility, location }) => {
 
     return (
         <div key={facility}>
-            <h5>{eng2kor(facility)} - {location.facility_type[facility].count}</h5>
+            <h5>{eng2kor(facility)} <blue>{location.facility_type[facility].count}</blue></h5>
             <ul>
                 {location.facility_type[facility].place.map((place, index) => (
                     <li key={`${place.distance}-${index}`} style={{ textAlign: 'left' }}>
+                        <hr id="near-hr"/>
                         <button onClick={() => handleMarkerClick(place.name)}>
                             {place.name}
                         </button>
                         <br />
                         <span>{place.address}</span>
                         <br />
-                        <span>{place.distance}m</span>
+                        <span id="distance">{place.distance}m</span>
                     </li>
                 ))}
             </ul>
@@ -84,7 +87,7 @@ const InfoSheet = ({ location, address }) => {
                     const { type, name, distance, address } = facility;
                     return (
                         <div key={type} style={{ textAlign: 'left' }}>
-                            <span> {eng2kor(type)} {name}은 {distance}m 떨어져 있습니다.</span>
+                            <span id="facility-info"> <span id="facility-type">{eng2kor(type)}</span> <blue>{name}</blue>은(는) <blue>{distance}</blue>m 떨어져 있습니다.</span>
                         </div>
                     );
                 })}
@@ -117,7 +120,9 @@ const InfoSheet = ({ location, address }) => {
                             {eng2kor(facility.facility)} {facility.ratio.toFixed(2)}% ({facility.count}개)
                         </li>
                     ))}
+                     <ImageComponent topFacilities={topFacilities} />
                 </ul>
+               
             </>
         )
     };
@@ -154,26 +159,32 @@ const InfoSheet = ({ location, address }) => {
 
     return (
         <div>
-            <Sheet isOpen={isOpen} onClose={closeSheet}>
+            <Sheet id="info-sheet" isOpen={isOpen} onClose={closeSheet}>
                 <Sheet.Container >
                     <Sheet.Header />
-                    <Sheet.Content>
+                    <Sheet.Content id="info-sheet-content">
                         <h4 >{address}</h4>
                         <hr />
                         {/* <h5>해쉬태그</h5> */}
-                        {location.hashtag}
-                        <hr />
-                        <h5>가장 가까운 편의시설</h5>
+                        <div id="location-hash">
+                            {location.hashtag}
+                        </div>
+                        {/* <hr id="section-hr"/> */}
+                        <p id="near-facilities">가장 가까운 편의시설</p>
                         {getFirstFacilities()}
                         <hr />
-                        <h5>주위에 어떤 편의시설들이 많을까?</h5>
-                        {getTopFacilities()}
-                        <hr />
-                        <h5>검색한 동네 주위 이런 편의시설이 있어요!</h5>
-                        {/* {facilities_list()} */}
-                        {facilities.map((facility) => (
-                            <FacilitiesList key={facility} facility={facility} location={location} />
-                        ))}
+                        <div id="top-facilities">
+                            <p>주위 편의시설 종류</p>
+                            {getTopFacilities()}
+                        </div>
+                        <hr id="section-hr"/>
+                        <div id="near-facilities">
+                            <p>인근 편의시설</p>
+                            {/* {facilities_list()} */}
+                            {facilities.map((facility) => (
+                                <FacilitiesList key={facility} facility={facility} location={location} />
+                            ))}
+                        </div>
                     </Sheet.Content>
                 </Sheet.Container>
                 <Sheet.Backdrop />

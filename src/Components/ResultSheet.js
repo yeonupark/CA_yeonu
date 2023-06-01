@@ -91,9 +91,9 @@ const ResultSheet = ({ address, coords, location }) => {
                         <hr />
                         <p>
                             <span> </span>
-                            <button onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} /></button>
-                            <button onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} /></button>
-                            <button onClick={handleLikeClick} style={{ color: like ? 'red' : 'black' }}>♥︎</button>
+                            <button id="review-btn" onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} /></button>
+                            <button id="dashboard-btn" onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} /></button>
+                            <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}>♥︎</button>
                         </p>
                         <div>{showReview && <Review address={address} reviews ={reviews}/>}</div>
                         <div>{showInfo && <InfoSheet address={address} location={location} />}</div>
