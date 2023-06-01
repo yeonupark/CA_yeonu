@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
@@ -12,25 +12,27 @@ import ResultSheet from "./ResultSheet";
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
-
+import { type } from "@testing-library/user-event/dist/type";
 
 /* global kakao */
 export const LeafletSearch = ({ setSearch }) => {
     const map = useMap();
 
     const [search, setSearchLocal] = useState("");
-    const [places, setPlace] = useState([]);
+    // const [places, setPlace] = useState([]);
     const [radius, setRadius] = useState('');
     const [facilities, setFacilities] = useState([]);
-    const [lat, setLat] = useState("");
-    const [lng, setLng] = useState("");
+    //const [lat, setLat] = useState("");
+    //const [lng, setLng] = useState("");
     const [isOpen, setOpen] = useState(false);
-
+    // 좋아요 눌렀을 때 좌표값 서버로 넘겨주기 위해 좌표 저장 공간 생성
+    const [position, setPosition] = useState({ lat: 37.5978219540466, lng: 127.065505630651 });
+    const [location, setLocation] = useState({});
     // 결과 창 바텀시트
     const [showResult, setShowResult] = useState(false);
     // 결과 창에서 주소 띄워주기 위해 저장소 생성
     const [address, setAddress] = useState("");
-    const [fullAddress, setFullAddress] = useState("");
+    //const [fullAddress,setFullAddress] = useState("");
 
     //바텀시트 핸들러(열기)
     const openSheet = () => {
@@ -66,7 +68,6 @@ export const LeafletSearch = ({ setSearch }) => {
 
     let user_json;
     let coords;
-
     // 폼 제출 핸들러
     const handleSubmit = async (event) => {
         //event.preventDefault();
@@ -102,32 +103,26 @@ export const LeafletSearch = ({ setSearch }) => {
             }
         });
 
-        const user_json = {
-            facilities_type: facilities.join(","),
-            lat: coords.lat.toString(),
-            lon: coords.lng.toString(),
-            radius: radius
-        };
-
-        console.log(user_json)
         // 서버로 POST
         try {
-            const response = await axios.post(one_server, user_json, {
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              });
-              const places = Array.isArray(response.data) ? response.data : [];
-            setPlace(places);
+            const response = await axios.post(one_server, user_json);
+
+            setLocation(response.data.location);
+            
+            const places = [];
+            // 편의시설 종류
+            const facilities = Object.keys(response.data.location.facility_type);
+            
+            // 모든 편의시설 데이터 추가
+            facilities.forEach(facility => {
+                const facilityData = response.data.location.facility_type[facility].place;
+                places.push(...facilityData);
+            });
 
             places.forEach((place) => {
                 const new_coords = new L.LatLng(place.lat, place.lon);
-                const { name, distance, address, lat, lon } = place;
-                const marker = L.marker([lat, lon]).addTo(map);
-                // const marker = L.marker(new_coords);
+                const marker = L.marker(new_coords);
                 marker.bindPopup(`<b>${place.name}</b>`);
-                console.log(place.name)
-                console.log(places);
                 markerClusterGroup.addLayer(marker);
             });
         } catch (error) {
@@ -150,23 +145,49 @@ export const LeafletSearch = ({ setSearch }) => {
         // 주소로 검색 -> result에 좌표값, 주소정보 들어있음
         geocoder.addressSearch(search, function (result, status) {
             // 정상적으로 검색이 완료됐으면
-            console.log(result)
+            
             if (status === kakao.maps.services.Status.OK) {
                 coords = new L.LatLng(result[0].y, result[0].x);
+                setPosition(coords);
 
-                // full address는 마이페이지에 넘겨주기 위한 저장값.
+                // if (result[0].address){
+                //     setFullAddress(result[0].address.address_name);
+                // } else {
+                //     setFullAddress(result[0].road_address.address_name);
+                // }
+                
+                // user_json 생성 (x좌표,y좌표,반경,편의시설)
+                const user1 = { lon: String(coords.lng), lat: String(coords.lat), radius: radius, facilities_type: facilities.join(',') };
+                const user_json_tmp = JSON.stringify(user1);
+                user_json = JSON.parse(user_json_tmp);
+
                 // address에는 시, 구, 동 단위까지 저장. 결과 컴포넌트에 띄워주기 위함
                 let adrs1, adrs2, adrs3;
-                if (result[0].road_address) {
-                    adrs1 = result[0].road_address.region_1depth_name;
-                    adrs2 = result[0].road_address.region_2depth_name;
-                    adrs3 = result[0].road_address.region_3depth_name;
-                    setFullAddress(result[0].road_address.address_name);
-                } else {
+                if (result[0].address) {    // 일반 주소
                     adrs1 = result[0].address.region_1depth_name;
                     adrs2 = result[0].address.region_2depth_name;
-                    adrs3 = result[0].address.region_3depth_name;
-                    setFullAddress(result[0].address.address_name);
+                    const adrs3_tmp = result[0].address.region_3depth_h_name;
+
+                    if (/\d/.test(adrs3_tmp)) { // 숫자가 있는 경우
+                        adrs3 = adrs3_tmp.replace(/\d/g, "");
+                    }
+                    else if (adrs3_tmp === "") {
+                        adrs3 = result[0].address.region_3depth_name;
+                    }
+                    else {
+                        adrs3 = adrs3_tmp;
+                    }
+                } else {    // 도로명 주소
+                    adrs1 = result[0].road_address.region_1depth_name;
+                    adrs2 = result[0].road_address.region_2depth_name;
+                    const adrs3_tmp = result[0].road_address.region_3depth_name;
+
+                    if (/\d/.test(adrs3_tmp)) { // 숫자가 있는 경우
+                        adrs3 = adrs3_tmp.replace(/\d/g, "");
+                    }
+                    else {
+                        adrs3 = adrs3_tmp;
+                    }
                 }
                 setAddress(adrs1 + " " + adrs2 + " " + adrs3);
 
@@ -253,7 +274,7 @@ export const LeafletSearch = ({ setSearch }) => {
                                     <div>
                                         <input
                                             type="checkbox"
-                                            value="hair"
+                                            value="미용실"
                                             checked={facilities.includes('hair')}
                                             onChange={handleFacilityChange}
                                         />
@@ -267,6 +288,15 @@ export const LeafletSearch = ({ setSearch }) => {
                                             onChange={handleFacilityChange}
                                         />
                                         <span>편의점</span>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="bus"
+                                            checked={facilities.includes('bus')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>버스정류장</span>
                                     </div>
                                 </div>
                                 <label>
@@ -292,7 +322,7 @@ export const LeafletSearch = ({ setSearch }) => {
                 <button id="search-btn" onClick={handleSearch}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
-                <div>{showResult && <ResultSheet address={address} fullAddress={fullAddress}/>}</div>
+                <div>{showResult && <ResultSheet address={address} coords={position} location={location} />}</div>
             </form>
         </div>
     );
