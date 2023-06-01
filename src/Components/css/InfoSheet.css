@@ -1,0 +1,110 @@
+#info-sheet-content{
+    padding-left: 3% !important;
+    padding-right: 3% !important;
+    overflow-y: scroll;
+}
+
+blue{
+    color: #3B89FD;
+    font-weight: bold;
+}
+
+#location-hashtag{
+    color: #3B89FD;
+}
+
+#top-facilities ul {
+    list-style: none;
+    text-align: left;
+    padding-left: 0px;
+}
+
+#top-facilities button{
+    background-color: #fff;
+}
+
+#near-facilities ul{
+    list-style: none;
+    padding-left: 0;
+}
+
+#near-facilities li{
+    line-height: 1.5;
+}
+
+#near-facilities button{
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding-left: 0px;
+}
+
+#near-facilities li span{
+    font-size: 14px;
+    color: #777;
+}
+
+#facility-type {
+    color: #c4c4c4;
+    /* border: 1px solid #c4c4c4; */
+    padding: 2px;
+    border-radius: 4px;
+    box-shadow : 2px 2px 2px 0;
+}
+
+#near-facilities h5{
+    color: #777;
+    border-radius: 4px;
+    box-shadow : 2px 2px 2px 0;
+    padding: 2px;
+    width: fit-content;
+    margin: auto;
+    margin-left: 0px; 
+}
+
+#facility-info{
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
+
+#distance{
+    /* color: #c4c4c4; */
+    /* float: right; */
+    margin-top: 10px;
+}
+
+#section-hr{
+    height: 10px;
+    background-color: #d5d5d5;
+    border: none;
+}
+
+hr{
+    border: 0.1px solid#d5d5d5 !important; 
+}
+
+#near-facilities p, #top-facilities p {
+    text-align: left;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+#facility-info{
+    line-height: 2.0;
+}
+
+#facility-img{
+    display:flex;
+    flex-direction: row;
+}
+
+#facility-img img{
+    width: 100px;
+    margin-right: 10px;
+}
+
+#facility-list{
+    display: flex;
+    padding-top: 20px;
+}
