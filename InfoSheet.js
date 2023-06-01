@@ -5,10 +5,46 @@ import { useMap } from "react-leaflet";
 
 // 편의시설 종류 영어 -> 한글로 변환
 function eng2kor(eng) {
-    const dic = {"cafe":"카페", "hospital":"병원","pharmacy":"약국","gym":"운동시설",
-    "laundry":"세탁소","bus":"버스","hair":"미용실","convenience":"편의점","mart":"마트"}
-    return(dic[eng])
+    const dict = {"cafe":"카페", "hospital":"병원","pharmacy":"약국","gym":"체육시설",
+    "laundry":"세탁소","bus":"버스정류장","hair":"미용실","convenience":"편의점","mart":"마트"}
+    return(dict[eng])
 }
+
+// 거리(m) -> 도보시간(minute) 환산
+function meter2minute(distance) {
+    if (distance <= 135) {
+        return 1;
+    } else if (distance <= 200) {
+        return 2;
+    } else if (distance <= 270) {
+        return 3;
+    } else if (distance <= 335) {
+        return 4;
+    } else if (distance <= 400) {
+        return 5;
+    } else if (distance <= 465) {
+        return 6;
+    } else if (distance <= 535) {
+        return 7;
+    } else if (distance <= 600) {
+        return 8;
+    } else if (distance <= 670) {
+        return 9;
+    } else if (distance <= 730) {
+        return 10;
+    } else if (distance <= 800) {
+        return 11;
+    } else if (distance <= 870) {
+        return 12;
+    } else if (distance <= 940) {
+        return 13;
+    } else if (distance <= 1000) {
+        return 14;
+    } else {
+        return 15; 
+    }
+}
+
 
 // 전체 편의시설 목록 가져오기
 // 편의시설 리스트에서 특정 편의시설 클릭 시 지도 상 해당 마커 위치로 이동시키는 ver.
@@ -84,7 +120,8 @@ const InfoSheet = ({ location, address }) => {
                     const { type, name, distance, address } = facility;
                     return (
                         <div key={type} style={{ textAlign: 'left' }}>
-                            <span> {eng2kor(type)} {name}은 {distance}m 떨어져 있습니다.</span>
+                            <span> {eng2kor(type)} {name}은 도보 {meter2minute(distance)}분 거리입니다. 
+                            -{distance}m </span>
                         </div>
                     );
                 })}
