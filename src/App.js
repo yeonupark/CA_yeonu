@@ -4,12 +4,12 @@ import LeafletSearch from "./Components/LeafletSearch";
 import Login from "./Components/Login";
 import Modal from 'react-modal';
 import Sheet from 'react-modal-sheet';
-import './Components/Modal.css';
+import './Components/css/Modal.css';
 import './App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { LoginProvider } from './Components/LoginContext';
-import RadarChart from "./Components/Radar";
+import MyPage from "./Components/userPage";
 
 function App() {
   const initialPosition = [37.5978219540466, 127.065505630651];
@@ -97,10 +97,11 @@ const openMypageModal = () => {
         <Sheet.Container>
           <Sheet.Header/>
             <Sheet.Content>
-              <RadarChart/>
+              <MyPage/>
+              {/* <RadarChart/>
               <button id="logout-btn" onClick={handleLogout}>
                 로그아웃
-              </button>
+              </button> */}
             </Sheet.Content>
           </Sheet.Container>
           <Sheet.Backdrop />

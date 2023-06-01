@@ -3,7 +3,7 @@ import axios from "axios"
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser, faLock } from "@fortawesome/free-solid-svg-icons";
-import './Login.css';
+import './css/Login.css';
 import { LoginContext } from './LoginContext';
 
 

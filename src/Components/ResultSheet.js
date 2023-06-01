@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sheet from 'react-modal-sheet';
-import './ResultSheet.css';
+import './css/ResultSheet.css';
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments, faChartSimple, faHeart } from "@fortawesome/free-solid-svg-icons";
 import Review from "./Review";
-import MyPage from './MyPage';
+// import MyPage from './MyPage';
+import InfoSheet from "./InfoSheet";
 
-const ResultSheet = ({ address, fullAddress} ) => {
+const ResultSheet = ({ address, coords, location} ) => {
     const [isOpen, setOpen] = useState(true);
     const [showReview, setShowReview] = useState(false);
-    const [like,setLike] = useState(false);
-    // 마이페이지에 전달할 좋아요 리스트
-    const [myAddressList, setMyAddressList] = useState([]);
+    const [like, setLike] = useState(undefined);
+    const [showInfo, setShowInfo] = useState(false);
 
 
     //바텀시트 핸들러(열기)
@@ -29,18 +30,37 @@ const ResultSheet = ({ address, fullAddress} ) => {
 
     const handleLikeClick = () => {
         setLike(!like);
-        const isLiked = myAddressList.includes(fullAddress);
-
-        if (isLiked) {
-            // 좋아요 취소
-            const updatedList = myAddressList.filter((item) => item !== fullAddress);
-            setMyAddressList(updatedList);
-          } else {
-            // 좋아요 추가
-            const updatedList = [...myAddressList, fullAddress];
-            setMyAddressList(updatedList);
-          }
     };
+
+    const handleInfoClick = () => {
+        //setShowInfo(false);
+        setShowInfo(!showInfo);
+    };
+
+    const sendLikeRequest = async (isLike) => {
+        try {
+            //const likeValue = isLike ? true : false;
+            const like_json = { lon: coords.lng, lat: coords.lat, like: like };
+            console.log(like_json);
+
+            const url = 'http://';
+            const response = await axios.post(url, { like_json });
+
+            if (isLike) {
+                //alert("찜 목록에 등록되었습니다.");
+            } else {
+                //alert("찜 목록에서 삭제되었습니다.");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        if (like !== undefined) {
+            sendLikeRequest(like);
+        }
+    }, [like]);
     
     return (
         <div>
@@ -52,12 +72,15 @@ const ResultSheet = ({ address, fullAddress} ) => {
                         <hr />
                         <div id="result-btn-container">
                             <span> </span>
-                            <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}>♥︎</button>
-                            <button id="dashboard-btn"><FontAwesomeIcon icon={faChartSimple} /></button>
+                            <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}><FontAwesomeIcon icon={faHeart}/></button>
+                            <button id="dashboard-btn" onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} /></button>
                             <button id="review-btn" onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} /></button>
                         </div>
                         <div id="review-upload-container">
                             {showReview && <Review address={address}/>}
+                        </div>
+                        <div>
+                            {showInfo && <InfoSheet address={address} location={location} />}
                         </div>
                     </Sheet.Content>
                 </Sheet.Container>

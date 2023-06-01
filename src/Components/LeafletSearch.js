@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
-import './LeafletSearch.css';
-import './BottomSheet.css';
+import './css/LeafletSearch.css';
+import './css/BottomSheet.css';
 import Sheet from 'react-modal-sheet';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -102,18 +102,32 @@ export const LeafletSearch = ({ setSearch }) => {
             }
         });
 
+        const user_json = {
+            facilities_type: facilities.join(","),
+            lat: coords.lat.toString(),
+            lon: coords.lng.toString(),
+            radius: radius
+        };
+
+        console.log(user_json)
         // 서버로 POST
         try {
-            const response = await axios.post(one_server, user_json);
-            const places = response.data;
+            const response = await axios.post(one_server, user_json, {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+              const places = Array.isArray(response.data) ? response.data : [];
             setPlace(places);
 
             places.forEach((place) => {
-
                 const new_coords = new L.LatLng(place.lat, place.lon);
-                const marker = L.marker(new_coords);
+                const { name, distance, address, lat, lon } = place;
+                const marker = L.marker([lat, lon]).addTo(map);
+                // const marker = L.marker(new_coords);
                 marker.bindPopup(`<b>${place.name}</b>`);
                 console.log(place.name)
+                console.log(places);
                 markerClusterGroup.addLayer(marker);
             });
         } catch (error) {
@@ -239,7 +253,7 @@ export const LeafletSearch = ({ setSearch }) => {
                                     <div>
                                         <input
                                             type="checkbox"
-                                            value="미용실"
+                                            value="hair"
                                             checked={facilities.includes('hair')}
                                             onChange={handleFacilityChange}
                                         />
@@ -253,15 +267,6 @@ export const LeafletSearch = ({ setSearch }) => {
                                             onChange={handleFacilityChange}
                                         />
                                         <span>편의점</span>
-                                    </div>
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            value="busStation"
-                                            checked={facilities.includes('busStation')}
-                                            onChange={handleFacilityChange}
-                                        />
-                                        <span>버스정류장</span>
                                     </div>
                                 </div>
                                 <label>
@@ -287,7 +292,7 @@ export const LeafletSearch = ({ setSearch }) => {
                 <button id="search-btn" onClick={handleSearch}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
-                <div>{showResult && <ResultSheet address={address} fullAddress={fullAddress} />}</div>
+                <div>{showResult && <ResultSheet address={address} fullAddress={fullAddress}/>}</div>
             </form>
         </div>
     );

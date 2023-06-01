@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import { Radar } from 'react-chartjs-2';
+import { Bar, Radar } from 'react-chartjs-2';
 import { Chart, RadialLinearScale, PointElement, LineElement } from 'chart.js';
 
 Chart.register(RadialLinearScale);
 Chart.register(PointElement);
 Chart.register(LineElement);
 
+//레이더 차트 도형 만들기
 const RadarChart = () => {
   const [selectedLabels, setSelectedLabels] = useState([]);
 
@@ -43,6 +44,9 @@ const RadarChart = () => {
       },
     },
   };
+
+  // 선택한 체크박스 수에 따라 차트 컴포넌트 변경
+  const ChartComponent = selectedLabels.length <= 2 ? Bar : Radar;
 
   return (
     <div>
