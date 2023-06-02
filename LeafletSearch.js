@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
-import './LeafletSearch.css';
-import './BottomSheet.css';
+import './css/LeafletSearch.css';
+import './css/BottomSheet.css';
 import Sheet from 'react-modal-sheet';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +14,6 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import { type } from "@testing-library/user-event/dist/type";
 
-
 /* global kakao */
 export const LeafletSearch = ({ setSearch }) => {
     const map = useMap();
@@ -23,8 +22,6 @@ export const LeafletSearch = ({ setSearch }) => {
     // const [places, setPlace] = useState([]);
     const [radius, setRadius] = useState('');
     const [facilities, setFacilities] = useState([]);
-    //const [lat, setLat] = useState("");
-    //const [lng, setLng] = useState("");
     const [isOpen, setOpen] = useState(false);
     // 좋아요 눌렀을 때 좌표값 서버로 넘겨주기 위해 좌표 저장 공간 생성
     const [position, setPosition] = useState({ lat: 37.5978219540466, lng: 127.065505630651 });
@@ -33,7 +30,6 @@ export const LeafletSearch = ({ setSearch }) => {
     const [showResult, setShowResult] = useState(false);
     // 결과 창에서 주소 띄워주기 위해 저장소 생성
     const [address, setAddress] = useState("");
-    //const [fullAddress,setFullAddress] = useState("");
 
     //바텀시트 핸들러(열기)
     const openSheet = () => {
@@ -150,18 +146,12 @@ export const LeafletSearch = ({ setSearch }) => {
             if (status === kakao.maps.services.Status.OK) {
                 coords = new L.LatLng(result[0].y, result[0].x);
                 setPosition(coords);
-
-                // if (result[0].address){
-                //     setFullAddress(result[0].address.address_name);
-                // } else {
-                //     setFullAddress(result[0].road_address.address_name);
-                // }
                 
                 // user_json 생성 (x좌표,y좌표,반경,편의시설)
                 const user1 = { lon: String(coords.lng), lat: String(coords.lat), radius: radius, facilities_type: facilities.join(',') };
                 const user_json_tmp = JSON.stringify(user1);
                 user_json = JSON.parse(user_json_tmp);
-
+                
                 // address에는 시, 구, 동 단위까지 저장. 결과 컴포넌트에 띄워주기 위함
                 let adrs1, adrs2, adrs3;
                 if (result[0].address) {    // 일반 주소
@@ -193,6 +183,9 @@ export const LeafletSearch = ({ setSearch }) => {
                 setAddress(adrs1 + " " + adrs2 + " " + adrs3);
 
                 handleSubmit();
+            }
+            else {
+                alert("올바른 주소를 입력해주세요!")
             }
         });
     };
@@ -275,7 +268,7 @@ export const LeafletSearch = ({ setSearch }) => {
                                     <div>
                                         <input
                                             type="checkbox"
-                                            value="미용실"
+                                            value="hair"
                                             checked={facilities.includes('hair')}
                                             onChange={handleFacilityChange}
                                         />

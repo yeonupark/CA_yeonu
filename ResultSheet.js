@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Sheet from 'react-modal-sheet';
 import './css/ResultSheet.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,14 +28,14 @@ const ResultSheet = ({ address, coords, location }) => {
     const handleReviewClick = () => {
         setShowReview(!showReview);
         fetchReviews();
+        setShowInfo(false);
     };
 
     // 주소 세 파트로 나누어서 json으로 만들기
     const addressParts = address.split(' ');
-    const seoul = (addressParts[0]+"특별시");
+    const seoul = (addressParts[0] + "특별시");
     const address_json_tmp = JSON.stringify({ "province": seoul, "city": addressParts[1], "dong": addressParts[2] });
     const address_json = JSON.parse(address_json_tmp);
-    //console.log(address_json)
 
     const fetchReviews = async () => {
         try {
@@ -43,7 +43,6 @@ const ResultSheet = ({ address, coords, location }) => {
             const response = await axios.post('http://127.0.0.1:8000/accounts/precomment/', address_json);
             const fetchedReviews = response.data;
             setReviews(fetchedReviews);
-            //console.log(response.data)
         } catch (error) {
             console.error('리뷰를 가져오는 중 오류가 발생했습니다.', error);
         }
@@ -56,20 +55,20 @@ const ResultSheet = ({ address, coords, location }) => {
 
     const handleLikeClick = () => {
         setLike(!like);
+        setShowInfo(false);
     };
 
     const sendLikeRequest = async (isLike) => {
         try {
             const likeValue = isLike ? "True" : "False";
-            const like_json_tmp = JSON.stringify({ lon: String(coords.lng), lat: String(coords.lat),  liked: likeValue, username: String(loggedInUser)});
+            const like_json_tmp = JSON.stringify({ lon: String(coords.lng), lat: String(coords.lat), liked: likeValue, username: String(loggedInUser) });
             const like_json = JSON.parse(like_json_tmp);
-            console.log(like_json);
 
-            axios.post('http://127.0.0.1:8000/facilities/like/', like_json );
+            axios.post('http://127.0.0.1:8000/facilities/like/', like_json);
             // if (isLike) {
-            //     //alert("찜 목록에 등록되었습니다.");
+            //     alert("찜 목록에 등록되었습니다.");
             // } else {
-            //     //alert("찜 목록에서 삭제되었습니다.");
+            //     alert("찜 목록에서 삭제되었습니다.");
             // }
         } catch (error) {
             console.error(error);
@@ -96,7 +95,7 @@ const ResultSheet = ({ address, coords, location }) => {
                             <button id="dashboard-btn" onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} /></button>
                             <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}>♥︎</button>
                         </p>
-                        <div>{showReview && <Review address={address} reviews ={reviews}/>}</div>
+                        <div>{showReview && <Review address={address} reviews={reviews} />}</div>
                         <div>{showInfo && <InfoSheet address={address} location={location} />}</div>
                     </Sheet.Content>
                 </Sheet.Container>
