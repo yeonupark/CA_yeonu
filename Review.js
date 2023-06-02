@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Sheet from 'react-modal-sheet';
-import axios from "axios";
+//import Sheet from 'react-modal-sheet';
+//import axios from "axios";
 import ReviewUpdate from "./ReviewUpdate";
 
 // 기존에 저장된 리뷰 서버로부터 불러오고, 서버에서 전달받은 리뷰 보여주는 컴포넌트
@@ -13,9 +13,8 @@ function Review({ address, reviews }) {
                 <ul>
                     {reviews.map((review) => (
                         <li key={review.created_at} style={{ textAlign: "left" }}>
-                            <span>{review.created_at}</span>
-                            <br />
-                            {/* {review.id} */}
+                            <span>{review.username_comment}</span><br/>
+                            <span>{review.created_at}</span><br />
                             <span>{review.content}</span>
                         </li>
                     ))}

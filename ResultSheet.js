@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import Sheet from 'react-modal-sheet';
-import './ResultSheet.css';
+import './css/ResultSheet.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments, faChartSimple, faHeart } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Review from "./Review";
-import MyPage from './MyPage';
 import InfoSheet from "./InfoSheet";
+import { LoginContext } from './LoginContext';
 
 const ResultSheet = ({ address, coords, location }) => {
     const [isOpen, setOpen] = useState(true);
@@ -14,6 +14,7 @@ const ResultSheet = ({ address, coords, location }) => {
     const [like, setLike] = useState(undefined);
     const [reviews, setReviews] = useState([]);
     const [showInfo, setShowInfo] = useState(false);
+    const { loggedInUser } = useContext(LoginContext);
 
     //바텀시트 핸들러(열기)
     const openSheet = () => {
@@ -42,14 +43,10 @@ const ResultSheet = ({ address, coords, location }) => {
             const response = await axios.post('http://127.0.0.1:8000/accounts/precomment/', address_json);
             const fetchedReviews = response.data;
             setReviews(fetchedReviews);
-            //console.log(response)
+            //console.log(response.data)
         } catch (error) {
             console.error('리뷰를 가져오는 중 오류가 발생했습니다.', error);
         }
-    };
-
-    const handleLikeClick = () => {
-        setLike(!like);
     };
 
     const handleInfoClick = () => {
@@ -57,10 +54,15 @@ const ResultSheet = ({ address, coords, location }) => {
         setShowInfo(!showInfo);
     };
 
+    const handleLikeClick = () => {
+        setLike(!like);
+    };
+
     const sendLikeRequest = async (isLike) => {
         try {
-            //const likeValue = isLike ? true : false;
-            const like_json = { lon: coords.lng, lat: coords.lat};
+            const likeValue = isLike ? "True" : "False";
+            const like_json_tmp = JSON.stringify({ lon: String(coords.lng), lat: String(coords.lat),  liked: likeValue, username: String(loggedInUser)});
+            const like_json = JSON.parse(like_json_tmp);
             console.log(like_json);
 
             axios.post('http://127.0.0.1:8000/facilities/like/', like_json );
@@ -73,7 +75,6 @@ const ResultSheet = ({ address, coords, location }) => {
             console.error(error);
         }
     };
-
 
     useEffect(() => {
         if (like !== undefined) {
@@ -91,9 +92,9 @@ const ResultSheet = ({ address, coords, location }) => {
                         <hr />
                         <p>
                             <span> </span>
-                            <button onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} /></button>
-                            <button onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} /></button>
-                            <button onClick={handleLikeClick} style={{ color: like ? 'red' : 'black' }}>♥︎</button>
+                            <button id="review-btn" onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} /></button>
+                            <button id="dashboard-btn" onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} /></button>
+                            <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}>♥︎</button>
                         </p>
                         <div>{showReview && <Review address={address} reviews ={reviews}/>}</div>
                         <div>{showInfo && <InfoSheet address={address} location={location} />}</div>
