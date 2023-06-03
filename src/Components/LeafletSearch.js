@@ -65,7 +65,6 @@ export const LeafletSearch = ({ setSearch }) => {
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', // Replace with the path to your custom red marker icon image
         iconSize: [25, 41], // Adjust the size of the icon as per your requirements
     });
-
     let user_json;
     let coords;
     // 폼 제출 핸들러
@@ -274,7 +273,7 @@ export const LeafletSearch = ({ setSearch }) => {
                                     <div>
                                         <input
                                             type="checkbox"
-                                            value="미용실"
+                                            value="hair"
                                             checked={facilities.includes('hair')}
                                             onChange={handleFacilityChange}
                                         />
