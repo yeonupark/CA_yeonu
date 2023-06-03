@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Sheet from 'react-modal-sheet';
 import './css/ResultSheet.css';
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments, faChartSimple, faHeart } from "@fortawesome/free-solid-svg-icons";
 import Review from "./Review";
-// import MyPage from './MyPage';
 import InfoSheet from "./InfoSheet";
+import LoginContext from './LoginContext';
 
 const ResultSheet = ({ address, coords, location }) => {
     const [isOpen, setOpen] = useState(true);
@@ -14,6 +14,7 @@ const ResultSheet = ({ address, coords, location }) => {
     const [like, setLike] = useState(undefined);
     const [reviews, setReviews] = useState([]);
     const [showInfo, setShowInfo] = useState(false);
+    const { loggedInUser } = useContext(LoginContext);
 
     //바텀시트 핸들러(열기)
     const openSheet = () => {
@@ -59,8 +60,9 @@ const ResultSheet = ({ address, coords, location }) => {
 
     const sendLikeRequest = async (isLike) => {
         try {
-            //const likeValue = isLike ? true : false;
-            const like_json = { lon: coords.lng, lat: coords.lat};
+            const likeValue = isLike ? "True" : "False";
+            const like_json_tmp = JSON.stringify({ lon: String(coords.lng), lat: String(coords.lat),  liked: likeValue, username: String(loggedInUser)});
+            const like_json = JSON.parse(like_json_tmp);
             console.log(like_json);
 
             axios.post('http://127.0.0.1:8000/facilities/like/', like_json );

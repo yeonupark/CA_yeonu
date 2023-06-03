@@ -81,6 +81,10 @@ const InfoSheet = ({ location, address }) => {
             firstFacilities.push(firstFacility);
         });
 
+        if (firstFacilities.length === 0) {
+            return <div>편의시설이 없습니다.</div>;
+        }
+
         return (
             <>
                 {firstFacilities.map(facility => {
@@ -91,6 +95,7 @@ const InfoSheet = ({ location, address }) => {
                         </div>
                     );
                 })}
+                {firstFacilities.length === 0 && <div>시설이 없습니다.</div>}
             </>
         );
     }
@@ -117,12 +122,11 @@ const InfoSheet = ({ location, address }) => {
                 <ul>
                     {topFacilities.map((facility) => (
                         <li key={facility.ratio}>
-                            {eng2kor(facility.facility)} {facility.ratio.toFixed(2)}% ({facility.count}개)
+                            {facility.count === 0 ? '시설이 없습니다' : `${eng2kor(facility.facility)} ${facility.ratio.toFixed(2)}% (${facility.count}개)`}
                         </li>
                     ))}
                      <ImageComponent topFacilities={topFacilities} />
                 </ul>
-               
             </>
         )
     };
