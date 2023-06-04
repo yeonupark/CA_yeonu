@@ -108,3 +108,11 @@ hr{
     display: flex;
     padding-top: 20px;
 }
+
+#chart .chartjs-render-monitor {
+    background-color: rgba(75, 192, 192, 0.4) !important; /* Location 1 도형 배경색 */
+  }
+  
+#chart .chartjs-render-monitor + .chartjs-render-monitor {
+    background-color: rgba(255, 99, 132, 0.4) !important; /* Location 2 도형 배경색 */
+  }

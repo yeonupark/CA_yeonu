@@ -138,7 +138,7 @@ function MyPage({ myAddressList }) {
     const selectedItems = myLikeList.filter((item) => item.selected);
   
     if (!selectedItems || selectedItems.length !== 2) {
-      console.error("두 개의 항목을 선택해야 합니다.");
+      alert("두 개의 항목을 선택해야 합니다.");
       return;
     }
   
@@ -201,7 +201,7 @@ function MyPage({ myAddressList }) {
     />
     )}
         <h4>내가 좋아요한 주소</h4>
-        <ul>
+        <ul id="mylike-list">
           {myLikeList.map((like, index) => (
             <li key={index} style={{ textAlign: "left" }}>
               <label>
@@ -218,27 +218,26 @@ function MyPage({ myAddressList }) {
           ))}
         </ul>
         <div>
-          <button onClick={handleSendToServer}>
-            선택한 항목 서버로 전송
+          <button id="seemore-btn" onClick={handleSendToServer}>
+            자세히 보기
           </button>
         </div>
-        <hr />
+        <hr id="sections"/>
         <h4>내가 작성한 리뷰</h4>
-        <ul>
+        <ul id="myreview-list">
           {myReview.map((review, index) => (
             <li
               key={`${review.created_at}-${index}`}
               style={{ textAlign: "left" }}
+              id="myreview"
             >
-              <span>{review.created_at}</span>
-              <br />
-              <span>{review.input_addr}</span>
-              <br />
-              <span>{review.content}</span>
+              <p id="review-addr">{review.input_addr}</p>
+              <p id="review-content">{review.content}</p>
+              <p id="review-created-at">{review.created_at}</p>
             </li>
           ))}
+          <hr />
         </ul>
-        <hr />
         <button id="logout-btn" onClick={Logout}>
           로그아웃
         </button>

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Bar, Radar } from 'react-chartjs-2';
-import { Chart, RadialLinearScale, PointElement, LineElement } from 'chart.js';
+import { Bar, Radar, Line} from 'react-chartjs-2';
+import { Chart, RadialLinearScale, PointElement, LineElement, Filler } from 'chart.js';
+// import './css/InfoSheet.css';
 
 Chart.register(RadialLinearScale);
 Chart.register(PointElement);
 Chart.register(LineElement);
+Chart.register(Filler);
 
 const RadarChart = ({ postData, setPostData, facilitiesType }) => {
   const [selectedLabels, setSelectedLabels] = useState([]);
@@ -26,22 +28,22 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
         {
           label: 'Location 1',
           data: Object.values(location1Data),
+          fill: true, // 도형을 채움
           backgroundColor: 'rgba(75,192,192,0.4)',
-          borderColor: 'rgba(75,192,192,1)',
-          pointBackgroundColor: 'rgba(75,192,192,1)',
-          pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
           pointHoverBorderColor: 'rgba(75,192,192,1)',
+          borderWidth: 0, // 선의 두께를 0으로 설정하여 표시하지 않음
+          pointRadius: 0, // 점의 반지름을 0으로 설정하여 표시하지 않음
         },
         {
           label: 'Location 2',
           data: Object.values(location2Data),
+          fill: true, // 도형을 채움
           backgroundColor: 'rgba(255,99,132,0.4)',
-          borderColor: 'rgba(255,99,132,1)',
-          pointBackgroundColor: 'rgba(255,99,132,1)',
-          pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
           pointHoverBorderColor: 'rgba(255,99,132,1)',
+          borderWidth: 0, // 선의 두께를 0으로 설정하여 표시하지 않음
+          pointRadius: 0, // 점의 반지름을 0으로 설정하여 표시하지 않음
         },
       ],
     };
@@ -122,16 +124,20 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
         suggestedMax: 100,
       },
     },
-  };
-
-
-  // // 선택한 체크박스 수에 따라 차트 컴포넌트 변경
-  // const ChartComponent = selectedLabels.length <= 2 ? Bar : Radar;
+    elements: {
+      line: {
+        fill: true, // 도형을 채우기 위해 fill 속성을 true로 설정
+      }
+  }
+};
 
   return (
     <div>
     <div>
       <div>
+      <div id="chart">
+      {chartData && <Radar data={chartData} options={options} />}
+    </div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('pharmacy')} onChange={() => handleLabelToggle('pharmacy')} />
           약국
@@ -146,37 +152,43 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
       <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('cafe')} onChange={() => handleLabelToggle('cafe')} />
-          항목3
+          카페
         </label>
       </div>
       <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('gym')} onChange={() => handleLabelToggle('gym')} />
-          항목4
+          운동시설
         </label>
       </div>
       <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('hair')} onChange={() => handleLabelToggle('hair')} />
-          항목5
+          미용실
         </label>
       </div>
       <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('mart')} onChange={() => handleLabelToggle('mart')} />
-          항목6
+          마트
         </label>
       </div>
       <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('convenience')} onChange={() => handleLabelToggle('convenience')} />
-          항목7
+          편의점
         </label>
       </div>
       <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('laundry')} onChange={() => handleLabelToggle('laundry')} />
-          항목8
+          빨래방
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="checkbox" checked={selectedLabels.includes('bus')} onChange={() => handleLabelToggle('bus')} />
+          버스
         </label>
       </div>
       <div>
@@ -185,11 +197,9 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
           <option value="100">100m</option>
           <option value="200">200m</option>
           <option value="500">500m</option>
+          <option value="1000">1km</option>
         </select>
       </div>
-    <div>
-      {chartData && <Radar data={chartData} options={options} />}
-    </div>
     </div>
     </div>
   );
