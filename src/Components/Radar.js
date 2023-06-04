@@ -21,6 +21,10 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
     const location1Data = location_1.score.individual_score;
     const location2Data = location_2.score.individual_score;
     
+    // 라벨 설정
+    const labels = Object.keys(location1Data).map((key) => key + ' (Location 1)');
+    labels.push(...Object.keys(location2Data).map((key) => key + ' (Location 2)'));
+    
 
     //차트 데이터
     const chartData = {
@@ -150,11 +154,13 @@ const options = {
   plugins: {
     legend: {
       display: true,
+      position: 'top',
+      align: 'center',
       labels: {
-        generateLabels: () => ({ text: "" }) // 기본값으로 빈 라벨을 생성하여 표시하지 않음
-      }
-    }
-  }
+        usePointStyle: true,
+      },
+    },
+  },
 };
 
   return (
