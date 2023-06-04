@@ -129,6 +129,10 @@ const InfoSheet = ({ location, address }) => {
             <>
                 {firstFacilities.map(facility => {
                     const { type, name, distance, address } = facility;
+                    // 해당 편의시설이 없는 경우 문장을 출력하지 않음
+                    if (name === undefined) {
+                        return null; 
+                    }
                     return (
                         <div key={type} style={{ textAlign: 'left' }}>
                             <span id="facility-info"> <span id="facility-type">{eng2kor(type)}</span>

@@ -8,6 +8,7 @@ import Sheet from 'react-modal-sheet';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import ResultSheet from "./ResultSheet";
+import { globalurl } from "../App";
 
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
@@ -69,8 +70,6 @@ export const LeafletSearch = ({ setSearch }) => {
     const handleSubmit = async (event) => {
         //event.preventDefault();
 
-        const one_server = 'http://127.0.0.1:8000/facilities/info/'
-
         // 검색할때마다 맵 리셋
         map.eachLayer((layer) => {
             if (layer instanceof L.MarkerClusterGroup || layer instanceof L.Circle || layer instanceof L.Marker) {
@@ -102,7 +101,7 @@ export const LeafletSearch = ({ setSearch }) => {
 
         // 서버로 POST
         try {
-            const response = await axios.post(one_server, user_json);
+            const response = await axios.post(globalurl+"facilities/info/", user_json);
 
             setLocation(response.data.location);
             
