@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Bar, Radar, Line} from 'react-chartjs-2';
-import { Chart, RadialLinearScale, PointElement, LineElement, Filler } from 'chart.js';
-// import './css/InfoSheet.css';
+// import { Chart, RadialLinearScale, PointElement, LineElement, Filler } from 'chart.js';
+import './css/Radar.css';
 
-Chart.register(RadialLinearScale);
-Chart.register(PointElement);
-Chart.register(LineElement);
-Chart.register(Filler);
+// Chart.register(RadialLinearScale);
+// Chart.register(PointElement);
+// Chart.register(LineElement);
+// Chart.register(Filler);
 
 const RadarChart = ({ postData, setPostData, facilitiesType }) => {
   const [selectedLabels, setSelectedLabels] = useState([]);
@@ -116,18 +116,34 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
     setPostData(updatedPostData);
   }, [facilitiesType]);
 
-  const options = {
-    scales: {
-      r: {
-        circular: true,
-        suggestedMin: 0,
-        suggestedMax: 100,
-      },
+
+
+// //체크박스 선택 시 라벨 색상 변화
+const checkboxes = document.querySelectorAll('#radar-checkbox-container input[type="checkbox"]');
+const labels = document.querySelectorAll('#radar-checkbox-container label');
+
+checkboxes.forEach((checkbox, index) => {
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+      labels[index].classList.add('checked'); // 체크박스 선택 시 checked 클래스 추가
+    } else {
+      labels[index].classList.remove('checked'); // 체크박스 선택 해제 시 checked 클래스 제거
+    }
+  });
+});
+
+const options = {
+  scales: {
+    r: {
+      circular: true,
+      suggestedMin: 0,
+      suggestedMax: 100,
     },
-    elements: {
-      line: {
-        fill: true, // 도형을 채우기 위해 fill 속성을 true로 설정
-      }
+  },
+  elements: {
+    line: {
+      fill: true, // 도형을 채우기 위해 fill 속성을 true로 설정
+    }
   }
 };
 
@@ -136,62 +152,47 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
     <div>
       <div>
       <div id="chart">
-      {chartData && <Radar data={chartData} options={options} />}
+      {chartData && <Radar data={chartData} options={{options}} />}
     </div>
-        <label>
+    <div id="radar-checkbox-container">
+      <label>
           <input type="checkbox" checked={selectedLabels.includes('pharmacy')} onChange={() => handleLabelToggle('pharmacy')} />
           약국
         </label>
-      </div>
-      <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('hospital')} onChange={() => handleLabelToggle('hospital')} />
           병원
         </label>
-      </div>
-      <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('cafe')} onChange={() => handleLabelToggle('cafe')} />
           카페
         </label>
-      </div>
-      <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('gym')} onChange={() => handleLabelToggle('gym')} />
           운동시설
         </label>
-      </div>
-      <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('hair')} onChange={() => handleLabelToggle('hair')} />
           미용실
         </label>
-      </div>
-      <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('mart')} onChange={() => handleLabelToggle('mart')} />
           마트
         </label>
-      </div>
-      <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('convenience')} onChange={() => handleLabelToggle('convenience')} />
           편의점
         </label>
-      </div>
-      <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('laundry')} onChange={() => handleLabelToggle('laundry')} />
           빨래방
         </label>
-      </div>
-      <div>
         <label>
           <input type="checkbox" checked={selectedLabels.includes('bus')} onChange={() => handleLabelToggle('bus')} />
           버스
         </label>
       </div>
-      <div>
+      <div id="radar-radius-select">
         <select value={radius} onChange={handleRadiusChange}>
           <option value="">반경 선택</option>
           <option value="100">100m</option>
@@ -199,6 +200,7 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
           <option value="500">500m</option>
           <option value="1000">1km</option>
         </select>
+      </div>
       </div>
     </div>
     </div>

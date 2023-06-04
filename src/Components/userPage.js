@@ -23,6 +23,7 @@ function MyPage({ myAddressList }) {
     lat_2: 0, // 예시값으로 0으로 설정
     lon_2: 0, // 예시값으로 0으로 설정
   });
+  const [visible, setVisible] = useState(true);
 
   function Logout() {
     setIsLoggedIn(false);
@@ -166,6 +167,7 @@ function MyPage({ myAddressList }) {
 
       // 레이더 차트 화면으로 전환
       setChartVisible(true);
+      setVisible(false);
     } catch (error) {
       console.error("데이터 전송 중 오류 발생", error);
     }
@@ -200,7 +202,9 @@ function MyPage({ myAddressList }) {
       handleRadiusChange={handleRadiusChange}
     />
     )}
-        <h4>내가 좋아요한 주소</h4>
+    {visible && (
+    <div>
+      <h4>내가 좋아요한 주소</h4>
         <ul id="mylike-list">
           {myLikeList.map((like, index) => (
             <li key={index} style={{ textAlign: "left" }}>
@@ -212,6 +216,7 @@ function MyPage({ myAddressList }) {
                   onChange={handleCheckboxChange}
                 />
                 <span>{like.address}</span>
+                <span id="clicked-index">{like.selected ? myLikeList.filter((item) => item.selected).indexOf(like) + 1 : ""}</span>
                 <br />
               </label>
             </li>
@@ -238,6 +243,8 @@ function MyPage({ myAddressList }) {
           ))}
           <hr />
         </ul>
+        </div>)}
+        
         <button id="logout-btn" onClick={Logout}>
           로그아웃
         </button>

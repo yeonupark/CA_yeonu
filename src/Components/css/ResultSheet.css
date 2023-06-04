@@ -26,4 +26,43 @@
     cursor: pointer;
     border-radius: 4px;
     font-weight: 700;
+    width: 90%;
+    margin-top: 10px;
+}
+
+#review-upload-form{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#review-area{
+    width:90%;
+    max-height: 100px;
+}
+
+#review-list {
+    list-style: none;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+#review-list li p{
+    line-height: 0.5;
+  }
+  
+#review-list li p{
+    margin:0;
+    line-height: 1.2;
+  }
+  
+  #review-username{
+    font-weight: 700;
+  }
+  #review-content{
+    font-size: 14px;
+  }
+#review-created-at{
+    font-size: 12px;
+    color: #777;
 }

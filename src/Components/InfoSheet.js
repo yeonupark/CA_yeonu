@@ -89,6 +89,9 @@ const InfoSheet = ({ location, address }) => {
             <>
                 {firstFacilities.map(facility => {
                     const { type, name, distance, address } = facility;
+                    if (name === undefined) {
+                        return null; 
+                    }
                     return (
                         <div key={type} style={{ textAlign: 'left' }}>
                             <span id="facility-info"> <span id="facility-type">{eng2kor(type)}</span> <blue>{name}</blue>은(는) <blue>{distance}</blue>m 떨어져 있습니다.</span>

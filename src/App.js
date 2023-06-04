@@ -112,3 +112,4 @@ const openMypageModal = () => {
 }
 
 export default App;
+export const globalurl = "https://";

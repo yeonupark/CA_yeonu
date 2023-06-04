@@ -70,3 +70,7 @@
   font-weight: 700;
   width: 90%;
 }
+
+#clicked-index{
+  float: right;
+}
