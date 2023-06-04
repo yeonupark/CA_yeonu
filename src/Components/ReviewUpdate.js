@@ -1,24 +1,22 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { LoginContext } from './LoginContext';
-import './css/ResultSheet.css';
 import { globalurl } from '../App';
 
-// 새로 작성하는 리뷰 서버에 post하는 컴포넌트
+// 새로 작성하는 리뷰를 서버에 post하는 컴포넌트
 function ReviewUpdate({ address }) {
-  
+
   const { loggedInUser } = useContext(LoginContext);
   const [reviewText, setReviewText] = useState('');
 
   const handleChange = (event) => {
     setReviewText(event.target.value);
   };
-
   // {주소, 텍스트, 풀주소, 아이디} json 생성 
   const addressParts = address.split(' ');
   const seoul = (addressParts[0]+"특별시");
   const fullAddress = seoul+" "+addressParts[1]+" "+addressParts[2];
-  const review_json_tmp = JSON.stringify({ username: String(loggedInUser), province: String(seoul), city: String(addressParts[1]), dong: String(addressParts[2]), addr: String(fullAddress), content: String(reviewText)});
+  const review_json_tmp = JSON.stringify({ username: String(loggedInUser), province: String(seoul), district: String(addressParts[1]), dong: String(addressParts[2]), addr: String(fullAddress), content: String(reviewText)});
   const review_json = JSON.parse(review_json_tmp);
 
   const handleSubmit = async (event) => {
@@ -47,9 +45,9 @@ function ReviewUpdate({ address }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} id="review-upload-form">
-        <textarea id="review-area" value={reviewText} onChange={handleChange} placeholder="리뷰를 자유롭게 남겨주세요!"></textarea>
-        <button id="review-upload-btn" type="submit">작성</button>
+      <form onSubmit={handleSubmit}>
+        <textarea value={reviewText} onChange={handleChange} placeholder="리뷰를 자유롭게 남겨주세요!"></textarea>
+        <button type="submit">작성</button>
       </form>
     </div>
   );
