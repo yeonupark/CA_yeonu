@@ -42,7 +42,7 @@ function MyPage({ myAddressList }) {
   const getMyReview = async () => {
     try {
       // 서버로 __를 post하고, 응답으로 내가 작성한 주소의 리뷰 데이터를 가져옴
-      const response = await axios.post(globalurl+"accounts/mycomment/", username_json);
+      const response = await axios.post(globalurl+"/accounts/mycomment/", username_json);
       //console.log(response);
       setMyReview(response.data);
     } catch (error) {
@@ -59,7 +59,7 @@ function MyPage({ myAddressList }) {
     try {
       setMyLikeList([]); // 이전 데이터 초기화
       const response = await axios.post(
-        globalurl+"facilities/mylike/",
+        globalurl+"/facilities/mylike/",
         username_json
       );
       const likes = response.data.map(async like => {
@@ -160,7 +160,7 @@ function MyPage({ myAddressList }) {
   };
 
   setPostData(updatedPostData);
-  axios.post(globalurl+"facilities/extra", updatedPostData);
+  axios.post(globalurl+"/facilities/extra", updatedPostData);
   console.log("데이터 전송 성공", updatedPostData);
   
   // 선택한 facilities_type 업데이트
@@ -181,7 +181,7 @@ function MyPage({ myAddressList }) {
     } else {
       updatedPostData.labels = [...updatedPostData.labels, label];
     }
-    axios.post(globalurl+"facilities/extra/", updatedPostData)
+    axios.post(globalurl+"/facilities/extra/", updatedPostData)
       .then((response) => {
         console.log('데이터 업데이트 성공:', response.data);
       })
