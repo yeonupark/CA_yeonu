@@ -135,3 +135,9 @@
     width: 60%;
     cursor: pointer;
 }
+
+#guite-txt {
+    padding-left: 2%;
+    font-weight: 700;
+    font-size: 16px;
+}

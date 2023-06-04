@@ -160,7 +160,7 @@ function MyPage({ myAddressList }) {
   };
 
   setPostData(updatedPostData);
-  axios.post(globalurl+"/facilities/extra", updatedPostData);
+  axios.post(globalurl+"/facilities/extra/", updatedPostData);
   console.log("데이터 전송 성공", updatedPostData);
   
   // 선택한 facilities_type 업데이트
