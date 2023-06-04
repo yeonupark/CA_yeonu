@@ -92,3 +92,11 @@
   font-size: 16px;
   border-radius: 4px;
 }
+
+#mylike-list-checkbox{
+  display:none;
+}
+
+#logout-section{
+  padding: 2px;
+}

@@ -146,6 +146,14 @@ const options = {
     line: {
       fill: true, // 도형을 채우기 위해 fill 속성을 true로 설정
     }
+  },
+  plugins: {
+    legend: {
+      display: true,
+      labels: {
+        generateLabels: () => ({ text: "" }) // 기본값으로 빈 라벨을 생성하여 표시하지 않음
+      }
+    }
   }
 };
 

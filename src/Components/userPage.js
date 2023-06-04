@@ -215,6 +215,7 @@ function MyPage({ myAddressList }) {
                   data-index={index} // 인덱스 정보를 data-index 속성으로 추가
                   checked={like.selected}
                   onChange={handleCheckboxChange}
+                  id="mylike-list-checkbox"
                 />
                 <span>{like.address}</span>
                 <span id="clicked-index">{like.selected ? myLikeList.filter((item) => item.selected).indexOf(like) + 1 : ""}</span>
@@ -245,10 +246,11 @@ function MyPage({ myAddressList }) {
           <hr />
         </ul>
         </div>)}
-        
+        <div id="logout-section">
         <button id="logout-btn" onClick={Logout}>
           로그아웃
         </button>
+        </div>
       </div>
     );
   }
