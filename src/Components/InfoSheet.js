@@ -94,7 +94,7 @@ const InfoSheet = ({ location, address }) => {
                     }
                     return (
                         <div key={type} style={{ textAlign: 'left' }}>
-                            <span id="facility-info"> <span id="facility-type">{eng2kor(type)}</span> <blue>{name}</blue>은(는) <blue>{distance}</blue>m 떨어져 있습니다.</span>
+                            <span id="facility-info"> <span id="facility-type">{eng2kor(type)}</span> <blue>{name}</blue>은 <blue>{distance}</blue>m 떨어져 있습니다.</span>
                         </div>
                     );
                 })}
@@ -133,36 +133,6 @@ const InfoSheet = ({ location, address }) => {
             </>
         )
     };
-
-    //const topFacilities = getTopFacilities();
-    
-
-    // 전체 편의시설 목록 가져오기
-    // 편의시설 목록에서 특정 편의시설 클릭 시 해당 위치 마커로 이동하는 기능 없는 ver.
-    // const facilities_list = () => {
-
-    //     return (
-    //         // 각 편의시설별 데이터 출력
-    //         <>
-    //             {facilities.map((facility) => (
-    //                 <div key={facility}>
-    //                     <h5>{facility} - {location.facility_type[facility].count}</h5>
-    //                     <ul>
-
-    //                         {location.facility_type[facility].place.map((place, index) => (
-    //                             <li key={`${place.distance}-${index}`} style={{ textAlign: 'left' }}>
-    //                                 <span style={{fontWeight: 'bold'}}>{place.name}</span><br />
-    //                                 <span>{place.address}</span><br />
-    //                                 <span>{place.distance}m</span>
-    //                             </li>
-    //                         ))}
-    //                     </ul>
-    //                     <hr />
-    //                 </div>
-    //             ))}
-    //         </>
-    //     );
-    //};
 
     return (
         <div>

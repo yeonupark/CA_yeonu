@@ -18,7 +18,7 @@ function ReviewUpdate({ address }) {
   const addressParts = address.split(' ');
   const seoul = (addressParts[0]+"특별시");
   const fullAddress = seoul+" "+addressParts[1]+" "+addressParts[2];
-  const review_json_tmp = JSON.stringify({ username: String(loggedInUser), province: String(seoul), city: String(addressParts[1]), dong: String(addressParts[2]), addr: String(fullAddress), content: String(reviewText)});
+  const review_json_tmp = JSON.stringify({ username: String(loggedInUser), province: String(seoul), district: String(addressParts[1]), dong: String(addressParts[2]), addr: String(fullAddress), content: String(reviewText)});
   const review_json = JSON.parse(review_json_tmp);
 
   const handleSubmit = async (event) => {
