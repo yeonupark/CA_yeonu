@@ -65,7 +65,7 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
     setPostData(updatedData);
   
     try {
-      const response = await axios.post(globalurl, updatedData);
+      const response = await axios.post(globalurl + "/facilities/extra/", updatedData);
       console.log("데이터 전송 성공", response.data);
       const data = response.data; // 받아온 데이터
       const chartData = generateChartData(data); // 차트 데이터 생성
@@ -94,7 +94,7 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
         facilities_type: updatedLabels.join(', '), // Join the array values with a comma
       };
   
-      const response = await axios.post(globalurl, updatedData);
+      const response = await axios.post(globalurl + "/facilities/extra/", updatedData);
       console.log("데이터 전송 성공", response.data);
       const data = response.data; // 받아온 데이터
       const chartData = generateChartData(data); // 차트 데이터 생성

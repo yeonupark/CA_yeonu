@@ -34,7 +34,7 @@ function ReviewUpdate({ address }) {
     }
     event.preventDefault();
     // 서버로 {주소3, 텍스트, 풀주소, 아이디}를 post
-    aaxios.post(globalurl+"/accounts/comment/", review_json)
+    axios.post(globalurl+"/accounts/comment/", review_json)
       .then(function (response) {
         alert("리뷰가 등록되었습니다.");
       })

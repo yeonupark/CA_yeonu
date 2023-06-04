@@ -72,7 +72,7 @@ export const LeafletSearch = ({ setSearch }) => {
     const handleSubmit = async (event) => {
         //event.preventDefault();
 
-        const one_server = 'http://127.0.0.1:8000/facilities/info/'
+        // const one_server = 'http://127.0.0.1:8000/facilities/info/'
 
         // 검색할때마다 맵 리셋
         map.eachLayer((layer) => {
