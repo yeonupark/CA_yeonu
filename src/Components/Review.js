@@ -10,12 +10,12 @@ function Review({ address, reviews }) {
     const showReview = () => {
         if (reviews) {
             return (
-                <ul>
+                <ul id="review-list">
                     {reviews.map((review) => (
                         <li key={review.created_at} style={{ textAlign: "left" }}>
-                            <span>{review.username_comment}</span><br/>
-                            <span>{review.created_at}</span><br />
-                            <span>{review.content}</span>
+                            <p id="review-username">{review.username_comment}</p><br/>
+                            <p>{review.content}</p>
+                            <p id="review-created-at">{review.created_at}</p>
                         </li>
                     ))}
                 </ul>
@@ -25,8 +25,8 @@ function Review({ address, reviews }) {
 
     return (
         <div>
-            <h5 >review</h5>
-            <hr />
+            {/* <h5 >review</h5> */}
+            {/* <hr /> */}
             <ReviewUpdate address={address} />
             <hr />
             {showReview()}

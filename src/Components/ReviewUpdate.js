@@ -44,8 +44,8 @@ function ReviewUpdate({ address }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <textarea value={reviewText} onChange={handleChange} placeholder="리뷰를 자유롭게 남겨주세요!"></textarea>
+      <form onSubmit={handleSubmit} id="review-upload-form">
+        <textarea id="review-area" value={reviewText} onChange={handleChange} placeholder="리뷰를 자유롭게 남겨주세요!"></textarea>
         <button id="review-upload-btn" type="submit">작성</button>
       </form>
     </div>

@@ -8,6 +8,7 @@ import Sheet from 'react-modal-sheet';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import ResultSheet from "./ResultSheet";
+import { globalurl } from "../App";
 
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
@@ -104,7 +105,7 @@ export const LeafletSearch = ({ setSearch }) => {
 
         // 서버로 POST
         try {
-            const response = await axios.post(one_server, user_json);
+            const response = await axios.post(globalurl+"facilities/info/", user_json);
 
             setLocation(response.data.location);
             

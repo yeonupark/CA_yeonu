@@ -1,0 +1,40 @@
+#radar-checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+#radar-checkbox-container input[type="checkbox"]{
+    display:none;
+}
+  
+#radar-checkbox-container label {
+    display: inline-block;
+    width: 100px;
+    border: 1px solid #d5d5d5;
+    border-radius: 2px;
+    margin-right: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    margin: 3px;
+    padding: 5px;
+    border-radius: 12px;
+  }
+  
+  #radar-checkbox-container label.checked {
+    background-color: #3B89FD; /* 체크박스 선택 시 배경색 변경 */
+    color: #fff; /* 체크박스 선택 시 글씨 색상 변경 */
+    border: 1px solid #3B89FD;;
+  }
+
+  #radar-radius-selector{
+    width: 95%;
+    height: 32px;
+  }
+
+  #radar-radius-selector select{
+    float: right;
+    padding: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    cursor: pointer;
+  }
