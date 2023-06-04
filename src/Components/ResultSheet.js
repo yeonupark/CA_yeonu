@@ -7,6 +7,7 @@ import { faComments, faChartSimple, faHeart } from "@fortawesome/free-solid-svg-
 import Review from "./Review";
 import InfoSheet from "./InfoSheet";
 import LoginContext from './LoginContext';
+import { globalurl } from "../App";
 
 const ResultSheet = ({ address, coords, location }) => {
     const [isOpen, setOpen] = useState(true);
@@ -40,7 +41,7 @@ const ResultSheet = ({ address, coords, location }) => {
     const fetchReviews = async () => {
         try {
             // 서버로 주소를 post하고, 응답으로 해당 주소의 리뷰 데이터를 가져옴
-            const response = await axios.post('http://127.0.0.1:8000/accounts/precomment/', address_json);
+            const response = await axios.post(globalurl+"/accounts/precomment/", address_json);
             const fetchedReviews = response.data;
             setReviews(fetchedReviews);
             //console.log(response)
@@ -65,7 +66,7 @@ const ResultSheet = ({ address, coords, location }) => {
             const like_json = JSON.parse(like_json_tmp);
             console.log(like_json);
 
-            axios.post('http://127.0.0.1:8000/facilities/like/', like_json );
+            axios.post(globalurl+"/facilities/like/", like_json);
             // if (isLike) {
             //     //alert("찜 목록에 등록되었습니다.");
             // } else {

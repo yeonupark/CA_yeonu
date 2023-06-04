@@ -3,6 +3,7 @@ import axios from "axios";
 import './css/userPage.css';
 import RadarChart from "./Radar";
 import { LoginContext } from './LoginContext';
+import { globalurl } from "../App";
 
 /* global kakao*/
 function MyPage({ myAddressList }) {
@@ -41,7 +42,7 @@ function MyPage({ myAddressList }) {
   const getMyReview = async () => {
     try {
       // 서버로 __를 post하고, 응답으로 내가 작성한 주소의 리뷰 데이터를 가져옴
-      const response = await axios.post(`http://127.0.0.1:8000/accounts/mycomment/`, username_json);
+      const response = await axios.post(globalurl+"accounts/mycomment/", username_json);
       //console.log(response);
       setMyReview(response.data);
     } catch (error) {
@@ -58,7 +59,7 @@ function MyPage({ myAddressList }) {
     try {
       setMyLikeList([]); // 이전 데이터 초기화
       const response = await axios.post(
-        `http://127.0.0.1:8000/facilities/mylike/`,
+        globalurl+"facilities/mylike/",
         username_json
       );
       const likes = response.data.map(async like => {
@@ -159,7 +160,7 @@ function MyPage({ myAddressList }) {
   };
 
   setPostData(updatedPostData);
-  axios.post("http://127.0.0.1:8000/facilities/extra/", updatedPostData);
+  axios.post(globalurl+"facilities/extra", updatedPostData);
   console.log("데이터 전송 성공", updatedPostData);
   
   // 선택한 facilities_type 업데이트
@@ -180,7 +181,7 @@ function MyPage({ myAddressList }) {
     } else {
       updatedPostData.labels = [...updatedPostData.labels, label];
     }
-    axios.post('http://127.0.0.1:8000/facilities/extra/', updatedPostData)
+    axios.post(globalurl+"facilities/extra/", updatedPostData)
       .then((response) => {
         console.log('데이터 업데이트 성공:', response.data);
       })
@@ -203,7 +204,7 @@ function MyPage({ myAddressList }) {
     />
     )}
     {visible && (
-    <div>
+    <div id="mylike-list-title">
       <h4>내가 좋아요한 주소</h4>
         <ul id="mylike-list">
           {myLikeList.map((like, index) => (
@@ -222,7 +223,7 @@ function MyPage({ myAddressList }) {
             </li>
           ))}
         </ul>
-        <div>
+        <div id="myreview-list-title">
           <button id="seemore-btn" onClick={handleSendToServer}>
             자세히 보기
           </button>

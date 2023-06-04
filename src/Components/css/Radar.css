@@ -1,3 +1,16 @@
+
+.ReactModal__Content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  max-height: 80vh; /* 최대 높이 설정 */
+  overflow-y: auto; /* 세로 스크롤을 가능하게 함 */
+  background-color: white;
+  padding: 20px;
+}
+
 #radar-checkbox-container {
     display: flex;
     flex-wrap: wrap;

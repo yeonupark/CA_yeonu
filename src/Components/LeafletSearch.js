@@ -105,7 +105,7 @@ export const LeafletSearch = ({ setSearch }) => {
 
         // 서버로 POST
         try {
-            const response = await axios.post(globalurl+"facilities/info/", user_json);
+            const response = await axios.post(globalurl+"/facilities/info/", user_json);
 
             setLocation(response.data.location);
             
@@ -195,6 +195,7 @@ export const LeafletSearch = ({ setSearch }) => {
             }
         });
     };
+
 
     return (
         <div className="leaflet-bar leaflet-control">
