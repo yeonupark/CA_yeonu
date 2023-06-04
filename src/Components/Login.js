@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import './css/Login.css';
 import { LoginContext } from './LoginContext';
+import { globalurl } from "../App";
 
 
 
@@ -70,7 +71,7 @@ export const Login = ({ onLogin }) => {
     const loginData_json = JSON.parse(loginData_json_tmp);
     console.log(loginData_json)
 
-    const login_url = "http://127.0.0.1:8000/accounts/login/"
+    const login_url = globalurl+"/accounts/login/"
 
     // 서버로 로그인 정보 post
     axios.post(login_url, loginData_json)
@@ -107,7 +108,7 @@ export const Login = ({ onLogin }) => {
     const signUpData_json = JSON.parse(signUpData_json_tmp);
     console.log(signUpData_json)
 
-    const signup_url = "http://127.0.0.1:8000/accounts/signup/"
+    const signup_url = globalurl+"accounts/signup/"
 
     // 서버로 회원가입 정보 post
     axios.post(signup_url, signUpData_json)

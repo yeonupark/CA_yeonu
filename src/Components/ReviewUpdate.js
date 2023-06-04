@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { LoginContext } from './LoginContext';
 import './css/ResultSheet.css';
+import { globalurl } from '../App';
 
 // 새로 작성하는 리뷰 서버에 post하는 컴포넌트
 function ReviewUpdate({ address }) {
@@ -33,12 +34,14 @@ function ReviewUpdate({ address }) {
     }
     event.preventDefault();
     // 서버로 {주소3, 텍스트, 풀주소, 아이디}를 post
-    axios.post('http://127.0.0.1:8000/accounts/comment/', review_json)
+    aaxios.post(globalurl+"/accounts/comment/", review_json)
       .then(function (response) {
         alert("리뷰가 등록되었습니다.");
       })
       .catch(function (error) {
         console.error("리뷰 작성 중 오류가 발생했습니다.", error);
+        console.log(review_json);
+        console.log(globalurl+"/accounts/comment/");
       })
   };
 

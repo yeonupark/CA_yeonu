@@ -4,6 +4,7 @@
     z-index: 100;
     opacity: 0;
     cursor: pointer;
+    height: 100px;
 }
 
 #options-container{
@@ -20,6 +21,7 @@
 #checkbox-container input{
     display: none;
     display: flex;
+    height: 100px;
 }
 
 #checkbox-container span {

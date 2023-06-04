@@ -1,3 +1,7 @@
+.ReactModal__Content.ReactModal__Content--after-open {
+    width: 80%;
+}
+
 #login-modal{
     text-align: center;
     opacity: 1 !important;

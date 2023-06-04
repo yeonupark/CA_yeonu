@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Bar, Radar, Line} from 'react-chartjs-2';
-// import { Chart, RadialLinearScale, PointElement, LineElement, Filler } from 'chart.js';
+import { Chart, RadialLinearScale, PointElement, LineElement, Filler } from 'chart.js';
 import './css/Radar.css';
+import { globalurl } from "../App";
 
-// Chart.register(RadialLinearScale);
-// Chart.register(PointElement);
-// Chart.register(LineElement);
-// Chart.register(Filler);
+Chart.register(RadialLinearScale);
+Chart.register(PointElement);
+Chart.register(LineElement);
+Chart.register(Filler);
 
 const RadarChart = ({ postData, setPostData, facilitiesType }) => {
   const [selectedLabels, setSelectedLabels] = useState([]);
@@ -64,11 +65,12 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
     setPostData(updatedData);
   
     try {
-      const response = await axios.post("http://127.0.0.1:8000/facilities/extra/", updatedData);
+      const response = await axios.post(globalurl, updatedData);
       console.log("데이터 전송 성공", response.data);
       const data = response.data; // 받아온 데이터
       const chartData = generateChartData(data); // 차트 데이터 생성
       setChartData(chartData); // 차트 데이터 설정
+      console.log(chartData);
     } catch (error) {
       console.error("데이터 전송 중 오류 발생", error);
     }
@@ -92,7 +94,7 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
         facilities_type: updatedLabels.join(', '), // Join the array values with a comma
       };
   
-      const response = await axios.post("http://127.0.0.1:8000/facilities/extra/", updatedData);
+      const response = await axios.post(globalurl, updatedData);
       console.log("데이터 전송 성공", response.data);
       const data = response.data; // 받아온 데이터
       const chartData = generateChartData(data); // 차트 데이터 생성
@@ -154,6 +156,15 @@ const options = {
       <div id="chart">
       {chartData && <Radar data={chartData} options={{options}} />}
     </div>
+    <div id="radar-radius-selector">
+        <select value={radius} onChange={handleRadiusChange}>
+          <option value="">반경 선택</option>
+          <option value="100">100m</option>
+          <option value="200">200m</option>
+          <option value="500">500m</option>
+          <option value="1000">1km</option>
+        </select>
+      </div>
     <div id="radar-checkbox-container">
       <label>
           <input type="checkbox" checked={selectedLabels.includes('pharmacy')} onChange={() => handleLabelToggle('pharmacy')} />
@@ -191,15 +202,6 @@ const options = {
           <input type="checkbox" checked={selectedLabels.includes('bus')} onChange={() => handleLabelToggle('bus')} />
           버스
         </label>
-      </div>
-      <div id="radar-radius-select">
-        <select value={radius} onChange={handleRadiusChange}>
-          <option value="">반경 선택</option>
-          <option value="100">100m</option>
-          <option value="200">200m</option>
-          <option value="500">500m</option>
-          <option value="1000">1km</option>
-        </select>
       </div>
       </div>
     </div>
