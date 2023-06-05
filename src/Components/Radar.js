@@ -216,6 +216,10 @@ const options = {
           <input type="checkbox" checked={selectedLabels.includes('bus')} onChange={() => handleLabelToggle('bus')} />
           버스
         </label>
+        <label>
+          <input type="checkbox" checked={selectedLabels.includes('subway')} onChange={() => handleLabelToggle('subway')} />
+          지하철역
+        </label>
       </div>
       </div>
     </div>
