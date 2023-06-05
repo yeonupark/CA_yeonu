@@ -14,7 +14,7 @@ function Review({ address, reviews }) {
                     {reviews.map((review) => (
                         <li key={review.created_at} style={{ textAlign: "left" }}>
                             <p id="review-username">{review.username_comment}</p><br/>
-                            <p>{review.content}</p>
+                            <p id="review-content">{review.content}</p>
                             <p id="review-created-at">{review.created_at}</p>
                         </li>
                     ))}

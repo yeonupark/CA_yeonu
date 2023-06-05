@@ -299,6 +299,15 @@ export const LeafletSearch = ({ setSearch }) => {
                                         />
                                         <span>버스정류장</span>
                                     </div>
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            value="bus"
+                                            checked={facilities.includes('metro')}
+                                            onChange={handleFacilityChange}
+                                        />
+                                        <span>지하철역</span>
+                                    </div>
                                 </div>
                                 <label>
                                     <hr />
