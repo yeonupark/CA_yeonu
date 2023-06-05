@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
@@ -14,6 +14,9 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import { type } from "@testing-library/user-event/dist/type";
+
+
+
 
 /* global kakao */
 export const LeafletSearch = ({ setSearch }) => {
@@ -196,6 +199,38 @@ export const LeafletSearch = ({ setSearch }) => {
         });
     };
 
+    // 카카오 API를 사용해 현재 위치 받고 => 그 위치를 주소로 변환해주는 컴포넌트 
+    const getCurrentLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            reverseGeocoding(latitude, longitude);
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
+      } else {
+        console.error('Geolocation is not supported by this browser.');
+      }
+    };
+  
+    const reverseGeocoding = (latitude, longitude) => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.coord2Address(longitude, latitude, (result, status) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const address = result[0].address.address_name;
+
+          // address를 받으면, 바로 searchLocal돌려서 input에 입력되게 함
+          setSearchLocal(address)
+        } else {
+          console.error('Failed to reverse geocode coordinates.');
+        }
+      });
+    };
+
+
 
     return (
         <div className="leaflet-bar leaflet-control">
@@ -209,6 +244,13 @@ export const LeafletSearch = ({ setSearch }) => {
                 />
                 {/* 누르면 바텀 시트 출력되는 필터링 버튼 */}
                 <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faFilter} /></button>
+                {/* 클릭하면 주소 가져오는 링크 */}    
+                <button id="bring-addr-btn" onClick={getCurrentLocation}>
+                {/* <i class="fas fa-map-marker-alt"></i> */}
+                <i class="fa-solid fa-location-crosshairs"></i>
+                </button>
+                
+
                 {/* 편의시설 종류 반경 선택: 바텀 시트에서 진행. */}
                 <Sheet isOpen={isOpen} onClose={closeSheet}>
                     <Sheet.Container>
