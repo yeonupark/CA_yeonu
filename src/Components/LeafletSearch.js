@@ -193,6 +193,9 @@ export const LeafletSearch = ({ setSearch }) => {
 
                 handleSubmit();
             }
+            else {
+                alert("올바른 주소를 입력해주세요!");
+            }
         });
     };
 
@@ -302,7 +305,7 @@ export const LeafletSearch = ({ setSearch }) => {
                                     <div>
                                         <input
                                             type="checkbox"
-                                            value="bus"
+                                            value="metro"
                                             checked={facilities.includes('metro')}
                                             onChange={handleFacilityChange}
                                         />
