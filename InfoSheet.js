@@ -69,10 +69,10 @@ const FacilitiesList = ({ facility, location }) => {
     return (
         <div key={facility}>
             <h5>{eng2kor(facility)} <blue>{location.facility_type[facility].count}</blue></h5>
-            <ul>
+            <ul id="facilities_list_container">
                 {location.facility_type[facility].place.map((place, index) => (
                     <li key={`${place.distance}-${index}`} style={{ textAlign: 'left' }}>
-                        <hr id="near-hr" />
+                        <hr id={`near-hr-${index}`}  />
                         <button onClick={() => handleMarkerClick(place.name)}>
                             {place.name}
                         </button>
@@ -93,7 +93,7 @@ const InfoSheet = ({ location, address }) => {
     var [firstFacilities, setFirstFacilities] = useState([]);
     const [isOpen, setOpen] = useState(true);
 
-    // 편의시설 선택하지 않았을 때 오류 뜨는 것 방지하기 위함
+    // 편의시설 선택하지 않았을 때 오류 뜨는 것 방지
     if (!location || !location.facility_type || Object.keys(location.facility_type).length === 0) {
         return (
             alert("편의시설을 선택해주세요.")
@@ -136,9 +136,7 @@ const InfoSheet = ({ location, address }) => {
                     return (
                         <div key={type} style={{ textAlign: 'left' }}>
                             <span id="facility-info"> <span id="facility-type">{eng2kor(type)}</span>
-                                <blue>{name}</blue>은(는) <blue>{distance}</blue>m 떨어져 있습니다.</span>
-                            {/* <span> {eng2kor(type)} {name}은 도보 {meter2minute(distance)}분 거리입니다. 
-                            ({distance}m) </span> */}
+                                <blue>{name}</blue>은(는) 도보 <blue>{meter2minute(distance)}분</blue> 거리입니다. ({distance}m)</span>
                         </div>
                     );
                 })}
@@ -164,7 +162,7 @@ const InfoSheet = ({ location, address }) => {
 
         return (
             <>
-                <ul>
+                <ul id="top_facilities_container">
                     {topFacilities.map((facility) => (
                         <li key={facility.ratio}>
                             {eng2kor(facility.facility)} {facility.ratio.toFixed(2)}% ({facility.count}개)
