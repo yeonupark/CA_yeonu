@@ -58,10 +58,10 @@ export const LeafletSearch = ({ setSearch }) => {
         setSearchLocal(e.target.value);
     };
 
-    // 빨간색 마커
-    const redIcon = L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', // Replace with the path to your custom red marker icon image
-        iconSize: [25, 41], // Adjust the size of the icon as per your requirements
+    // 검색한 주소에 좌표 찍는 마커
+    const homeIcon = L.icon({
+        iconUrl: 'https://api.geoapify.com/v1/icon/?type=material&color=%232948ee&icon=home&iconType=awesome&apiKey=5d8a4be3945344c2b7b425443b6ae5c6', 
+        iconSize: [35, 55], 
     });
 
     let user_json;
@@ -162,7 +162,7 @@ export const LeafletSearch = ({ setSearch }) => {
         setShowResult(true);
 
         map.addLayer(markerClusterGroup);
-        L.marker(coords, { icon: redIcon }).addTo(map);
+        L.marker(coords, { icon: homeIcon }).addTo(map);
         // 반경 원 그리기
         L.circle(coords, { color: "grey", radius: parseInt(radius) }).addTo(map);
         map.setView(coords, 17);
@@ -350,7 +350,6 @@ export const LeafletSearch = ({ setSearch }) => {
                 <button id="search-btn" onClick={handleSearch}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
-                {/* <><div currentLocationSet && setSearch()openSheet() )></div></> */}
                 <div>{showResult && <ResultSheet address={address} coords={position} location={location} />}</div>
             </form>
         </div>
