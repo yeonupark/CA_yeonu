@@ -6,7 +6,7 @@ import './css/LeafletSearch.css';
 import './css/BottomSheet.css';
 import Sheet from 'react-modal-sheet';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faMagnifyingGlass,faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
 import ResultSheet from "./ResultSheet";
 import { globalurl } from "../App";
 
@@ -246,8 +246,7 @@ export const LeafletSearch = ({ setSearch }) => {
                 <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faFilter} /></button>
                 {/* 클릭하면 주소 가져오는 링크 */}    
                 <button id="bring-addr-btn" onClick={getCurrentLocation}>
-                {/* <i class="fas fa-map-marker-alt"></i> */}
-                <i class="fa-solid fa-location-crosshairs"></i>
+                <FontAwesomeIcon icon={faLocationCrosshairs} style={{ color: 'black' }}/>
                 </button>
                 
 
