@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
@@ -320,6 +321,7 @@ const handleCloseSheet = () => {
                     <PopupComponent/>
                 )}
                 {/* 누르면 바텀 시트 출력되는 필터링 버튼 */}
+
                 <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
                 {/* 클릭하면 주소 가져오는 링크 */}    
                 <button id="bring-addr-btn" onClick={getCurrentLocation}>

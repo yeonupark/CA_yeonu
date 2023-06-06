@@ -30,6 +30,7 @@ function MyPage({ myAddressList }) {
     setIsLoggedIn(false);
     alert('로그아웃 되었습니다!');
     closeSheet();
+    window.location.reload();
   }
 
   function closeSheet() {
