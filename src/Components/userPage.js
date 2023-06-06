@@ -207,13 +207,6 @@ function MyPage({ myAddressList }) {
           {myLikeList.map((like, index) => (
             <li key={index} style={{ textAlign: "left" }}>
               <label>
-                <input
-                  type="checkbox"
-                  data-index={index} // 인덱스 정보를 data-index 속성으로 추가
-                  checked={like.selected}
-                  onChange={handleCheckboxChange}
-                  id="mylike-list-checkbox"
-                />
       {like.selected && (
         <span>
           <span>{like.address}</span>
@@ -272,7 +265,6 @@ function MyPage({ myAddressList }) {
               <hr/>
             </li>
           ))}
-          
         </ul>
         </div>)}
         <hr id="sections"/>

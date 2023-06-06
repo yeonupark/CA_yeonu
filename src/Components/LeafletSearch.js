@@ -440,7 +440,7 @@ const handleCloseSheet = () => {
                 <button id="search-btn" onClick={handleRecentSearch}>
                     <FontAwesomeIcon icon={faClock} />
                 </button>
-                <div>{recentResult && <ResultSheet address={address} coords={position} location={location} onClose={handleCloseSheet}/>}</div>
+                <div>{recentResult && <ResultSheet address={address} coords={position} location={location}/>}</div>
             </form>
         </div>
     );

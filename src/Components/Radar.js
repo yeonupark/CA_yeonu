@@ -17,6 +17,8 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
   const [chartData, setChartData] = useState(null); // chartData 상태 추가
   const [total1Score, setTotal1Score] = useState(null); // total score 상태 추가
   const [total2Score, setTotal2Score] = useState(null); // total score 상태 추가
+  const [total1Hash, setTotal1Hash] = useState([]); // 해시태그 상태 추가
+  const [total2Hash, setTotal2Hash] = useState([]); // 해시태그 상태 추가
   // const [location1Total, setLocation1Total] = useState(null);
 
   const generateChartData = (data) => {
@@ -25,6 +27,8 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
     const location2Data = location_2.score.individual_score;
     const location1Total = location_1.score.total_score;
     const location2Total = location_2.score.total_score;
+    const location1Hash = location_1.hashtag;
+    const location2Hash = location_2.hashtag;
 
 
     //차트 데이터
@@ -56,6 +60,8 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
 
     setTotal1Score(location1Total);
     setTotal2Score(location2Total);
+    setTotal1Hash(location1Hash);
+    setTotal2Hash(location2Hash);
   
     return chartData;
   };
@@ -231,10 +237,22 @@ const options = {
       }
        <h4 id="living-score">생활지수</h4>
       {chartData &&
+      <div>
         <div id="total-score">
+        <div id="total-comp">
         <div id="total1">Location 1: {total1Score}</div>
+        <div id="hash-list">{total1Hash.map((item, index) => (
+          <span id="hash-txt-1" key={index}>{item}</span>))}
+          </div>
+         </div> 
+        <div id="total-comp">
         <div id="total2">Location 2: {total2Score}</div>
+        <div id="hash-list">{total2Hash.map((item, index) => (
+          <span id="hash-txt-2" key={index}>{item}</span>))}
+          </div>
         </div>
+        </div>
+      </div>
       }
       </div>
     </div>
