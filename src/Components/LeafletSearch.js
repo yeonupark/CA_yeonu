@@ -41,6 +41,17 @@ export const LeafletSearch = ({ setSearch }) => {
     const [recentSearchValue, setRecentSearchValue] = useState('');
 
     const openResultSheet = () => {
+        if (facilities.length === 0){
+            return(
+                alert("편의시설을 선택해주세요.")
+                )
+        }
+
+        if (radius === '') {
+            return(
+                alert("반경을 설정해주세요.")
+                )
+        }
         setShowResult(!showResult)
     }
     //바텀시트 핸들러(열기)
