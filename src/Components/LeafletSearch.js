@@ -186,6 +186,19 @@ export const LeafletSearch = ({ setSearch }) => {
 
 }
 const handleSearch = () => {
+
+    if (facilities.length === 0){
+        return(
+            alert("편의시설을 선택해주세요.")
+            )
+    }
+
+    if (radius === '') {
+        return(
+            alert("반경을 설정해주세요.")
+            )
+    }
+
     // 주소-좌표 변환 객체를 생성
     const geocoder = new kakao.maps.services.Geocoder();
 
