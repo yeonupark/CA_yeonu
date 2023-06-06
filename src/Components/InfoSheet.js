@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import Sheet from 'react-modal-sheet';
+import React, { useState, useEffect } from "react";
 import ImageComponent from './ImageComponent';
 import { useMap } from "react-leaflet";
 import './css/InfoSheet.css';
-//import axios from "axios";
+
 
 // 편의시설 종류 영어 -> 한글로 변환
 function eng2kor(eng) {
@@ -47,6 +46,32 @@ function meter2minute(distance) {
     }
 }
 
+const HandleScroll = () => {
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const handleScroll = (scrollTop) => {
+        setScrollPosition(scrollTop);
+      };
+
+      useEffect(() => {
+        // 컴포넌트 마운트 시 저장된 스크롤 위치를 불러와 설정합니다.
+        const savedPosition = localStorage.getItem("scrollPosition");
+        if (savedPosition) {
+          setScrollPosition(parseInt(savedPosition, 10));
+        }
+      }, []);
+
+      const handleContinue = () => {
+        // 스크롤 위치를 localStorage에 저장합니다.
+        localStorage.setItem("scrollPosition", scrollPosition.toString());
+      };
+
+      return (
+        <>
+          <button onClick={HandleScroll}>이어보기</button>
+        </>
+      );
+};
+
 // 전체 편의시설 목록 가져오기
 // 편의시설 리스트에서 특정 편의시설 클릭 시 지도 상 해당 마커 위치로 이동시키는 ver.
 const FacilitiesList = ({ facility, location }) => {
@@ -86,11 +111,13 @@ const FacilitiesList = ({ facility, location }) => {
     );
 };
 
-const InfoSheet = ({ location, address }) => {
 
+
+const InfoSheet = ({ location, address }) => {
     var [firstFacilities, setFirstFacilities] = useState([]);
     const [isOpen, setOpen] = useState(true);
-    
+ 
+
     // 선택된 편의시설 종류
     const facilities = Object.keys(location.facility_type);
 
@@ -119,7 +146,6 @@ const InfoSheet = ({ location, address }) => {
         if (firstFacilities.length === 0) {
             return <div>편의시설이 없습니다.</div>;
         }
-
         return (
             <>
                 {firstFacilities.map(facility => {
@@ -173,15 +199,13 @@ const InfoSheet = ({ location, address }) => {
     return (
         <div>
             <div id="info-sheet">
+            {/* <button onClick={handleContinue}>이어보기</button> */}
                     <div id="info-sheet-content">
-                        <h4 >{address}</h4>
-                        <hr />
-                        {/* <h5>해쉬태그</h5> */}
                         <div id="location-hash">
                             {location.hashtag}
                         </div>
                         {/* <hr id="section-hr"/> */}
-                        <p id="near-facilities">가장 가까운 편의시설</p>
+                        <p id="nearest-facilities">가장 가까운 편의시설</p>
                         {getFirstFacilities()}
                         <hr />
                         <div id="top-facilities">

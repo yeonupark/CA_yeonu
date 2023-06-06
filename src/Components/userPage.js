@@ -196,12 +196,40 @@ function MyPage({ myAddressList }) {
     return (
       <div className="Mypage">
         {isChartVisible && (
+          <div>
       <RadarChart
       postData={postData}
       setPostData={setPostData}
       facilitiesType={selectedFacilitiesType} // facilitiesType을 props로 전달
       handleRadiusChange={handleRadiusChange}
     />
+            <ul id="mylike-list">
+          {myLikeList.map((like, index) => (
+            <li key={index} style={{ textAlign: "left" }}>
+              <label>
+                <input
+                  type="checkbox"
+                  data-index={index} // 인덱스 정보를 data-index 속성으로 추가
+                  checked={like.selected}
+                  onChange={handleCheckboxChange}
+                  id="mylike-list-checkbox"
+                />
+      {like.selected && (
+        <span>
+          <span>{like.address}</span>
+          <span id="clicked-index"
+          style={{ color: myLikeList.filter((item) => item.selected).indexOf(like) === 0 ? "rgba(75,192,192,1)" : "rgba(255,99,132,1)" }}>
+            <span>Location </span>
+            {myLikeList.filter((item) => item.selected).indexOf(like) + 1}
+          </span>
+        </span>
+      )}
+                <br />
+              </label>
+            </li>
+          ))}
+        </ul>
+    </div>
     )}
     {visible && (
     <div id="mylike-list-title">
@@ -241,11 +269,13 @@ function MyPage({ myAddressList }) {
               <p id="review-addr">{review.input_addr}</p>
               <p id="review-content">{review.content}</p>
               <p id="review-created-at">{review.created_at}</p>
+              <hr/>
             </li>
           ))}
-          <hr />
+          
         </ul>
         </div>)}
+        <hr id="sections"/>
         <div id="logout-section">
         <button id="logout-btn" onClick={Logout}>
           로그아웃

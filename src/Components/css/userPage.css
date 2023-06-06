@@ -1,6 +1,8 @@
-.mypage {
-  text-align: right;
+.Mypage {
+  /* text-align: right; */
+  height: 150vh !important;
 }
+
 .mypage-button {
     position: absolute;
     /* top: 90%; */
@@ -73,6 +75,8 @@
 
 #clicked-index{
   float: right;
+  font-weight: 700;
+  /* border: 1px solid #d5d5d5; */
 }
 
 #mylike-list-title, #myreview-list-title {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import Sheet from 'react-modal-sheet';
 import './css/ResultSheet.css';
 import axios from "axios";
@@ -11,24 +11,24 @@ import { globalurl } from "../App";
 
 const ResultSheet = ({ address, coords, location }) => {
     const [isOpen, setOpen] = useState(true);
-    const [showReview, setShowReview] = useState(false);
+    const [showReview, setShowReview] = useState(true);
     const [like, setLike] = useState(undefined);
     const [reviews, setReviews] = useState([]);
-    const [showInfo, setShowInfo] = useState(false);
+    const [showInfo, setShowInfo] = useState(true);
     const { loggedInUser } = useContext(LoginContext);
+    const [scrollPosition, setScrollPosition] = useState(0);
+
+    const sheetContentRef = useRef(0);
 
     //바텀시트 핸들러(열기)
     const openSheet = () => {
         setOpen(true);
     }
-    //바텀시트 핸들러(닫기)
-    const closeSheet = () => {
-        setOpen(false);
-    };
 
     const handleReviewClick = () => {
         setShowReview(!showReview);
         fetchReviews();
+        setShowInfo(false);
     };
 
     // 주소 세 파트로 나누어서 json으로 만들기
@@ -57,6 +57,7 @@ const ResultSheet = ({ address, coords, location }) => {
     const handleInfoClick = () => {
         //setShowInfo(false);
         setShowInfo(!showInfo);
+        setShowReview(false);
     };
 
     const sendLikeRequest = async (isLike) => {
@@ -67,16 +68,10 @@ const ResultSheet = ({ address, coords, location }) => {
             console.log(like_json);
 
             axios.post(globalurl+"/facilities/like/", like_json);
-            // if (isLike) {
-            //     //alert("찜 목록에 등록되었습니다.");
-            // } else {
-            //     //alert("찜 목록에서 삭제되었습니다.");
-            // }
         } catch (error) {
             console.error(error);
         }
     };
-
 
     useEffect(() => {
         if (like !== undefined) {
@@ -84,22 +79,95 @@ const ResultSheet = ({ address, coords, location }) => {
         }
     }, [like]);
 
+    const handleScroll = (event) => {
+        const newPosition = event.target.scrollTop;
+        setScrollPosition(newPosition);
+      };
+    
+      const handleContinue = () => {
+        const sheetContent = document.getElementById("sheet-content");
+        if (sheetContent) {
+          sheetContent.scrollTo({
+            top: scrollPosition,
+            behavior: "smooth",
+          });
+        console.log('스크롤:', scrollPosition);
+        }
+      };
+
+    useEffect(() => {
+        const savedPosition = localStorage.getItem("scrollPosition");
+        const position = parseInt(savedPosition, 10) || 0;
+        setScrollPosition(position);
+      }, []);    
+
+        //바텀시트 핸들러(닫기)
+        const closeSheet = () => {
+            setOpen(false);
+            localStorage.setItem("scrollPosition", scrollPosition.toString());
+        };
+        
+    //       useEffect(() => {
+    //         const savedPosition = localStorage.getItem("scrollPosition");
+    //         const position = parseInt(savedPosition, 10) || 0;
+    //         setScrollPosition(position);
+    //         if (sheetContentRef.current) {
+    //             sheetContentRef.current.scrollTop = position;
+    //           }
+    //       }, []);
+        
+    //       const handleScroll = () => {
+    //         if (!sheetContentRef.current) return;
+    //         const newPosition = sheetContentRef.current.scrollTop;
+    //         setScrollPosition(newPosition);
+    //       };
+
+    //       const handleContinue = () => {
+    //         if (sheetContentRef.current) {
+    //           sheetContentRef.current.scrollTo({
+    //             top: scrollPosition,
+    //             behavior: "smooth",
+    //           });
+    //         }
+    //       };
+
+    //       useEffect(() => {
+    //         if (!sheetContentRef.current) return;
+          
+    //         // 이어보기 버튼을 클릭할 때만 스크롤 위치로 이동
+    //         if (scrollPosition > 0) {
+    //           sheetContentRef.current.scrollTo({
+    //             top: scrollPosition,
+    //             behavior: "auto",
+    //           });
+    //         }
+          
+    //         sheetContentRef.current.addEventListener("scroll", handleScroll);
+    //         return () => {
+    //           sheetContentRef.current.removeEventListener("scroll", handleScroll);
+    //         };
+    //       }, []);
+
+
     return (
         <div>
             <Sheet isOpen={isOpen} onClose={closeSheet}>
                 <Sheet.Container >
                     <Sheet.Header />
-                    <Sheet.Content>
+                    <Sheet.Content id="sheet-content" onScroll={handleScroll}>
+                        <div id="result-header">
                         <h4 >{address}</h4>
+                        <button id="continue-btn" onClick={handleContinue}>이어보기</button>
+                        </div>
                         <hr />
                         <p>
                             <span> </span>
-                            <button id="review-btn" onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} /></button>
-                            <button id="dashboard-btn" onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} /></button>
+                            <button id="review-btn" onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} style={{ color: showReview ? '#3B89FD' : '#c4c4c4' }} /></button>
+                            <button id="dashboard-btn" onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} style={{ color: showInfo ? '#3B89FD' : '#c4c4c4' }}/></button>
                             <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}>♥︎</button>
                         </p>
+                        <div>{showInfo &&<InfoSheet address={address} location={location} />}</div>
                         <div>{showReview && <Review address={address} reviews ={reviews}/>}</div>
-                        <div>{showInfo && <InfoSheet address={address} location={location} />}</div>
                     </Sheet.Content>
                 </Sheet.Container>
                 <Sheet.Backdrop />

@@ -11,6 +11,7 @@ function Review({ address, reviews }) {
         if (reviews) {
             return (
                 <ul id="review-list">
+                    <div>
                     {reviews.map((review) => (
                         <li key={review.created_at} style={{ textAlign: "left" }}>
                             <p id="review-username">{review.username_comment}</p><br/>
@@ -18,6 +19,7 @@ function Review({ address, reviews }) {
                             <p id="review-created-at">{review.created_at}</p>
                         </li>
                     ))}
+                    </div>
                 </ul>
             )
         }
