@@ -11,23 +11,9 @@ const DaumPostAddress = ({address, setSearchLocal, setPopup}) => {
     setPopup();
   };
 
-  const postCodeStyle = {
-    display: "block",
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "350px",
-    height: "350px",
-    padding: "7px",
-    zIndex: 100,
-  };
-
-
   return (
     <div id="popup-open">
         <DaumPostcode
-          style={postCodeStyle}
           onComplete={onCompletePost}
         />
     </div>

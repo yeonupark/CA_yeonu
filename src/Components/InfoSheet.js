@@ -7,7 +7,11 @@ import './css/InfoSheet.css';
 // 편의시설 종류 영어 -> 한글로 변환
 function eng2kor(eng) {
     const dic = {"cafe":"카페", "hospital":"병원","pharmacy":"약국","gym":"운동시설",
+<<<<<<< HEAD
     "laundry":"세탁소","bus":"버스","hair":"미용실","convenience":"편의점","mart":"마트", "metro":"지하철역"}
+=======
+    "laundry":"세탁소","bus":"버스","hair":"미용실","convenience":"편의점","mart":"마트","metro":"지하철"}
+>>>>>>> 9a50017b624fa79e28769afc2969df37632931e2
     return(dic[eng])
 }
 
@@ -131,9 +135,19 @@ const InfoSheet = ({ location, address, recentInfoSheet, setRecentInfoSheet }) =
                         return null; 
                     }
                     return (
+                        // 지하철일 때, "~역" 하도록 첨부함
                         <div key={type} style={{ textAlign: 'left' }}>
-                            <span id="facility-info"> <span id="facility-type">{eng2kor(type)}</span>
-                            <blue>{name}</blue>은(는) 도보 <blue>{meter2minute(distance)}분</blue> 거리입니다. ({distance}m)</span>
+                            {type === 'metro' ? (
+                                <span id="facility-info">
+                                    <span id="facility-type">{eng2kor(type)}</span>
+                                    <blue>{name}역</blue>은(는) 도보 <blue>{meter2minute(distance)}분</blue> 거리입니다. ({distance}m)
+                                </span>
+                            ) : (
+                                <span id="facility-info">
+                                    <span id="facility-type">{eng2kor(type)}</span>
+                                    <blue>{name}</blue>은(는) 도보 <blue>{meter2minute(distance)}분</blue> 거리입니다. ({distance}m)
+                                </span>
+                            )}
                         </div>
                     );
                 })}

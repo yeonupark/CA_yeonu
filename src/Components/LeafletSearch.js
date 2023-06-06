@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useRef, useEffect } from "react";
+=======
+import React, { useState, useEffect } from "react";
+>>>>>>> 9a50017b624fa79e28769afc2969df37632931e2
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
@@ -15,7 +19,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import { type } from "@testing-library/user-event/dist/type";
-import DaumPostAddress from "./DaumPostAddress";
+
 
 
 /* global kakao */
@@ -289,14 +293,12 @@ const handleCloseSheet = () => {
       });
     };
 
-
     return (
         <div className="leaflet-bar leaflet-control">
             {/* input을 클릭해서 open하면 => popup창 뜨도록 */}
             {isPopupOpen && (
                 <PopupComponent/>
             )}
-
             <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(event) => event.preventDefault()}>
                 <input
                     className="leaflet-search-control form-control"
@@ -309,10 +311,15 @@ const handleCloseSheet = () => {
                     <PopupComponent/>
                 )}
                 {/* 누르면 바텀 시트 출력되는 필터링 버튼 */}
+<<<<<<< HEAD
                 <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+=======
+                <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faFilter}/>
+                </button>
+>>>>>>> 9a50017b624fa79e28769afc2969df37632931e2
                 {/* 클릭하면 주소 가져오는 링크 */}    
                 <button id="bring-addr-btn" onClick={getCurrentLocation}>
-                <FontAwesomeIcon icon={faLocationCrosshairs} style={{ color: 'black' }}/>
+                    <FontAwesomeIcon icon={faLocationCrosshairs} style={{ color: 'black' }}/>
                 </button>
                 {/* 편의시설 종류 반경 선택: 바텀 시트에서 진행. */}
                 <Sheet isOpen={isOpen} onClose={closeSheet}>
