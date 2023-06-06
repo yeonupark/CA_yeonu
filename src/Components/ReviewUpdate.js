@@ -39,7 +39,6 @@ function ReviewUpdate({ address }) {
       .catch(function (error) {
         console.error("리뷰 작성 중 오류가 발생했습니다.", error);
         console.log(review_json);
-        console.log(globalurl+"/accounts/comment/");
       })
   };
 

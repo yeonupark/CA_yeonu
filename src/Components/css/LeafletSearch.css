@@ -164,4 +164,10 @@
     height: 100px;
     z-index: 1001;
     top: 38px
+
+#guite-txt {
+    padding-left: 2%;
+    font-weight: 700;
+    font-size: 16px;
+
 }

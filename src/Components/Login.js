@@ -108,7 +108,7 @@ export const Login = ({ onLogin }) => {
     const signUpData_json = JSON.parse(signUpData_json_tmp);
     console.log(signUpData_json)
 
-    const signup_url = globalurl+"accounts/signup/"
+    const signup_url = globalurl+"/accounts/signup/"
 
     // 서버로 회원가입 정보 post
     axios.post(signup_url, signUpData_json)

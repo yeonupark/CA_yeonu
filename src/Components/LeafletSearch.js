@@ -261,7 +261,7 @@ export const LeafletSearch = ({ setSearch }) => {
                 <input
                     className="leaflet-search-control form-control"
                     type="text"
-                    placeholder="상권이 궁금한 동네의 위치를 입력해보세요!"
+                    placeholder="궁금한 동네의 위치를 입력해보세요!"
                     // onChange={onChange}
                     value={search}
                     onClick={popupClick} // input 클릭하면 Popup창 클릭
@@ -280,7 +280,7 @@ export const LeafletSearch = ({ setSearch }) => {
                         <Sheet.Header />
                         <Sheet.Content>
                             <div className="filter-contents">
-                                <p> 상권이 궁금한 동네의 위치를 입력해 보세요! </p>
+                                <p id="guite-txt"> 원하는 편의시설을 선택해주세요! </p>
                                 <hr />
                                 <div id="checkbox-container">
                                     <div>
@@ -367,7 +367,7 @@ export const LeafletSearch = ({ setSearch }) => {
                                 </div>
                                 <label>
                                     <hr />
-                                    <p>입력한 주소에서(최대)</p>
+                                    <p id="guite-txt">입력한 주소에서(최대)</p>
                                     <select
                                         id="radius-select"
                                         value={radius}

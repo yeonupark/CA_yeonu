@@ -21,6 +21,10 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
     const location1Data = location_1.score.individual_score;
     const location2Data = location_2.score.individual_score;
     
+    // 라벨 설정
+    const labels = Object.keys(location1Data).map((key) => key + ' (Location 1)');
+    labels.push(...Object.keys(location2Data).map((key) => key + ' (Location 2)'));
+    
 
     //차트 데이터
     const chartData = {
@@ -146,7 +150,17 @@ const options = {
     line: {
       fill: true, // 도형을 채우기 위해 fill 속성을 true로 설정
     }
-  }
+  },
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+      align: 'center',
+      labels: {
+        usePointStyle: true,
+      },
+    },
+  },
 };
 
   return (
@@ -201,6 +215,10 @@ const options = {
         <label>
           <input type="checkbox" checked={selectedLabels.includes('bus')} onChange={() => handleLabelToggle('bus')} />
           버스
+        </label>
+        <label>
+          <input type="checkbox" checked={selectedLabels.includes('subway')} onChange={() => handleLabelToggle('subway')} />
+          지하철역
         </label>
       </div>
       </div>
