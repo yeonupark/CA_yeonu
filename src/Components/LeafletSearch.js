@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
 import './css/LeafletSearch.css';
 import './css/BottomSheet.css';
 import Sheet from 'react-modal-sheet';
-import Modal from 'react-modal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faMagnifyingGlass, faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
 import ResultSheet from "./ResultSheet";
@@ -16,6 +15,9 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import { type } from "@testing-library/user-event/dist/type";
+
+
+
 
 /* global kakao */
 export const LeafletSearch = ({ setSearch }) => {
@@ -252,21 +254,21 @@ const handleSearch = () => {
           console.error('Geolocation is not supported by this browser.');
         }
       };
+  
+    const reverseGeocoding = (latitude, longitude) => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.coord2Address(longitude, latitude, (result, status) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const address = result[0].address.address_name;
 
-      const reverseGeocoding = (latitude, longitude) => {
-        const geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.coord2Address(longitude, latitude, (result, status) => {
-          if (status === window.kakao.maps.services.Status.OK) {
-            const address = result[0].address.address_name;
-  
-            // address를 받으면, 바로 searchLocal돌려서 input에 입력되게 함
-            setSearchLocal(address)
-          } else {
-            console.error('Failed to reverse geocode coordinates.');
-          }
-        });
-      };
-  
+          // address를 받으면, 바로 searchLocal돌려서 input에 입력되게 함
+          setSearchLocal(address)
+        } else {
+          console.error('Failed to reverse geocode coordinates.');
+        }
+      });
+    };
+
 
 
     return (
