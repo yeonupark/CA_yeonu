@@ -124,7 +124,7 @@ export const Login = ({ onLogin }) => {
   return (
     <div id="login-modal">
       <h2>로그인</h2>
-      <form onSubmit={handleSubmit} style={{ flexDirection: 'column' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1px', flexDirection: 'column' }}>
         <div id="input-area">
           <label>
             <FontAwesomeIcon icon={faUser} />
@@ -137,7 +137,9 @@ export const Login = ({ onLogin }) => {
             <input className="login" type="password" value={password} onChange={event => setPassword(event.target.value)} placeholder="비밀번호" />
           </label>
         </div>
-        <button id="login-btn" onSubmit={closeModal}>로그인</button>
+        <div id='btn-area'>
+          <button id="login-btn" onSubmit={closeModal}>로그인</button>
+        </div>
         <span>
           다양한 기능을 이용하고 싶다면?
           <button onClick={openModal} id="signup-btn">회원가입</button>
