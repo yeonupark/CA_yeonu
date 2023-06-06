@@ -94,3 +94,8 @@ svg {
   width: 18px !important;
   height: 100%;
 }
+
+/* 
+.leaflet-search-control.form-control input:focus ~ .map-container{
+  background-color: #000 !important;
+} */

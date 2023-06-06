@@ -22,7 +22,7 @@
   
 #radar-checkbox-container label {
     display: inline-block;
-    width: 100px;
+    width: fit-content;
     border: 1px solid #d5d5d5;
     border-radius: 2px;
     margin-right: 5px;
@@ -52,3 +52,28 @@
     padding-right: 8px;
     cursor: pointer;
   }
+
+  #section-hr{
+    height: 10px;
+    background-color: #d5d5d5;
+    border: none;
+}
+
+#total-score {
+  display: flex;
+}
+
+#total1, #total2 {
+  width: fit-content;
+  margin-right: 10px;
+  border: 1px solid #d5d5d5;
+  padding: 5px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+#living-score {
+  text-align: left;
+  font-weight: 700;
+  font-size: 1.2em;
+}

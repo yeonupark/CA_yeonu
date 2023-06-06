@@ -66,3 +66,20 @@
     font-size: 12px;
     color: #777;
 }
+
+#continue-btn {
+  color: #3B89FD;
+  border: none;
+  background-color: #fff;
+  font-weight: 700;
+  /* float: right; */
+  text-align: right;
+}
+
+#result-header{
+  display: flex;
+}
+
+#result-header h4{
+  width: 80%;
+}

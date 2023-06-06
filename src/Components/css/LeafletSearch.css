@@ -77,6 +77,7 @@
     z-index: 100;
     opacity: 0;
     cursor: pointer;
+    /* height: 100px; */
 }
 
 #options-container{
@@ -84,17 +85,18 @@
     flex-wrap: wrap;
 }
 
-#checkbox-container div{
+/* #checkbox-container div{
     width: 100px;
-}
+} */
 
-#checkbox-container label{
-    width: fit-content;
-    display: flex;
-    flex-direction: row;
-}
+/* #checkbox-container label{
+    /* width: fit-content; */
+    /* display: flex;
+    flex-direction: row; */
+/* } */
 
 #checkbox-container input{
+    position: absolute;
     display: none;
     display: flex;
     width: 100%;
@@ -107,22 +109,28 @@
     text-align: center;
     color: #777777;
     padding: 5px;
-    margin: 5px;
-    width: 100px;
+    /* margin: 5px; */
+    width: fit-content;
     background-color: #fff;
     border-radius: 12px;
     cursor: pointer;
-    border: 1px solid #777777;
+    border: 1px solid #d5d5d5;
 }
 
 #checkbox-container input:checked ~ span{
+    background-color: #3B89FD;
+    color: white;
+    border:1px solid #3B89FD;
+}
+
+#checkbox-container input:checked ~ label{
     background-color: #3B89FD;
     color: white;
     border:none;
 }
 
 #submit-btn{
-    width: 100%;
+    /* width: 100%; */
     cursor: pointer;
     background-color: #3B89FD;
     color: #fff;
@@ -130,8 +138,9 @@
     padding: 5px;
     border: none;
     font-size: 16px;
-    width: 90%;
+    width: 95%;
     border-radius: 4px;
+    justify-content: center;
 }
 
 #bring-addr-btn{
@@ -152,7 +161,7 @@
 
 #radius-select {
     padding: 5px;
-    width: 60%;
+    width: 100%;
     cursor: pointer;
 }
 
@@ -170,5 +179,26 @@
     padding-left: 2%;
     font-weight: 700;
     font-size: 16px;
+}
 
+#radius-container{
+    width: 70%;
+}
+
+#bring-addr-btn{
+    position: absolute;
+    padding: 2px;
+    top: 115px;
+    left: -1px;
+    background-color: #fff;
+    font-size: 20px;
+    border: 1px solid #c4c4c4;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+form .popup-open {
+    background-color: rgba( 0, 0, 0, 0.5 ) !important;
 }

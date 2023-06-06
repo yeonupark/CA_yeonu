@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { LoginContext } from './LoginContext';
 import { globalurl } from '../App';
+import './css/ResultSheet.css';
 
 // 새로 작성하는 리뷰를 서버에 post하는 컴포넌트
 function ReviewUpdate({ address }) {
@@ -44,9 +45,9 @@ function ReviewUpdate({ address }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <textarea value={reviewText} onChange={handleChange} placeholder="리뷰를 자유롭게 남겨주세요!"></textarea>
-        <button type="submit">작성</button>
+      <form id="review-upload-form" onSubmit={handleSubmit}>
+        <textarea id="review-area" value={reviewText} onChange={handleChange} placeholder="리뷰를 자유롭게 남겨주세요!"></textarea>
+        <button id="review-upload-btn" type="submit">작성</button>
       </form>
     </div>
   );

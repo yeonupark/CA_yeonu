@@ -15,16 +15,17 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
   const [selectedFacilitiesType, setSelectedFacilitiesType] = useState(facilitiesType);
   const [radius, setRadius] = useState('');
   const [chartData, setChartData] = useState(null); // chartData 상태 추가
+  const [total1Score, setTotal1Score] = useState(null); // total score 상태 추가
+  const [total2Score, setTotal2Score] = useState(null); // total score 상태 추가
+  // const [location1Total, setLocation1Total] = useState(null);
 
   const generateChartData = (data) => {
     const { location_1, location_2 } = data;
     const location1Data = location_1.score.individual_score;
     const location2Data = location_2.score.individual_score;
-    
-    // 라벨 설정
-    const labels = Object.keys(location1Data).map((key) => key + ' (Location 1)');
-    labels.push(...Object.keys(location2Data).map((key) => key + ' (Location 2)'));
-    
+    const location1Total = location_1.score.total_score;
+    const location2Total = location_2.score.total_score;
+
 
     //차트 데이터
     const chartData = {
@@ -52,6 +53,9 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
         },
       ],
     };
+
+    setTotal1Score(location1Total);
+    setTotal2Score(location2Total);
   
     return chartData;
   };
@@ -163,12 +167,12 @@ const options = {
   },
 };
 
+
   return (
     <div>
     <div>
       <div>
       <div id="chart">
-      {chartData && <Radar data={chartData} options={{options}} />}
     </div>
     <div id="radar-radius-selector">
         <select value={radius} onChange={handleRadiusChange}>
@@ -216,11 +220,22 @@ const options = {
           <input type="checkbox" checked={selectedLabels.includes('bus')} onChange={() => handleLabelToggle('bus')} />
           버스
         </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('subway')} onChange={() => handleLabelToggle('subway')} />
-          지하철역
-        </label>
       </div>
+      </div>
+      <hr id="section-hr"/>
+      <div id="summary-info">
+      {chartData &&
+      <div>
+        <Radar data={chartData} options={{options}}/>
+        </div>
+      }
+       <h4 id="living-score">생활지수</h4>
+      {chartData &&
+        <div id="total-score">
+        <div id="total1">Location 1: {total1Score}</div>
+        <div id="total2">Location 2: {total2Score}</div>
+        </div>
+      }
       </div>
     </div>
     </div>
