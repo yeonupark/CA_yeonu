@@ -31,9 +31,6 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
     const location1Hash = location_1.hashtag;
     const location2Hash = location_2.hashtag;
 
-    setlocation1HashTag(location_1.hashtag);
-    setlocation2HashTag(location_2.hashtag);
-
 
 
     const newLabels = selectedLabels.filter(item => item !== "metro")
@@ -197,98 +194,99 @@ const options = {
 
   return (
     <div>
-    <div>
-      <div>
-      <div id="chart">
-    </div>
-    <div id="radar-radius-selector">
-        <select value={radius} onChange={handleRadiusChange}>
-          <option value="">반경 선택</option>
-          <option value="100">100m</option>
-          <option value="200">200m</option>
-          <option value="500">500m</option>
-          <option value="1000">1km</option>
-        </select>
-      </div>
-    <div id="radar-checkbox-container">
-      <label>
-          <input type="checkbox" checked={selectedLabels.includes('pharmacy')} onChange={() => handleLabelToggle('pharmacy')} />
-          약국
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('hospital')} onChange={() => handleLabelToggle('hospital')} />
-          병원
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('cafe')} onChange={() => handleLabelToggle('cafe')} />
-          카페
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('gym')} onChange={() => handleLabelToggle('gym')} />
-          운동시설
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('hair')} onChange={() => handleLabelToggle('hair')} />
-          미용실
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('mart')} onChange={() => handleLabelToggle('mart')} />
-          마트
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('convenience')} onChange={() => handleLabelToggle('convenience')} />
-          편의점
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('laundry')} onChange={() => handleLabelToggle('laundry')} />
-          빨래방
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('bus')} onChange={() => handleLabelToggle('bus')} />
-          버스
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('metro')} onChange={() => handleLabelToggle('metro')} />
-          지하철
-        </label>
-      </div>
-      </div>
-      <hr id="section-hr"/>
-      <div id="summary-info">
-
-
-        {chartData ? (
         <div>
-          <h4 id="living-score">생활지수</h4>
-          <Radar data={chartData} options={{options}}/>
-          <div>
-            <div id="total-score">
-            <div id="total-comp">
-            <div id="total1">Location 1: {total1Score}</div>
-            <div id="hash-list">{total1Hash.map((item, index) => (
-              <span id="hash-txt-1" key={index}>{item}</span>))}
-              </div>
-             </div> 
-            <div id="total-comp">
-              <div id="total2">Location 2: {total2Score}</div>
-                <div id="hash-list">{total2Hash.map((item, index) => (
-                  <span id="hash-txt-2" key={index}>{item}</span>))}
+            <div>
+                <div id="chart">
                 </div>
-              </div>
+                <div id="radar-radius-selector">
+                    <select value={radius} onChange={handleRadiusChange}>
+                        <option value="">반경 선택</option>
+                        <option value="100">100m</option>
+                        <option value="200">200m</option>
+                        <option value="500">500m</option>
+                        <option value="1000">1km</option>
+                    </select>
+                </div>
+                <div id="radar-checkbox-container">
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('pharmacy')} onChange={()=> handleLabelToggle('pharmacy')} />
+                        약국
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('hospital')} onChange={()=> handleLabelToggle('hospital')} />
+                        병원
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('cafe')} onChange={()=> handleLabelToggle('cafe')} />
+                        카페
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('gym')} onChange={()=> handleLabelToggle('gym')} />
+                        운동시설
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('hair')} onChange={()=> handleLabelToggle('hair')} />
+                        미용실
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('mart')} onChange={()=> handleLabelToggle('mart')} />
+                        마트
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('convenience')} onChange={()=> handleLabelToggle('convenience')} />
+                        편의점
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('laundry')} onChange={()=> handleLabelToggle('laundry')} />
+                        빨래방
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('bus')} onChange={()=> handleLabelToggle('bus')} />
+                        버스
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('metro')} onChange={()=> handleLabelToggle('metro')} />
+                        지하철
+                    </label>
+                </div>
             </div>
-          </div>
-         ) : (
-          <div>
-            <h4>점수를 보시려면 편의시설 3개 이상 선택하셔야 합니다.</h4>
-            <p>*지하철은 점수산출에 계산되지 않습니다</p>
-          </div>
+            <hr id="section-hr" />
+            <div id="summary-info">
+            {chartData ? (
+                    <div>
+                      <h4 id="living-score">생활지수</h4>
+                      <Radar data={chartData} options={options} />
+                      <div>
+                        <div id="total-score">
+                          <div id="total-comp">
+                            <div id="total1">Location 1: {total1Score}</div>
+                            <div id="hash-list">{total1Hash.map((item, index) => (
+                              <span id="hash-txt-1" key={index}>{item}</span>
+                            ))}
+                            </div>
+                          </div>
+                          <div id="total-comp">
+                            <div id="total2">Location 2: {total2Score}</div>
+                            <div id="hash-list">{total2Hash.map((item, index) => (
+                              <span id="hash-txt-2" key={index}>{item}</span>
+                            ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <h4>점수를 보시려면 편의시설 3개 이상 선택하셔야 합니다.</h4>
+                      <p>*지하철은 점수산출에 계산되지 않습니다</p>
+                    </div>
+                  )}
 
-        )}
 
 
-      </div>
-    </div>
-    </div>
+                </div>
+            </div>
+        </div>
   );
 };
 

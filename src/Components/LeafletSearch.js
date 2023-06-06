@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, { useState, useRef, useEffect } from "react";
-=======
-import React, { useState, useEffect } from "react";
->>>>>>> 9a50017b624fa79e28769afc2969df37632931e2
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
@@ -12,7 +8,7 @@ import Sheet from 'react-modal-sheet';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faMagnifyingGlass, faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
 import ResultSheet from "./ResultSheet";
-// import DaumPostAddress from './DaumPostAddress';
+import DaumPostAddress from './DaumPostAddress';
 import { globalurl } from "../App";
 
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -324,12 +320,7 @@ const handleCloseSheet = () => {
                     <PopupComponent/>
                 )}
                 {/* 누르면 바텀 시트 출력되는 필터링 버튼 */}
-<<<<<<< HEAD
                 <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
-=======
-                <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faFilter}/>
-                </button>
->>>>>>> 9a50017b624fa79e28769afc2969df37632931e2
                 {/* 클릭하면 주소 가져오는 링크 */}    
                 <button id="bring-addr-btn" onClick={getCurrentLocation}>
                     <FontAwesomeIcon icon={faLocationCrosshairs} style={{ color: 'black' }}/>
