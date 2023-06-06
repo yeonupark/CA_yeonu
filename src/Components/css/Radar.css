@@ -59,21 +59,45 @@
     border: none;
 }
 
-#total-score {
+#total-comp {
   display: flex;
+  width: 100%;
 }
 
 #total1, #total2 {
-  width: fit-content;
+  width: 50%;
   margin-right: 10px;
-  border: 1px solid #d5d5d5;
-  padding: 5px;
+  /* border: 1px solid #d5d5d5; */
+  /* padding: 5px; */
   border-radius: 12px;
   font-weight: 700;
+  font-size: 14px;
 }
 
 #living-score {
   text-align: left;
   font-weight: 700;
   font-size: 1.2em;
+}
+
+#hash-txt-1, #hash-txt-2{
+  font-size: 12px;
+  padding: 3px;
+}
+
+#hash-txt-1{
+  color: rgb(75, 192, 192);
+}
+
+#hash-txt-2{
+  color: rgb(255, 99, 132)
+}
+
+#hash-list{
+  width: 250px;
+  text-align: right;
+}
+
+#total-score{
+  padding: 2%;
 }
