@@ -171,7 +171,7 @@ const options = {
     r: {
       circular: true,
       suggestedMin: 0,
-      suggestedMax: 100,
+      suggestedMax: 20,
     },
   },
   elements: {

@@ -44,7 +44,6 @@ function MyPage({ myAddressList }) {
     try {
       // 서버로 __를 post하고, 응답으로 내가 작성한 주소의 리뷰 데이터를 가져옴
       const response = await axios.post(globalurl+"/accounts/mycomment/", username_json);
-      //console.log(response);
       setMyReview(response.data);
     } catch (error) {
       console.error('리뷰를 가져오는 중 오류가 발생했습니다.', error);
