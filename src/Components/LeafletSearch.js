@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
@@ -15,7 +15,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import { type } from "@testing-library/user-event/dist/type";
-import DaumPostAddress from "./DaumPostAddress";
+
 
 
 
@@ -262,14 +262,12 @@ const handleSearch = () => {
       });
     };
 
-
     return (
         <div className="leaflet-bar leaflet-control">
             {/* input을 클릭해서 open하면 => popup창 뜨도록 */}
             {isPopupOpen && (
                 <PopupComponent/>
             )}
-
             <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(event) => event.preventDefault()}>
                 <input
                     className="leaflet-search-control form-control"
@@ -279,10 +277,11 @@ const handleSearch = () => {
                     onClick={popupClick}
                 />                
                 {/* 누르면 바텀 시트 출력되는 필터링 버튼 */}
-                <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faFilter} />
+                <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faFilter}/>
+                </button>
                 {/* 클릭하면 주소 가져오는 링크 */}    
                 <button id="bring-addr-btn" onClick={getCurrentLocation}>
-                <FontAwesomeIcon icon={faLocationCrosshairs} style={{ color: 'black' }}/>
+                    <FontAwesomeIcon icon={faLocationCrosshairs} style={{ color: 'black' }}/>
                 </button>
                 {/* 편의시설 종류 반경 선택: 바텀 시트에서 진행. */}
                 <Sheet isOpen={isOpen} onClose={closeSheet}>
