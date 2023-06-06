@@ -40,7 +40,9 @@ export const LeafletSearch = ({ setSearch }) => {
     const [recentaddress, setRecentAddress] = useState("");
     const [recentSearchValue, setRecentSearchValue] = useState('');
 
-
+    const openResultSheet = () => {
+        setShowResult(!showResult)
+    }
     //바텀시트 핸들러(열기)
     const openSheet = () => {
         setOpen(true)
@@ -252,17 +254,17 @@ const handleSearch = () => {
 };
 
 const handleRecentSearch = async (event) => {
-    let storedUser = JSON.parse(localStorage.getItem("user"));
-    try {
-        const response =  await axios.post(globalurl+"/facilities/info/", storedUser);
-        // 서버 응답 처리
-        setLocation(response.data.location);
-        console.log(response.data);
-        setAddress("");
-        setRecentResult(!recentResult);
-    } catch (error) {
-        console.error(error);
-    }
+    // let storedUser = JSON.parse(localStorage.getItem("user"));
+    // try {
+    //     const response =  await axios.post(globalurl+"/facilities/info/", storedUser);
+    //     // 서버 응답 처리
+    //     setLocation(response.data.location);
+    //     console.log(response.data);
+    //     setAddress("");
+    //     setRecentResult(!recentResult);
+    // } catch (error) {
+    //     console.error(error);
+    // }
     setRecentResult(!recentResult);
 };
 
@@ -449,11 +451,11 @@ const handleCloseSheet = () => {
                     </Sheet.Container>
                     <Sheet.Backdrop />
                 </Sheet>
-                <div>{showResult && <ResultSheet address={address} coords={position} location={location} />}</div>
-                <button id="search-btn" onClick={handleRecentSearch}>
+                <div>{showResult && <ResultSheet address={address} coords={position} location={location} open={true} />}</div>
+                <button id="search-btn" onClick={openResultSheet}>
                     <FontAwesomeIcon icon={faClock} />
                 </button>
-                <div>{recentResult && <ResultSheet address={address} coords={position} location={location}/>}</div>
+                <div>{recentResult && <ResultSheet address={address} coords={position} location={location} open={true}/>}</div>
             </form>
         </div>
     );
