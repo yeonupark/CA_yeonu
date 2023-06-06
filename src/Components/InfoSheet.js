@@ -7,7 +7,7 @@ import './css/InfoSheet.css';
 // 편의시설 종류 영어 -> 한글로 변환
 function eng2kor(eng) {
     const dic = {"cafe":"카페", "hospital":"병원","pharmacy":"약국","gym":"운동시설",
-    "laundry":"세탁소","bus":"버스","hair":"미용실","convenience":"편의점","mart":"마트"}
+    "laundry":"세탁소","bus":"버스","hair":"미용실","convenience":"편의점","mart":"마트", "metro":"지하철역"}
     return(dic[eng])
 }
 
@@ -46,31 +46,7 @@ function meter2minute(distance) {
     }
 }
 
-const HandleScroll = () => {
-    const [scrollPosition, setScrollPosition] = useState(0);
-    const handleScroll = (scrollTop) => {
-        setScrollPosition(scrollTop);
-      };
 
-      useEffect(() => {
-        // 컴포넌트 마운트 시 저장된 스크롤 위치를 불러와 설정합니다.
-        const savedPosition = localStorage.getItem("scrollPosition");
-        if (savedPosition) {
-          setScrollPosition(parseInt(savedPosition, 10));
-        }
-      }, []);
-
-      const handleContinue = () => {
-        // 스크롤 위치를 localStorage에 저장합니다.
-        localStorage.setItem("scrollPosition", scrollPosition.toString());
-      };
-
-      return (
-        <>
-          <button onClick={HandleScroll}>이어보기</button>
-        </>
-      );
-};
 
 // 전체 편의시설 목록 가져오기
 // 편의시설 리스트에서 특정 편의시설 클릭 시 지도 상 해당 마커 위치로 이동시키는 ver.
@@ -113,7 +89,7 @@ const FacilitiesList = ({ facility, location }) => {
 
 
 
-const InfoSheet = ({ location, address }) => {
+const InfoSheet = ({ location, address, recentInfoSheet, setRecentInfoSheet }) => {
     var [firstFacilities, setFirstFacilities] = useState([]);
     const [isOpen, setOpen] = useState(true);
  
@@ -146,6 +122,7 @@ const InfoSheet = ({ location, address }) => {
         if (firstFacilities.length === 0) {
             return <div>편의시설이 없습니다.</div>;
         }
+    
         return (
             <>
                 {firstFacilities.map(facility => {
@@ -163,6 +140,8 @@ const InfoSheet = ({ location, address }) => {
                 {firstFacilities.length === 0 && <div>시설이 없습니다.</div>}
             </>
         );
+
+
     }
 
     // 가장 많이 있는 편의시설 가져오기
@@ -178,7 +157,6 @@ const InfoSheet = ({ location, address }) => {
         });
 
         const sortedFacilities = facilityRatios.sort((a, b) => b.ratio - a.ratio);
-
         const topFacilities = sortedFacilities.slice(0, 3);
 
         
@@ -199,7 +177,6 @@ const InfoSheet = ({ location, address }) => {
     return (
         <div>
             <div id="info-sheet">
-            {/* <button onClick={handleContinue}>이어보기</button> */}
                     <div id="info-sheet-content">
                         <div id="location-hash">
                             {location.hashtag}

@@ -108,5 +108,5 @@ const openMypageModal = () => {
 }
 
 export default App;
-export const globalurl = "https://port-0-a2-server2-dcse2bligafhm4.sel4.cloudtype.app";
-// export const globalurl = "http://127.0.0.1:8000/";
+// export const globalurl = "https://port-0-a2-server2-dcse2bligafhm4.sel4.cloudtype.app";
+export const globalurl = "http://127.0.0.1:8000/";

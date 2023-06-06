@@ -18,7 +18,7 @@ const ResultSheet = ({ address, coords, location }) => {
     const { loggedInUser } = useContext(LoginContext);
     const [scrollPosition, setScrollPosition] = useState(0);
 
-    const sheetContentRef = useRef(0);
+    // const sheetContentRef = useRef(0);
 
     //바텀시트 핸들러(열기)
     const openSheet = () => {
@@ -106,47 +106,6 @@ const ResultSheet = ({ address, coords, location }) => {
             setOpen(false);
             localStorage.setItem("scrollPosition", scrollPosition.toString());
         };
-        
-    //       useEffect(() => {
-    //         const savedPosition = localStorage.getItem("scrollPosition");
-    //         const position = parseInt(savedPosition, 10) || 0;
-    //         setScrollPosition(position);
-    //         if (sheetContentRef.current) {
-    //             sheetContentRef.current.scrollTop = position;
-    //           }
-    //       }, []);
-        
-    //       const handleScroll = () => {
-    //         if (!sheetContentRef.current) return;
-    //         const newPosition = sheetContentRef.current.scrollTop;
-    //         setScrollPosition(newPosition);
-    //       };
-
-    //       const handleContinue = () => {
-    //         if (sheetContentRef.current) {
-    //           sheetContentRef.current.scrollTo({
-    //             top: scrollPosition,
-    //             behavior: "smooth",
-    //           });
-    //         }
-    //       };
-
-    //       useEffect(() => {
-    //         if (!sheetContentRef.current) return;
-          
-    //         // 이어보기 버튼을 클릭할 때만 스크롤 위치로 이동
-    //         if (scrollPosition > 0) {
-    //           sheetContentRef.current.scrollTo({
-    //             top: scrollPosition,
-    //             behavior: "auto",
-    //           });
-    //         }
-          
-    //         sheetContentRef.current.addEventListener("scroll", handleScroll);
-    //         return () => {
-    //           sheetContentRef.current.removeEventListener("scroll", handleScroll);
-    //         };
-    //       }, []);
 
 
     return (
