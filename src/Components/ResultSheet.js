@@ -91,7 +91,7 @@ const ResultSheet = ({ address, coords, location }) => {
             top: scrollPosition,
             behavior: "smooth",
           });
-        console.log('스크롤:', scrollPosition);
+
         }
       };
 
@@ -99,7 +99,7 @@ const ResultSheet = ({ address, coords, location }) => {
         const savedPosition = localStorage.getItem("scrollPosition");
         const position = parseInt(savedPosition, 10) || 0;
         setScrollPosition(position);
-      }, []);    
+        }, []);    
 
         //바텀시트 핸들러(닫기)
         const closeSheet = () => {
