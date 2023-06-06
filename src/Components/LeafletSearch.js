@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+import React, { useState, useRef, useEffect } from "react";
+=======
 import React, { useState, useEffect } from "react";
+>>>>>>> 9a50017b624fa79e28769afc2969df37632931e2
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
@@ -6,17 +10,15 @@ import './css/LeafletSearch.css';
 import './css/BottomSheet.css';
 import Sheet from 'react-modal-sheet';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faMagnifyingGlass, faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
+import { faClock, faMagnifyingGlass, faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
 import ResultSheet from "./ResultSheet";
-import DaumPostAddress from './DaumPostAddress';
+// import DaumPostAddress from './DaumPostAddress';
 import { globalurl } from "../App";
 
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import { type } from "@testing-library/user-event/dist/type";
-
-
 
 
 
@@ -33,9 +35,13 @@ export const LeafletSearch = ({ setSearch }) => {
     const [location, setLocation] = useState({});
     // 결과 창 바텀시트
     const [showResult, setShowResult] = useState(false);
+    //최근 결과창 바텀시트
+    const [recentResult, setRecentResult] = useState(false);
     // 결과 창에서 주소 띄워주기 위해 저장소 생성
     const [address, setAddress] = useState("");
-    //const [fullAddress,setFullAddress] = useState("");
+    // 결과 창에서 주소 띄워주기 위해 저장소 생성
+    const [recentaddress, setRecentAddress] = useState("");
+    const [recentSearchValue, setRecentSearchValue] = useState('');
 
 
     //바텀시트 핸들러(열기)
@@ -89,6 +95,9 @@ export const LeafletSearch = ({ setSearch }) => {
 
     let user_json;
     let coords;
+    let storedUser = localStorage.getItem("user");
+    console.log(storedUser);
+
     // 폼 제출 핸들러
     const handleSubmit = async (event) => {
         //event.preventDefault();
@@ -101,6 +110,7 @@ export const LeafletSearch = ({ setSearch }) => {
                 map.removeLayer(layer);
             }
         });
+
         // 결과 바텀시트 재오픈 위해 초기 세팅
         setShowResult(false);
 
@@ -124,10 +134,9 @@ export const LeafletSearch = ({ setSearch }) => {
             }
         });
 
-        // // 서버로 POST
+        // 서버로 POST
         try {
             const response = await axios.post(globalurl+"/facilities/info/", user_json);
-
             setLocation(response.data.location);
 
         // 편의시설 별 커스텀 마커로 변경
@@ -173,6 +182,7 @@ export const LeafletSearch = ({ setSearch }) => {
     // 반경 원 그리기
     L.circle(coords, { color: "grey", radius: parseInt(radius) }).addTo(map);
     map.setView(coords, 17);
+    localStorage.setItem("user", JSON.stringify(user_json));
 
 }
 const handleSearch = () => {
@@ -239,10 +249,31 @@ const handleSearch = () => {
         }
         // 주소값 잘못 들어왔을 시 alert
         else {
-            alert("올바른 주소를 입력해주세요!")
+            alert('올바른 주소를 입력하세요')
         }
     });
 };
+
+const handleRecentSearch = async (event) => {
+    let storedUser = JSON.parse(localStorage.getItem("user"));
+    try {
+        const response =  await axios.post(globalurl+"/facilities/info/", storedUser);
+        // 서버 응답 처리
+        setLocation(response.data.location);
+        console.log(response.data);
+        setAddress("");
+        setRecentResult(!recentResult);
+    } catch (error) {
+        console.error(error);
+    }
+    setRecentResult(!recentResult);
+};
+
+const handleCloseSheet = () => {
+    setRecentResult(false);
+  };
+
+// setRecentResult(false);
 
     // 카카오 API를 사용해 현재 위치 받고 => 그 위치를 주소로 변환해주는 컴포넌트 
     const getCurrentLocation = () => {
@@ -288,10 +319,17 @@ const handleSearch = () => {
                     placeholder="궁금한 동네의 위치를 입력해보세요!"
                     value={search}
                     onClick={popupClick}
-                />                
+                />
+                {isPopupOpen && (
+                    <PopupComponent/>
+                )}
                 {/* 누르면 바텀 시트 출력되는 필터링 버튼 */}
+<<<<<<< HEAD
+                <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+=======
                 <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faFilter}/>
                 </button>
+>>>>>>> 9a50017b624fa79e28769afc2969df37632931e2
                 {/* 클릭하면 주소 가져오는 링크 */}    
                 <button id="bring-addr-btn" onClick={getCurrentLocation}>
                     <FontAwesomeIcon icon={faLocationCrosshairs} style={{ color: 'black' }}/>
@@ -418,14 +456,12 @@ const handleSearch = () => {
                     </Sheet.Container>
                     <Sheet.Backdrop />
                 </Sheet>
-                <button id="search-btn" onClick={handleSearch}>
-                    <FontAwesomeIcon icon={faMagnifyingGlass} />
-                </button>
                 <div>{showResult && <ResultSheet address={address} coords={position} location={location} />}</div>
+                <button id="search-btn" onClick={handleRecentSearch}>
+                    <FontAwesomeIcon icon={faClock} />
+                </button>
+                <div>{recentResult && <ResultSheet address={address} coords={position} location={location}/>}</div>
             </form>
-            {isPopupOpen && (
-                <PopupComponent/>
-            )}
         </div>
     );
 };

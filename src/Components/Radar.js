@@ -17,10 +17,9 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
   const [chartData, setChartData] = useState(null); // chartData 상태 추가
   const [total1Score, setTotal1Score] = useState(null); // total score 상태 추가
   const [total2Score, setTotal2Score] = useState(null); // total score 상태 추가
-  const [location1HashTag, setlocation1HashTag] = useState(null);
-  const [location2HashTag, setlocation2HashTag] = useState(null);
 
-  // const [location1Total, setLocation1Total] = useState(null);
+  const [total1Hash, setTotal1Hash] = useState([]); // 해시태그 상태 추가
+  const [total2Hash, setTotal2Hash] = useState([]); // 해시태그 상태 추가
 
   const generateChartData = (data) => {
     const { location_1, location_2 } = data;
@@ -29,6 +28,8 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
 
     const location1Total = location_1.score.total_score;
     const location2Total = location_2.score.total_score;
+    const location1Hash = location_1.hashtag;
+    const location2Hash = location_2.hashtag;
 
     setlocation1HashTag(location_1.hashtag);
     setlocation2HashTag(location_2.hashtag);
@@ -74,9 +75,12 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
 
       setTotal1Score(location1Total);
       setTotal2Score(location2Total);
+      setTotal1Hash(location1Hash);
+      setTotal2Hash(location2Hash);
     
       return chartData;
     }
+
   };
   
 
@@ -251,37 +255,31 @@ const options = {
       </div>
       <hr id="section-hr"/>
       <div id="summary-info">
-        {/* {chartData &&
-        <div>
-          <Radar data={chartData} options={{options}}/>
-          </div>
-        }
-        // 
-        {!chartData &&
-          <div>adfadfadf</div>
-        }
-        <h4 id="living-score">생활지수</h4>
-        {chartData &&
-          <div id="total-score">
-          <div id="total1">Location 1: {total1Score}</div>
-          <div id="total2">Location 2: {total2Score}</div>
-          </div>
-        } */}
+
+
         {chartData ? (
         <div>
+          <h4 id="living-score">생활지수</h4>
           <Radar data={chartData} options={{options}}/>
-          <div id="total-score">
+          <div>
+            <div id="total-score">
+            <div id="total-comp">
             <div id="total1">Location 1: {total1Score}</div>
-            <div id="total2">Location 2: {total2Score}</div>
+            <div id="hash-list">{total1Hash.map((item, index) => (
+              <span id="hash-txt-1" key={index}>{item}</span>))}
+              </div>
+             </div> 
+            <div id="total-comp">
+              <div id="total2">Location 2: {total2Score}</div>
+                <div id="hash-list">{total2Hash.map((item, index) => (
+                  <span id="hash-txt-2" key={index}>{item}</span>))}
+                </div>
+              </div>
+            </div>
           </div>
-          <div id="hashtag">
-            <div id="total1">Location 1: {location1HashTag}</div>
-            <div id="total2">Location 2: {location2HashTag}</div>
-          </div>
-        </div>
          ) : (
           <div>
-            <h3>점수를 보시려면 편의시설 3개 이상 선택하셔야 합니다.</h3>
+            <h4>점수를 보시려면 편의시설 3개 이상 선택하셔야 합니다.</h4>
             <p>*지하철은 점수산출에 계산되지 않습니다</p>
           </div>
 
