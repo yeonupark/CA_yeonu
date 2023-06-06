@@ -14,6 +14,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster';
 import { type } from "@testing-library/user-event/dist/type";
+import DaumPostAddress from "./DaumPostAddress";
 
 
 
@@ -38,6 +39,7 @@ export const LeafletSearch = ({ setSearch }) => {
     const [address, setAddress] = useState("");
     //const [fullAddress,setFullAddress] = useState("");
 
+
     //바텀시트 핸들러(열기)
     const openSheet = () => {
         setOpen(true)
@@ -60,8 +62,25 @@ export const LeafletSearch = ({ setSearch }) => {
         }
     }
 
-    const onChange = (e) => {
-        setSearchLocal(e.target.value);
+    // const onChange = (e) => {
+    //     setSearchLocal(e.target.value);
+    // };
+
+    // 주소 완성 팝업창
+    const PopupComponent = () => {
+        return (
+        <div className="popup">
+            {/* 팝업창 내부에서 주소 => 좌표 반환하는 작업까지 한다 */}
+            <DaumPostAddress address={search} setSearchLocal={setSearchLocal} setPopup={popupClick}/>
+        </div>
+        );
+      };
+
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+
+    const popupClick = () => {
+        setIsPopupOpen(!isPopupOpen);
     };
 
     // 빨간색 마커
@@ -231,25 +250,30 @@ export const LeafletSearch = ({ setSearch }) => {
     };
 
 
-
     return (
         <div className="leaflet-bar leaflet-control">
+            {/* input을 클릭해서 open하면 => popup창 뜨도록 */}
+            {isPopupOpen && (
+                <PopupComponent/>
+            )}
+
             <form className="leaflet-bar-part leaflet-bar-part-single" onSubmit={(event) => event.preventDefault()}>
                 <input
                     className="leaflet-search-control form-control"
                     type="text"
                     placeholder="궁금한 동네의 위치를 입력해보세요!"
-                    onChange={onChange}
+                    // onChange={onChange}
                     value={search}
-                />
+                    onClick={popupClick} // input 클릭하면 Popup창 클릭
+                />                
                 {/* 누르면 바텀 시트 출력되는 필터링 버튼 */}
                 <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faFilter} /></button>
                 {/* 클릭하면 주소 가져오는 링크 */}    
                 <button id="bring-addr-btn" onClick={getCurrentLocation}>
                 <FontAwesomeIcon icon={faLocationCrosshairs} style={{ color: 'black' }}/>
                 </button>
-                
-
+    
+   
                 {/* 편의시설 종류 반경 선택: 바텀 시트에서 진행. */}
                 <Sheet isOpen={isOpen} onClose={closeSheet}>
                     <Sheet.Container>
