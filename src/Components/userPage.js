@@ -228,19 +228,29 @@ function MyPage({ myAddressList }) {
     {visible && (
     <div id="mylike-list-title">
       <h4>내가 좋아요한 주소</h4>
-        <ul id="mylike-list">
+      <p>* 비교하고 싶은 주소를 선택하세요</p>
+      <ul id="mylike-list">
           {myLikeList.map((like, index) => (
-            <li key={index} style={{ textAlign: "left" }}>
+            <li
+              key={index}
+              style={{
+                textAlign: "left",
+                backgroundColor: like.selected ? "rgba(0, 128, 255, 0.5)" : "transparent",
+                color: like.selected ? "white" : "inherit",
+              }}
+            >
               <label>
                 <input
                   type="checkbox"
-                  data-index={index} // 인덱스 정보를 data-index 속성으로 추가
+                  data-index={index}
                   checked={like.selected}
                   onChange={handleCheckboxChange}
                   id="mylike-list-checkbox"
                 />
                 <span>{like.address}</span>
-                <span id="clicked-index">{like.selected ? myLikeList.filter((item) => item.selected).indexOf(like) + 1 : ""}</span>
+                {/* <span id="clicked-index">
+                  {like.selected ? myLikeList.filter((item) => item.selected).indexOf(like) + 1 : ""}
+                </span> */}
                 <br />
               </label>
             </li>
@@ -248,7 +258,7 @@ function MyPage({ myAddressList }) {
         </ul>
         <div id="myreview-list-title">
           <button id="seemore-btn" onClick={handleSendToServer}>
-            자세히 보기
+            비교하기
           </button>
         </div>
         <hr id="sections"/>

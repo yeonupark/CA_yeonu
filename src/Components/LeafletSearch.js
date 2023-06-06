@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import axios from 'axios';
@@ -182,6 +183,19 @@ export const LeafletSearch = ({ setSearch }) => {
 
 }
 const handleSearch = () => {
+
+    if (facilities.length === 0){
+        return(
+            alert("편의시설을 선택해주세요.")
+            )
+    }
+
+    if (radius === '') {
+        return(
+            alert("반경을 설정해주세요.")
+            )
+    }
+
     // 주소-좌표 변환 객체를 생성
     const geocoder = new kakao.maps.services.Geocoder();
 
@@ -307,8 +321,8 @@ const handleCloseSheet = () => {
                     <PopupComponent/>
                 )}
                 {/* 누르면 바텀 시트 출력되는 필터링 버튼 */}
-                <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faMagnifyingGlass}/>
-                </button>
+
+                <button id="filter-btn" onClick={openSheet}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
                 {/* 클릭하면 주소 가져오는 링크 */}    
                 <button id="bring-addr-btn" onClick={getCurrentLocation}>
                     <FontAwesomeIcon icon={faLocationCrosshairs} style={{ color: 'black' }}/>

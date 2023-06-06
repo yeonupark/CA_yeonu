@@ -17,53 +17,67 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
   const [chartData, setChartData] = useState(null); // chartData 상태 추가
   const [total1Score, setTotal1Score] = useState(null); // total score 상태 추가
   const [total2Score, setTotal2Score] = useState(null); // total score 상태 추가
+
   const [total1Hash, setTotal1Hash] = useState([]); // 해시태그 상태 추가
   const [total2Hash, setTotal2Hash] = useState([]); // 해시태그 상태 추가
-  // const [location1Total, setLocation1Total] = useState(null);
 
   const generateChartData = (data) => {
     const { location_1, location_2 } = data;
     const location1Data = location_1.score.individual_score;
     const location2Data = location_2.score.individual_score;
+
     const location1Total = location_1.score.total_score;
     const location2Total = location_2.score.total_score;
     const location1Hash = location_1.hashtag;
     const location2Hash = location_2.hashtag;
 
 
-    //차트 데이터
-    const chartData = {
-      labels: selectedLabels,
-      datasets: [
-        {
-          label: 'Location 1',
-          data: Object.values(location1Data),
-          fill: true, // 도형을 채움
-          backgroundColor: 'rgba(75,192,192,0.4)',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(75,192,192,1)',
-          borderWidth: 0, // 선의 두께를 0으로 설정하여 표시하지 않음
-          pointRadius: 0, // 점의 반지름을 0으로 설정하여 표시하지 않음
-        },
-        {
-          label: 'Location 2',
-          data: Object.values(location2Data),
-          fill: true, // 도형을 채움
-          backgroundColor: 'rgba(255,99,132,0.4)',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(255,99,132,1)',
-          borderWidth: 0, // 선의 두께를 0으로 설정하여 표시하지 않음
-          pointRadius: 0, // 점의 반지름을 0으로 설정하여 표시하지 않음
-        },
-      ],
-    };
 
-    setTotal1Score(location1Total);
-    setTotal2Score(location2Total);
-    setTotal1Hash(location1Hash);
-    setTotal2Hash(location2Hash);
-  
-    return chartData;
+    const newLabels = selectedLabels.filter(item => item !== "metro")
+
+
+    if (newLabels.length < 3) {
+      return null
+    }
+
+
+    else {
+      //차트 데이터
+      // 지하철이 들어가면 차트데이터에서 제외하기로 함
+      const chartData = {
+        labels: newLabels,
+        datasets: [
+          {
+            label: 'Location 1',
+            data: Object.values(location1Data),
+            fill: true, // 도형을 채움
+            backgroundColor: 'rgba(75,192,192,0.4)',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(75,192,192,1)',
+            borderWidth: 0, // 선의 두께를 0으로 설정하여 표시하지 않음
+            pointRadius: 0, // 점의 반지름을 0으로 설정하여 표시하지 않음
+          },
+          {
+            label: 'Location 2',
+            data: Object.values(location2Data),
+            fill: true, // 도형을 채움
+            backgroundColor: 'rgba(255,99,132,0.4)',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(255,99,132,1)',
+            borderWidth: 0, // 선의 두께를 0으로 설정하여 표시하지 않음
+            pointRadius: 0, // 점의 반지름을 0으로 설정하여 표시하지 않음
+          },
+        ],
+      };
+
+      setTotal1Score(location1Total);
+      setTotal2Score(location2Total);
+      setTotal1Hash(location1Hash);
+      setTotal2Hash(location2Hash);
+    
+      return chartData;
+    }
+
   };
   
 
@@ -84,7 +98,8 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
       const data = response.data; // 받아온 데이터
       const chartData = generateChartData(data); // 차트 데이터 생성
       setChartData(chartData); // 차트 데이터 설정
-      console.log(chartData);
+      console.log('차트 데이터 생성');
+
     } catch (error) {
       console.error("데이터 전송 중 오류 발생", error);
     }
@@ -119,8 +134,11 @@ const RadarChart = ({ postData, setPostData, facilitiesType }) => {
   };
   
   const updatePostData = async (updatedLabels) => {
+
     const updatedData = {
+      
       ...postData,
+      
       facilities_type: updatedLabels.join(','), // Join the array values with a comma
     };
     console.log('json:', updatedData);
@@ -176,87 +194,99 @@ const options = {
 
   return (
     <div>
-    <div>
-      <div>
-      <div id="chart">
-    </div>
-    <div id="radar-radius-selector">
-        <select value={radius} onChange={handleRadiusChange}>
-          <option value="">반경 선택</option>
-          <option value="100">100m</option>
-          <option value="200">200m</option>
-          <option value="500">500m</option>
-          <option value="1000">1km</option>
-        </select>
-      </div>
-    <div id="radar-checkbox-container">
-      <label>
-          <input type="checkbox" checked={selectedLabels.includes('pharmacy')} onChange={() => handleLabelToggle('pharmacy')} />
-          약국
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('hospital')} onChange={() => handleLabelToggle('hospital')} />
-          병원
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('cafe')} onChange={() => handleLabelToggle('cafe')} />
-          카페
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('gym')} onChange={() => handleLabelToggle('gym')} />
-          운동시설
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('hair')} onChange={() => handleLabelToggle('hair')} />
-          미용실
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('mart')} onChange={() => handleLabelToggle('mart')} />
-          마트
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('convenience')} onChange={() => handleLabelToggle('convenience')} />
-          편의점
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('laundry')} onChange={() => handleLabelToggle('laundry')} />
-          빨래방
-        </label>
-        <label>
-          <input type="checkbox" checked={selectedLabels.includes('bus')} onChange={() => handleLabelToggle('bus')} />
-          버스
-        </label>
-      </div>
-      </div>
-      <hr id="section-hr"/>
-      <div id="summary-info">
-      {chartData &&
-      <div>
-        <Radar data={chartData} options={{options}}/>
+        <div>
+            <div>
+                <div id="chart">
+                </div>
+                <div id="radar-radius-selector">
+                    <select value={radius} onChange={handleRadiusChange}>
+                        <option value="">반경 선택</option>
+                        <option value="100">100m</option>
+                        <option value="200">200m</option>
+                        <option value="500">500m</option>
+                        <option value="1000">1km</option>
+                    </select>
+                </div>
+                <div id="radar-checkbox-container">
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('pharmacy')} onChange={()=> handleLabelToggle('pharmacy')} />
+                        약국
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('hospital')} onChange={()=> handleLabelToggle('hospital')} />
+                        병원
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('cafe')} onChange={()=> handleLabelToggle('cafe')} />
+                        카페
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('gym')} onChange={()=> handleLabelToggle('gym')} />
+                        운동시설
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('hair')} onChange={()=> handleLabelToggle('hair')} />
+                        미용실
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('mart')} onChange={()=> handleLabelToggle('mart')} />
+                        마트
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('convenience')} onChange={()=> handleLabelToggle('convenience')} />
+                        편의점
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('laundry')} onChange={()=> handleLabelToggle('laundry')} />
+                        빨래방
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('bus')} onChange={()=> handleLabelToggle('bus')} />
+                        버스
+                    </label>
+                    <label>
+                        <input type="checkbox" checked={selectedLabels.includes('metro')} onChange={()=> handleLabelToggle('metro')} />
+                        지하철
+                    </label>
+                </div>
+            </div>
+            <hr id="section-hr" />
+            <div id="summary-info">
+            {chartData ? (
+                    <div>
+                      <h4 id="living-score">생활지수</h4>
+                      <Radar data={chartData} options={options} />
+                      <div>
+                        <div id="total-score">
+                          <div id="total-comp">
+                            <div id="total1">Location 1: {total1Score}</div>
+                            <div id="hash-list">{total1Hash.map((item, index) => (
+                              <span id="hash-txt-1" key={index}>{item}</span>
+                            ))}
+                            </div>
+                          </div>
+                          <div id="total-comp">
+                            <div id="total2">Location 2: {total2Score}</div>
+                            <div id="hash-list">{total2Hash.map((item, index) => (
+                              <span id="hash-txt-2" key={index}>{item}</span>
+                            ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <h4>점수를 보시려면 편의시설 3개 이상 선택하셔야 합니다.</h4>
+                      <p>*지하철은 점수산출에 계산되지 않습니다</p>
+                    </div>
+                  )}
+
+
+
+                </div>
+            </div>
         </div>
-      }
-       <h4 id="living-score">생활지수</h4>
-      {chartData &&
-      <div>
-        <div id="total-score">
-        <div id="total-comp">
-        <div id="total1">Location 1: {total1Score}</div>
-        <div id="hash-list">{total1Hash.map((item, index) => (
-          <span id="hash-txt-1" key={index}>{item}</span>))}
-          </div>
-         </div> 
-        <div id="total-comp">
-        <div id="total2">Location 2: {total2Score}</div>
-        <div id="hash-list">{total2Hash.map((item, index) => (
-          <span id="hash-txt-2" key={index}>{item}</span>))}
-          </div>
-        </div>
-        </div>
-      </div>
-      }
-      </div>
-    </div>
-    </div>
   );
 };
 
