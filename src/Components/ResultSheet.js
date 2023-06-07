@@ -11,7 +11,7 @@ import { globalurl } from "../App";
 
 const ResultSheet = ({ address, coords, location }) => {
     const [isOpen, setOpen] = useState(true);
-    const [showReview, setShowReview] = useState(true);
+    const [showReview, setShowReview] = useState(false);
     const [like, setLike] = useState(undefined);
     const [reviews, setReviews] = useState([]);
     const [showInfo, setShowInfo] = useState(true);
@@ -126,7 +126,7 @@ const ResultSheet = ({ address, coords, location }) => {
                             <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}>♥︎</button>
                         </p>
                         <div>{showInfo &&<InfoSheet address={address} location={location} />}</div>
-                        <div>{showReview && <Review address={address} reviews ={reviews}/>}</div>
+                        <div id="review-container">{showReview && <Review address={address} reviews ={reviews}/>}</div>
                     </Sheet.Content>
                 </Sheet.Container>
                 <Sheet.Backdrop />

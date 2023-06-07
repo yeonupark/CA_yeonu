@@ -84,3 +84,7 @@
 #result-header h4{
   width: 80%;
 }
+
+#review-container {
+  min-height: 100vh;
+}
