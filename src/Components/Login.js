@@ -80,7 +80,7 @@ export const Login = ({ onLogin }) => {
         onLogin();
       })
       .catch(function (error) {
-        alert('로그인에 실패하셨습니다.')
+        // alert('로그인에 실패하셨습니다.')
         console.error("Login failed:", error);
       })
   };

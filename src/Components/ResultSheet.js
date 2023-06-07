@@ -126,7 +126,7 @@ const ResultSheet = ({ address, coords, location }) => {
                             <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}>♥︎</button>
                         </p>
                         <div>{showInfo &&<InfoSheet address={address} location={location} />}</div>
-                        <div>{showReview && <Review address={address} reviews ={reviews}/>}</div>
+                        <div id="review-container">{showReview && <Review address={address} reviews ={reviews}/>}</div>
                     </Sheet.Content>
                 </Sheet.Container>
                 <Sheet.Backdrop />
