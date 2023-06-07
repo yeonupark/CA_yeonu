@@ -276,18 +276,15 @@ const options = {
                       </div>
                     </div>
                   ) : (
-                    <div>
-                      <h4>점수를 보시려면 편의시설 3개 이상 선택하셔야 합니다.</h4>
-                      <p>*지하철은 점수산출에 계산되지 않습니다</p>
+                    <div id="guide-compare">
+                      <h4 id="radar-guide">3개 이상의 편의시설을 선택하고 반경을 선택해주세요!</h4>
+                      <p id="caution">지하철은 점수산출에 계산되지 않습니다</p>
                     </div>
                   )}
-
-
-
                 </div>
             </div>
         </div>
-  );
+  ); 
 };
 
 export default RadarChart;

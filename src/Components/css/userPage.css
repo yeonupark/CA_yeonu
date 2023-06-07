@@ -109,3 +109,7 @@
 #confirmed {
   pointer-events: none;
 }
+
+#choose-likes label span{
+  cursor: pointer;
+}

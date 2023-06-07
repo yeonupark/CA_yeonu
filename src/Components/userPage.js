@@ -227,15 +227,16 @@ function MyPage({ myAddressList }) {
     {visible && (
     <div id="mylike-list-title">
       <h4>내가 좋아요한 주소</h4>
-      <p>* 비교하고 싶은 주소를 선택하세요</p>
+      <p>비교하고 싶은 주소를 선택하세요</p>
       <ul id="mylike-list">
           {myLikeList.map((like, index) => (
             <li
+            id ="choose-likes"
               key={index}
               style={{
                 textAlign: "left",
-                backgroundColor: like.selected ? "rgba(0, 128, 255, 0.5)" : "transparent",
-                color: like.selected ? "white" : "inherit",
+                color: like.selected ? "#3B89FD" : "#000",
+                fontWeight: like.selected ? "700" : "",
               }}
             >
               <label>

@@ -27,9 +27,9 @@ function ReviewUpdate({ address }) {
       );
     }
     if (loggedInUser === null) {
-      return (
-        alert("리뷰를 작성하려면 로그인을 해주세요!")
-      );
+      alert("리뷰를 작성하려면 로그인을 해주세요!")
+      //새로고침 -> 로그인으로 돌아감
+      window.location.reload()
     }
     event.preventDefault();
     // 서버로 {주소3, 텍스트, 풀주소, 아이디}를 post

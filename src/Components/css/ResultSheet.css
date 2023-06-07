@@ -45,6 +45,7 @@
     list-style: none;
     padding-left: 2%;
     padding-right: 2%;
+    overflow: auto;
 }
 
 #review-list li p{
