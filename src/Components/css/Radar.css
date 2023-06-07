@@ -101,3 +101,18 @@
 #total-score{
   padding: 2%;
 }
+
+#radar-guide{
+  font-size: 14px;
+  margin: 0;
+}
+
+#caution {
+  font-size: 12px;
+  color: #777;
+  margin: 0;
+}
+
+#guide-compare{
+  line-height: 1.5;
+}
