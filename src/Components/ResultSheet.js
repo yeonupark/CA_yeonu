@@ -11,7 +11,7 @@ import { globalurl } from "../App";
 
 const ResultSheet = ({ address, coords, location }) => {
     const [isOpen, setOpen] = useState(true);
-    const [showReview, setShowReview] = useState(true);
+    const [showReview, setShowReview] = useState(false);
     const [like, setLike] = useState(undefined);
     const [reviews, setReviews] = useState([]);
     const [showInfo, setShowInfo] = useState(true);
