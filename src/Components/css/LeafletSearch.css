@@ -1,6 +1,4 @@
-:root{/* 변수 정의 */
---component-width: 345px;
-}
+
 
 .leaflet-top.leaflet-left{
     top: 50px !important;
@@ -12,7 +10,7 @@
 }
 
 .leaflet-bar-part.leaflet-bar-part-single{
-    width: var(--component-width) !important;
+    width: 90vw !important;
     background-color: #fff;
     margin:auto;
     border:none;
@@ -168,7 +166,7 @@
 .popup {
     display: block;
     position: fixed;
-    width: var(--component-width);
+    width: 95vw;
     margin: auto;
     height: 100px;
     z-index: 1001;
