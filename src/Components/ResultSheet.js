@@ -111,7 +111,7 @@ const ResultSheet = ({ address, coords, location }) => {
     return (
         <div>
             <Sheet isOpen={isOpen} onClose={closeSheet}>
-                <Sheet.Container >
+                <Sheet.Container>
                     <Sheet.Header />
                     <Sheet.Content id="sheet-content" onScroll={handleScroll}>
                         <div id="result-header">

@@ -11,7 +11,7 @@
 .ReactModal__Overlay.ReactModal__Overlay--after-open{
     background-color: rgba( 0, 0, 0, 0.5 ) !important;
     margin: auto;
-    width: 360px;
+    /* width: 360px; */
 }
 
 .ReactModal__Content.ReactModal__Content--after-open{
