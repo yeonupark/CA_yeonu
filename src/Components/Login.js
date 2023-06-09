@@ -80,7 +80,7 @@ export const Login = ({ onLogin }) => {
         onLogin();
       })
       .catch(function (error) {
-        // alert('로그인에 실패하셨습니다.')
+        alert('로그인에 실패하셨습니다.')
         console.error("Login failed:", error);
       })
   };
@@ -140,7 +140,9 @@ export const Login = ({ onLogin }) => {
         <div id='btn-area'>
           <button id="login-btn" onSubmit={closeModal}>로그인</button>
         </div>
-        <span>
+
+      </form>
+      <span>
           다양한 기능을 이용하고 싶다면?
           <button onClick={openModal} id="signup-btn">회원가입</button>
         </span>
@@ -176,7 +178,6 @@ export const Login = ({ onLogin }) => {
             <button id="login-btn" type="submit" onClick={handleSignUpSubmit}>가입</button>
           </div>
         </Modal>
-      </form>
     </div>
   );
 }

@@ -194,7 +194,7 @@ const options = {
 
   return (
     <div>
-        <div>
+        <div id="info-sheet">
             <div>
                 <div id="chart">
                 </div>
