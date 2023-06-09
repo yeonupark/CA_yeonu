@@ -16,8 +16,23 @@ function ReviewUpdate({ address }) {
   // {주소, 텍스트, 풀주소, 아이디} json 생성 
   const addressParts = address.split(' ');
 
+  var province = addressParts[0]
+
+
+  if (addressParts.length == 4){ // 용인
+
+      var district = addressParts[1] + " " +  addressParts[2]
+      var dong = addressParts[3]
+  } else if (addressParts[2] == '') { // 세종
+      var district = null
+      var dong = addressParts[2]
+  } else {
+      var district = addressParts[1]
+      var dong = addressParts[2]
+  }
+
   // const fullAddress = addressParts[0] + " "+addressParts[1] + " "+addressParts[2];
-  const review_json_tmp = JSON.stringify({ username: String(loggedInUser), province: String(addressParts[0]), district: String(addressParts[1]), dong: String(addressParts[2]), addr: String(address), content: String(reviewText)});
+  const review_json_tmp = JSON.stringify({ username: String(loggedInUser), province: String(province), district: String(district), dong: String(dong), addr: String(address), content: String(reviewText)});
   const review_json = JSON.parse(review_json_tmp);
 
   const handleSubmit = async (event) => {

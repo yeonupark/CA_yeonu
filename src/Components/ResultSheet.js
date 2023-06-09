@@ -33,8 +33,24 @@ const ResultSheet = ({ address, coords, location }) => {
 
     // 주소 세 파트로 나누어서 json으로 만들기
     const addressParts = address.split(' ');
-    const address_json_tmp = JSON.stringify({ "province": addressParts[0], "city": addressParts[1], "dong": addressParts[2] });
+    var province = addressParts[0]
+
+    // 용인
+    if (addressParts.length == 4){ // 용인
+
+        var city = addressParts[1] + " " +  addressParts[2]
+        var dong = addressParts[3]
+    } else if (addressParts[1] == '') { // 세종
+        console.log('서종')
+        var city = null
+        var dong = addressParts[2]
+    } else {
+        var city = addressParts[1]
+        var dong = addressParts[2]
+    }
+    const address_json_tmp = JSON.stringify({ "province": province, "city": city, "dong": dong });
     const address_json = JSON.parse(address_json_tmp);
+
     //console.log(address_json)
 
     const fetchReviews = async () => {
