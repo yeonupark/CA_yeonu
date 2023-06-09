@@ -225,34 +225,18 @@ const handleSearch = () => {
             const user_json_tmp = JSON.stringify(user1);
             user_json = JSON.parse(user_json_tmp);
 
+
             // address에는 시, 구, 동 단위까지 저장. 결과 컴포넌트에 띄워주기 위함
             let adrs1, adrs2, adrs3;
+            console.log(result)
             if (result[0].address) {    // 일반 주소
                 adrs1 = result[0].address.region_1depth_name;
                 adrs2 = result[0].address.region_2depth_name;
-                const adrs3_tmp = result[0].address.region_3depth_h_name;
+                adrs3 = result[0].address.region_3depth_h_name;
 
-                if (/\d/.test(adrs3_tmp)) { // 숫자가 있는 경우
-                    adrs3 = adrs3_tmp.replace(/\d/g, "");
-                }
-                else if (adrs3_tmp === "") {
-                    adrs3 = result[0].address.region_3depth_name;
-                }
-                else {
-                    adrs3 = adrs3_tmp;
-                }
-            } else {    // 도로명 주소
-                adrs1 = result[0].road_address.region_1depth_name;
-                adrs2 = result[0].road_address.region_2depth_name;
-                const adrs3_tmp = result[0].road_address.region_3depth_name;
 
-                if (/\d/.test(adrs3_tmp)) { // 숫자가 있는 경우
-                    adrs3 = adrs3_tmp.replace(/\d/g, "");
-                }
-                else {
-                    adrs3 = adrs3_tmp;
-                }
-            }
+            } 
+            console.log(adrs1, adrs2, adrs3);
             setAddress(adrs1 + " " + adrs2 + " " + adrs3);
 
             handleSubmit();

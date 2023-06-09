@@ -33,8 +33,7 @@ const ResultSheet = ({ address, coords, location }) => {
 
     // 주소 세 파트로 나누어서 json으로 만들기
     const addressParts = address.split(' ');
-    const seoul = (addressParts[0]+"특별시");
-    const address_json_tmp = JSON.stringify({ "province": seoul, "city": addressParts[1], "dong": addressParts[2] });
+    const address_json_tmp = JSON.stringify({ "province": addressParts[0], "city": addressParts[1], "dong": addressParts[2] });
     const address_json = JSON.parse(address_json_tmp);
     //console.log(address_json)
 
@@ -115,16 +114,20 @@ const ResultSheet = ({ address, coords, location }) => {
                     <Sheet.Header />
                     <Sheet.Content id="sheet-content" onScroll={handleScroll}>
                         <div id="result-header">
-                        <h4 >{address}</h4>
-                        <button id="continue-btn" onClick={handleContinue}>이어보기</button>
+                            <h4 >{address}</h4>
+                            <button id="continue-btn" onClick={handleContinue}>이어보기</button>
+                            <div>
+
+
+                        </div>
                         </div>
                         <hr />
-                        <p>
-                            <span> </span>
-                            <button id="review-btn" onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} style={{ color: showReview ? '#3B89FD' : '#c4c4c4' }} /></button>
-                            <button id="dashboard-btn" onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} style={{ color: showInfo ? '#3B89FD' : '#c4c4c4' }}/></button>
-                            <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}>♥︎</button>
+                        <p class="btn-section">
+                                <button id="review-btn" onClick={handleReviewClick}><FontAwesomeIcon icon={faComments} style={{ color: showReview ? '#3B89FD' : '#c4c4c4' }} /></button>
+                                <button id="dashboard-btn" onClick={handleInfoClick}><FontAwesomeIcon icon={faChartSimple} style={{ color: showInfo ? '#3B89FD' : '#c4c4c4' }}/></button>
+                                <button id="like-btn" onClick={handleLikeClick} style={{ color: like ? 'red' : '#c4c4c4' }}>♥︎</button>
                         </p>
+
                         <div>{showInfo &&<InfoSheet address={address} location={location} />}</div>
                         <div id="review-container">{showReview && <Review address={address} reviews ={reviews}/>}</div>
                     </Sheet.Content>
